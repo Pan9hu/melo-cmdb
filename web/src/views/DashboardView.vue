@@ -20,6 +20,7 @@ import {
   AuditOutlined,
   InfoCircleOutlined
 } from "@vicons/antd";
+import router from "@/router";
 
 function renderIcon(icon) {
   return () => h(NIcon, null, {default: () => h(icon)});
@@ -152,6 +153,11 @@ function handleMenuItemClicked(key, item) {
   console.log(item)
 }
 
+function handleLogoutButtonClicked() {
+    router.push({
+    path: '/login'
+  })
+}
 
 onMounted(() => {
   document.title = "Melo CMDB - 具有HA特性的分布式配置管理数据系统"
@@ -172,7 +178,7 @@ onMounted(() => {
 <template>
   <div class="dashboard-view">
       <n-layout has-sider>
-        <n-button id="logout-button" strong secondary style="position: absolute;bottom: 10px;left: 10px; z-index: 99;width: 220px">退&nbsp;出&nbsp;Melo&nbsp;CMDB</n-button>
+        <n-button @click="handleLogoutButtonClicked" id="logout-button" strong secondary style="position: absolute;bottom: 10px;left: 10px; z-index: 99;width: 220px">退&nbsp;出&nbsp;Melo&nbsp;CMDB</n-button>
         <n-layout-sider
             id="left-menu"
             bordered

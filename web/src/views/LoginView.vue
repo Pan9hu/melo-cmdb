@@ -2,7 +2,7 @@
   <n-layout class="login-view">
     <div
         style="width: 100%;height: 100%;display: flex;flex-direction: column;justify-content: center;align-items: center">
-      <div class="title">登录 Gala CMDB</div>
+      <div class="title">登录 Melo CMDB</div>
       <div class="box">
         <n-input v-model:value="username" type="text" placeholder="请输入用户名"/>
       </div>
