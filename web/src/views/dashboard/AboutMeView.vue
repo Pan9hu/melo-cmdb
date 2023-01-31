@@ -1,6 +1,6 @@
 <template>
-  <div class="group-mgmt-view">
-    Group Mgmt View
+  <div class="about-me">
+    About Me Page
   </div>
 </template>
 

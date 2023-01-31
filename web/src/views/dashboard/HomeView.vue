@@ -2,8 +2,12 @@
   <div class="home-view">
     <div class="welcome-text">欢迎使用 Melo CMDB</div>
     <div class="version-text">v1.0.0</div>
-    <img class="left-img" src="../../assets/image/undraw_ideas_re_7twj.svg" alt="">
-    <img class="right-img" src="../../assets/image/undraw_proud_coder_re_exuy.svg" alt="">
+    <div class="left-img">
+      <img src="../../assets/image/undraw_ideas_re_7twj.svg" alt=" ">
+    </div>
+    <div class="right-img">
+      <img src="../../assets/image/undraw_proud_coder_re_exuy.svg" alt=" ">
+    </div>
   </div>
 </template>
 
@@ -24,17 +28,17 @@
   font-size: 16pt;
 }
 .left-img{
-  width: 140px ;
-  height: 150px;
+  width: 54px ;
+  height: 59px;
   position: absolute;
   left: 5px;
   border: 0;
 }
 .right-img{
-  width: 140px;
-  height: 150px;
+  width: 70px;
+  height: 65px;
   position: absolute;
-  left: 5px;
+  right: 0px;
   border: 0;
 }
 </style>

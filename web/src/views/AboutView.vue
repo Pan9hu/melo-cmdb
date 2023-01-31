@@ -4,6 +4,12 @@
   </div>
 </template>
 
+<script setup>
+import {onMounted} from 'vue';
+onMounted(()=>{
+  document.title = "关于CMDB"
+})
+</script>
 <style scoped>
 
 </style>

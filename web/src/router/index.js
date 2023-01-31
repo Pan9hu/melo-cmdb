@@ -6,6 +6,8 @@ const router = createRouter({
         path: '/', component: LoginView
     }, {
         path: '/login', name: "login", component: LoginView
+    },{
+        path: '/about', name: 'about', component: () => import('../views/AboutView.vue')
     }, {
         path: '/dashboard', component: () => import('../views/DashboardView.vue'), children: [{
             path: '', name: "home", component: () => import('../views/dashboard/HomeView.vue')
@@ -13,19 +15,19 @@ const router = createRouter({
             path: 'overview', children: [{
                 path: "permission",
                 name: "overview-permission",
-                component: () => import('../views/dashboard/overview/PermissionOverviewView.vue')
+                component: () => import('../views/dashboard/overview/PermissionView.vue')
             }, {
                 path: "machine",
                 name: "overview-machine",
-                component: () => import('../views/dashboard/overview/MachineOverviewView.vue')
+                component: () => import('../views/dashboard/overview/MachineView.vue')
             }, {
                 path: "concept",
                 name: "overview-concept",
-                component: () => import('../views/dashboard/overview/ConceptOverviewView.vue')
+                component: () => import('../views/dashboard/overview/ConceptView.vue')
             }, {
                 path: "repo-config",
                 name: "overview-repo-config",
-                component: () => import('../views/dashboard/overview/RepoConfigOverviewView.vue')
+                component: () => import('../views/dashboard/overview/RepoConfigView.vue')
             },]
         }, {
             path: 'permission-control', children: [{
@@ -41,37 +43,34 @@ const router = createRouter({
             path: 'biz-concept', children: [{
                 path: "machine",
                 name: "biz-concept-machine",
-                component: () => import('../views/dashboard/biz-concept/MachineBizConceptView.vue')
+                component: () => import('../views/dashboard/biz-concept/MachineView.vue')
             }, {
                 path: "group",
                 name: "biz-concept-group",
-                component: () => import('../views/dashboard/biz-concept/GroupBizConceptView.vue')
+                component: () => import('../views/dashboard/biz-concept/GroupView.vue')
             }, {
                 path: "safe-group",
                 name: "biz-concept-safe-group",
-                component: () => import('../views/dashboard/biz-concept/SafeGroupBizConceptView.vue')
+                component: () => import('../views/dashboard/biz-concept/SafeGroupView.vue')
             }, {
                 path: "res-pool",
                 name: "biz-concept-res-pool",
-                component: () => import('../views/dashboard/biz-concept/ResPoolBizConceptView.vue')
+                component: () => import('../views/dashboard/biz-concept/ResPoolView.vue')
             },]
         }, {
             path: 'config', children: [{
-                path: "repo",
-                name: "config-repo",
-                component: () => import('../views/dashboard/config/RepoConfigView.vue')
+                path: "repo", name: "config-repo", component: () => import('../views/dashboard/config/RepoView.vue')
             }, {
                 path: "versions-control",
                 name: "config-versions-control",
-                component: () => import('../views/dashboard/config/VersionsControlConfigView.vue')
-            }, {
-                path: "audit",
-                name: "config-audit",
-                component: () => import('../views/dashboard/config/AuditConfigView.vue')
+                component: () => import('../views/dashboard/config/VersionsControlView.vue')
             },]
         }, {
-            path: 'about', name: 'about', component: () => import('../views/AboutView.vue')
+            path: "audit", name: "audit", component: () => import('../views/dashboard/AuditView.vue')
+        }, {
+            path: 'about-me', name: 'about-me', component: () => import('../views/dashboard/AboutMeView.vue')
         }]
+
     },]
 })
 
