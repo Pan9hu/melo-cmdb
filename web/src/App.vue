@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue";
 import {darkTheme} from "naive-ui";
 
-let systemDarkModeMedia = window.matchMedia('(prefers-color-scheme: light)');
+let systemDarkModeMedia = window.matchMedia('(prefers-color-scheme: dark)');
 
 let useDarkTheme = ref(systemDarkModeMedia.matches);
 

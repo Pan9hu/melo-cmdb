@@ -1,4 +1,16 @@
 <template>
+  <n-watermark
+      content="欢迎使用 Melo CMDB"
+      cross
+      fullscreen
+      :font-size="16"
+      :line-height="16"
+      :width="384"
+      :height="384"
+      :x-offset="12"
+      :y-offset="60"
+      :rotate="-15"
+  />
   <n-layout class="login-view">
     <div
         style="width: 100%;height: 100%;display: flex;flex-direction: column;justify-content: center;align-items: center">

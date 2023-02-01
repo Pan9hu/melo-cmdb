@@ -31,16 +31,16 @@
 }
 
 .left-img {
-  width: 314px;
+  width: 315px;
   height: 336px;
   position: absolute;
-  left: 5px;
+  left: 0px;
   bottom: 0;
 }
 
 .right-img {
-  width: 388px;
-  height: 280px;
+  width: 400px;
+  height: 250px;
   position: absolute;
   right: 0;
   bottom: 0;
