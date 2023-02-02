@@ -1,6 +1,6 @@
 <template>
   <n-layout class="about-view">
-    <div>sb</div>
+    sb
   </n-layout>
 </template>
 
@@ -10,7 +10,13 @@ onMounted(()=>{
   document.title = "关于CMDB"
 })
 </script>
+
+
 <style scoped>
+
+
+
+
 .about-view{
   width: 100%;
   height: 100%;

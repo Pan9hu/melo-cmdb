@@ -123,8 +123,8 @@ const menuOptions = [
         icon: renderIcon(DatabaseFilled)
       },
       {
-        label: renderRouteLink("/dashboard/config/versions-control", {}, "版本控制"),
-        key: "versions-control",
+        label: renderRouteLink("/dashboard/config/vcs", {}, "版本控制"),
+        key: "vcs",
         icon: renderIcon(PartitionOutlined)
       },
     ]
@@ -178,6 +178,18 @@ onMounted(() => {
 
 <template>
   <div class="dashboard-view">
+    <n-watermark
+        content="小林 Z12311"
+        cross
+        fullscreen
+        :font-size="16"
+        :line-height="16"
+        :width="384"
+        :height="384"
+        :x-offset="12"
+        :y-offset="60"
+        :rotate="-15"
+    />
       <n-layout has-sider>
         <n-button @click="handleLogoutButtonClicked" id="logout-button" strong secondary style="position: absolute;bottom: 10px;left: 10px; z-index: 99;width: 220px">退&nbsp;出&nbsp;Melo&nbsp;CMDB</n-button>
         <n-layout-sider
@@ -197,7 +209,7 @@ onMounted(() => {
               @update:value="handleMenuItemClicked"
           />
         </n-layout-sider>
-        <n-layout-content id="right-content">
+        <n-layout-content id="right-content" content-style="padding: 20px;">
           <router-view style="width: 100%; height: 100%;"/>
         </n-layout-content>
       </n-layout>

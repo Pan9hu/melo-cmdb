@@ -14,6 +14,9 @@
   <n-layout class="login-view">
     <div
         style="width: 100%;height: 100%;display: flex;flex-direction: column;justify-content: center;align-items: center">
+      <div class="image">
+        <img src="../assets/image/melo.svg" alt="">
+      </div>
       <div class="title">登录 Melo CMDB</div>
       <div class="box">
         <n-input v-model:value="username" type="text" placeholder="请输入用户名"/>
@@ -25,7 +28,7 @@
         <div class="about-text" @click="handleAboutLinkClicked">关于 Melo CMDB</div>
         <div class="forget-password">忘记密码? 点击找回</div>
       </div>
-      <div class="box">
+      <div class="box" >
         <n-button @click="handleLoginButtonClicked" type="primary" strong secondary style="width: 100%;"
                   :loading="loginButtonLoadingStatus">进&nbsp;入&nbsp;系&nbsp;统
         </n-button>
@@ -103,5 +106,12 @@ function handleAboutLinkClicked() {
   text-decoration-line: underline;
   cursor: pointer;
 }
-
+.image{
+  display: flex;
+  width: 20%;
+  height: 20%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
 </style>

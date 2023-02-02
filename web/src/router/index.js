@@ -61,10 +61,36 @@ const router = createRouter({
             path: 'config', children: [{
                 path: "repo", name: "config-repo", component: () => import('../views/dashboard/config/RepoView.vue')
             }, {
-                path: "versions-control",
-                name: "config-versions-control",
-                component: () => import('../views/dashboard/config/VersionsControlView.vue')
-            },]
+                path: "vcs",
+                name: "config-vcs",
+                component: () => import('../views/dashboard/config/VCSView.vue'),children:[
+                    {
+                        path: "",
+                        component: () => import('../views/dashboard/config/vcs/RepoStepView.vue')
+                    },{
+                        path: "repo-step",
+                        name: "config-vcs-repo-step",
+                        component: () => import('../views/dashboard/config/vcs/RepoStepView.vue')
+                    },{
+                        path: "directory-step",
+                        name: "config-vcs-directory-step",
+                        component: () => import('../views/dashboard/config/vcs/DirectoryStepView.vue')
+                    }, {
+                        path: "target-step",
+                        name: "config-vcs-target-step",
+                        component: () => import('../views/dashboard/config/vcs/TargetStepView.vue')
+                    },{
+                        path: "execute-step",
+                        name: "config-vcs-execute-step",
+                        component: () => import('../views/dashboard/config/vcs/ExecuteStepView.vue')
+                    },{
+                        path: "finish-step",
+                        name: "config-vcs-finish-step",
+                        component: () => import('../views/dashboard/config/vcs/FinishStepView.vue')
+                    },
+                ]
+            },
+            ]
         }, {
             path: "audit", name: "audit", component: () => import('../views/dashboard/AuditView.vue')
         }, {

@@ -21,7 +21,7 @@
                 placeholder="选择机器状态" style="width: 150px; margin-right: 5px;"/>
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
-          <n-button tertiary circle style="margin-left: 5px">
+          <n-button secondary tertiary circle style="margin-left: 5px" type="info">
             <template #icon>
               <n-icon>
                 <search-outlined/>
@@ -33,7 +33,7 @@
       </n-tooltip>
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
-          <n-button tertiary circle style="margin-left: 5px">
+          <n-button secondary tertiary circle style="margin-left: 5px" type="error">
             <template #icon>
               <n-icon>
                 <close-outlined/>
@@ -45,7 +45,7 @@
       </n-tooltip>
     </div>
     <n-data-table striped :columns="columns" :data="machines" :pagination="pagination"/>
-    <div style="width: 100%; min-height: 20px;"></div>
+    <div style="width: 100%; min-height: 20px;">&nbsp</div>
   </div>
 </template>
 
@@ -87,8 +87,17 @@ let machineStatusSearchOptions = [
     label: "正在运行",
     value: "正在运行"
   }, {
-    label: "容器",
-    value: "容器"
+    label: "已挂起",
+    value: "已挂起"
+  }, {
+    label: "正在挂起",
+    value: "正在挂起"
+  }, {
+    label: "正在关闭",
+    value: "正在关闭"
+  }, {
+    label: "就绪中",
+    value: "就绪中"
   },
 ]
 
@@ -144,26 +153,113 @@ let machines = ref([
     "create-time": "2023/02/15 00:12:09",
     "update-time": "2023/02/15 00:12:15"
   },
+  {
+    "key": "4",
+    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "type": "物理机",
+    "status": "正在运行",
+    "group": "/minecraft/全球",
+    "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
+    "res-pool": "北京东三区",
+    "create-time": "2023/02/15 00:12:09",
+    "update-time": "2023/02/15 00:12:15"
+  },
+  {
+    "key": "5",
+    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "type": "物理机",
+    "status": "正在运行",
+    "group": "/minecraft/全球",
+    "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
+    "res-pool": "北京东三区",
+    "create-time": "2023/02/15 00:12:09",
+    "update-time": "2023/02/15 00:12:15"
+  },
+  {
+    "key": "6",
+    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "type": "物理机",
+    "status": "正在运行",
+    "group": "/minecraft/全球",
+    "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
+    "res-pool": "北京东三区",
+    "create-time": "2023/02/15 00:12:09",
+    "update-time": "2023/02/15 00:12:15"
+  }, {
+    "key": "7",
+    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "type": "物理机",
+    "status": "正在运行",
+    "group": "/minecraft/全球",
+    "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
+    "res-pool": "北京东三区",
+    "create-time": "2023/02/15 00:12:09",
+    "update-time": "2023/02/15 00:12:15"
+  },
+  {
+    "key": "8",
+    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "type": "物理机",
+    "status": "正在运行",
+    "group": "/minecraft/全球",
+    "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
+    "res-pool": "北京东三区",
+    "create-time": "2023/02/15 00:12:09",
+    "update-time": "2023/02/15 00:12:15"
+  }, {
+    "key": "9",
+    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "type": "物理机",
+    "status": "正在运行",
+    "group": "/minecraft/全球",
+    "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
+    "res-pool": "北京东三区",
+    "create-time": "2023/02/15 00:12:09",
+    "update-time": "2023/02/15 00:12:15"
+  }, {
+    "key": "10",
+    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "type": "物理机",
+    "status": "正在运行",
+    "group": "/minecraft/全球",
+    "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
+    "res-pool": "北京东三区",
+    "create-time": "2023/02/15 00:12:09",
+    "update-time": "2023/02/15 00:12:15"
+  }, {
+    "key": "11",
+    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "type": "物理机",
+    "status": "正在运行",
+    "group": "/minecraft/全球",
+    "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
+    "res-pool": "北京东三区",
+    "create-time": "2023/02/15 00:12:09",
+    "update-time": "2023/02/15 00:12:15"
+  }
 ])
 const columns = [
   {
-    title: "selection",
-    key: "sb"
+    type: "selection",
+    fixed: "left"
   },
   {
     title: "ID",
     key: "id",
-    width: 320
+    width: 320,
+    fixed: "left"
   },
   {
     title: "类型",
     key: "type",
-    width: 80
+    width: 80,
+    fixed: "left"
   },
   {
     title: "群组",
     key: "group",
-    width: 100
+    width: 150,
+    fixed: "left"
   },
   {
     title: "资源池",
@@ -174,15 +270,18 @@ const columns = [
   {
     title: "安全组",
     key: "safe-group",
+    resizable: true,
     render(row) {
       return row["safe-group"].map((tagKey) => {
         return h(
             NTag,
             {
               style: {
-                marginRight: "6px"
+                marginRight: "6px",
+                marginTop: "2px",
+
               },
-              type: "info",
+              size: "small",
               bordered: false
             }, {
               default: () => tagKey
@@ -194,11 +293,11 @@ const columns = [
   {
     title: "受控时间",
     key: "create-time",
-    width: 100
+    width: 220
   }, {
     title: "数据上报时间",
     key: "update-time",
-    width: 100
+    width: 220
   },
 
   {
