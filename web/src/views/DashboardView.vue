@@ -96,7 +96,7 @@ const menuOptions = [
         icon: renderIcon(CloudServerOutlined)
       },
       {
-        label: renderRouteLink("/dashboard/biz-concept/group", {}, "群组"),
+        label: renderRouteLink("/dashboard/biz-concept/group", {}, "群组 (服务)"),
         key: "group",
         icon: renderIcon(GroupOutlined)
       },

@@ -11,8 +11,8 @@
     <div class="op-area">
       <n-input style="width: 300px; margin-right: 10px;" v-model:value="resPoolName" type="text"
                placeholder="请输入名称"/>
-      <n-input  v-model:value="resPoolBizDemand" type="text"
-               placeholder="请输入名称"/>
+      <n-input style="margin-right: 10px;" v-model:value="resPoolBizDemand" type="text"
+               placeholder="请输入业务需求, 支持全文检索.."/>
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
           <n-button secondary tertiary circle style="margin-left: 5px" type="info">
@@ -47,15 +47,25 @@
 import {h, reactive, ref} from "vue";
 import {NButton, NTag} from "naive-ui";
 import {SearchOutlined,CloseOutlined} from "@vicons/antd"
+import TableOperationAreaButtonGroup from "@/components/TableOperationAreaButtonGroup.vue";
 
 let resPoolName = ref("")
 let resPoolBizDemand = ref("")
 
-let resPools = ref([]);
-let columns = [{
-  type: "selection",
-  fixed:"left"
-},{
+let resPools = ref([
+  {
+    "key": "0",
+    "name": "SuperComputer",
+    "processor": "5995WX",
+    "memory": "128",
+    "disk": "5000",
+    "net": "1000",
+    "create-time": "2023/2/3 15:51:03",
+    "usage": "打游戏",
+  }
+]);
+let columns = [
+{
   title:"名称",
   key: "name",
   fixed:"left",
@@ -99,12 +109,16 @@ let columns = [{
     key: "op",
     render(row) {
       return h(
-          NButton, {
-            size: "tiny",
-            onClick: () => handleDeleteCurrentItemButtonClicked(row),
-            secondary: true,
-          }, {
-            default: () => "删除"
+          TableOperationAreaButtonGroup, {
+            isShowDetail: false,
+            isShowModify: true,
+            isShowDelete: true,
+            onDetailButtonClicked: () => {
+            },
+            onModifyButtonClicked: () => {
+            },
+            onDeleteButtonClicked: () => {
+            },
           }
       );
     },

@@ -240,10 +240,6 @@ let machines = ref([
 ])
 const columns = [
   {
-    type: "selection",
-    fixed: "left"
-  },
-  {
     title: "ID",
     key: "id",
     width: 320,
