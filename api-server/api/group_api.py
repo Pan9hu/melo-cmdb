@@ -1,3 +1,5 @@
 from flask import Blueprint
 
-bp_group = Blueprint("group", __name__, url_prefix="/group")
+
+class GroupAPI:
+    api = Blueprint("group", __name__, url_prefix="/group")

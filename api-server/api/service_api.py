@@ -1,3 +1,5 @@
 from flask import Blueprint
 
-bp_service = Blueprint("service", __name__, url_prefix="/service")
+
+class ServiceAPI:
+    api = Blueprint("service", __name__, url_prefix="/service")

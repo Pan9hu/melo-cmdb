@@ -1,3 +1,5 @@
 from flask import Blueprint
 
-bp_audit = Blueprint("audit", __name__, url_prefix="/audit")
+
+class AuditAPI:
+    api = Blueprint("audit", __name__, url_prefix="/audit")

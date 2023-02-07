@@ -11,14 +11,14 @@
     <div class="op-area">
       <n-input style="width: 350px; margin-right: 10px;" v-model:value="memberName" type="text"
                placeholder="请输入姓名"/>
-      <n-input style="width: 350px; margin-right: 10px;" v-model:value="memberNo" type="text" placeholder="请输入工号"/>
+      <n-input style="width: 600px; margin-right: 10px;" v-model:value="memberNo" type="text" placeholder="请输入工号, 与其他条件互斥"/>
       <n-input style="width: 350px; margin-right: 10px;" v-model:value="memberGroup" type="text"
                placeholder="请输入组"/>
       <n-input style="width: 400px; margin-right: 10px;" v-model:value="memberPhone" type="text"
                placeholder="请输入手机号码"/>
       <n-input style="width: 400px; margin-right: 10px;" v-model:value="memberEmail" type="text"
                placeholder="请输入工作邮箱"/>
-      <n-select style="width: 300px; margin-right: 10px;" v-model:value="memberSexSelectOptionValue"
+      <n-select style="width: 350px; margin-right: 10px;" v-model:value="memberSexSelectOptionValue"
                 :options="memberSexSelectOptions" placeholder="请选择性别"/>
       <n-input style="margin-right: 10px;" v-model:value="memberArchGroup" type="text"
                placeholder="请输入组织架构, 支持全文检索.."/>

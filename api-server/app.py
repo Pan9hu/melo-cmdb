@@ -1,5 +1,4 @@
 from flask import Flask
-from pymongo import auth
 
 from api import account_api
 from api import auth_api
