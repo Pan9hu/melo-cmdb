@@ -10,7 +10,7 @@ class AccountAPI:
 
     @staticmethod
     @api.route("/<uid>", methods=("GET",))
-    def get_account_by_id(uid):
+    def get_account_by_uid(uid):
         """
         根据工号，精确搜索
         :param uid:
@@ -27,11 +27,11 @@ class AccountAPI:
         根据条件进行匹配
         :return:
         """
-        p_name = RequestUtil.get_param(request, "name")
-        p_phone = RequestUtil.get_param(request, "phone")
-        p_email = RequestUtil.get_param(request, "email")
-        p_sex = RequestUtil.get_param(request, "sex")
-        p_arch_group = RequestUtil.get_param(request, "arch-group")
+        p_name = RequestUtil.get_param_from_body_raw_json(request, "name")
+        p_phone = RequestUtil.get_param_from_body_raw_json(request, "phone")
+        p_email = RequestUtil.get_param_from_body_raw_json(request, "email")
+        p_sex = RequestUtil.get_param_from_body_raw_json(request, "sex")
+        p_arch_group = RequestUtil.get_param_from_body_raw_json(request, "arch-group")
 
         name = StringUtil.smart_trim(p_name)
         phone = StringUtil.smart_trim(p_phone)
@@ -46,12 +46,12 @@ class AccountAPI:
     @staticmethod
     @api.route("/", methods=("POST",))
     def create_account():
-        p_uid = RequestUtil.get_param(request, "uid")
-        p_name = RequestUtil.get_param(request, "name")
-        p_phone = RequestUtil.get_param(request, "phone")
-        p_email = RequestUtil.get_param(request, "email")
-        p_sex = RequestUtil.get_param(request, "sex")
-        p_arch_group = RequestUtil.get_param(request, "arch-group")
+        p_uid = RequestUtil.get_param_from_body_raw_json(request, "uid")
+        p_name = RequestUtil.get_param_from_body_raw_json(request, "name")
+        p_phone = RequestUtil.get_param_from_body_raw_json(request, "phone")
+        p_email = RequestUtil.get_param_from_body_raw_json(request, "email")
+        p_sex = RequestUtil.get_param_from_body_raw_json(request, "sex")
+        p_arch_group = RequestUtil.get_param_from_body_raw_json(request, "arch-group")
 
         uid = StringUtil.smart_trim(p_uid)
         name = StringUtil.smart_trim(p_name)
@@ -62,5 +62,26 @@ class AccountAPI:
         create_time = datetime.now()
         update_time = datetime.now()
 
-        AccountService.create_account(uid, name, phone, email, sex, arch_group, create_time,update_time)
+        AccountService.create_account(uid, name, phone, email, sex, arch_group, create_time, update_time)
         return {}
+
+    @staticmethod
+    @api.route("/", methods=("DELETE",))
+    def delete_account_by_uid(uid):
+        AccountService.delete_account_by_uid(StringUtil.smart_trim(uid))
+        pass
+
+    @staticmethod
+    @api.route("/", methods=("DELETE",))
+    def delete_account():
+        p_uid_list = RequestUtil.get_param_from_body_raw_json_as_list(request)
+
+        if len(p_uid_list) > 0:
+            AccountService.delete_account(p_uid_list)
+
+        return {}
+
+    @staticmethod
+    @api.route("/", methods=("PUT",))
+    def update_account_by_uid(uid):
+        pass

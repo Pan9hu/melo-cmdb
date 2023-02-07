@@ -10,7 +10,7 @@
     </n-page-header>
     <div class="op-area">
       <n-input style="width: 700px; margin-right: 10px;" v-model:value="groupName" type="text"
-               placeholder="请输入名称"/>
+               placeholder="请输入名称, 与其他条件互斥"/>
       <n-select v-model:value="groupLevelSelectOptionValue" size="medium" :options="groupLevelSelectOptions"
                 placeholder="请选择层级" style="width: 300px; margin-right: 10px;"/>
       <n-input style="width: 700px; margin-right: 10px;" v-model:value="parentGroup" type="text"
@@ -166,7 +166,20 @@ let groupLevelSelectOptions = [
 let bizDemand = ref("")
 
 
-let groups = ref([{}]);
+let groups = ref([{
+  "key" : "0",
+  "name" : "1",
+  "level" : "1",
+  "parent" : "1",
+  "create-time" : "2023/2/7 18:32:30",
+  "usage" : "1",
+  // M 表示当前群组下面的机器所用的安全组
+  // G 表示当前群组下面次级群组所用的安全组
+  // 只能修改当前群组下面机器的安群组
+  // 若要修改机器的安全组配置, 那么可以通过搜索指定
+  "safe-group-list" : ["M:Web 业务", "M:数据库服务","G:网关服务"]
+
+}]);
 
 
 
@@ -205,6 +218,29 @@ let columns = [{
   key: "parent",
   width: 250
 },
+  {
+    title: "安全组汇总",
+    key: "safe-group-list",
+    resizable: true,
+    render(row) {
+      return row["safe-group-list"].map((tagKey) => {
+        return h(
+            NTag,
+            {
+              style: {
+                marginRight: "6px",
+                marginTop: "2px",
+
+              },
+              size: "small",
+              bordered: false
+            }, {
+              default: () => tagKey
+            }
+        );
+      });
+    }
+  },
   {
     title: "创建时间",
     key: "create-time",

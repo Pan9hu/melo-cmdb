@@ -1,7 +1,7 @@
 class RequestUtil:
 
     @staticmethod
-    def get_param(request, name):
+    def get_param_from_body_raw_json(request, name):
         request_content = request.json
 
         value = None
@@ -11,6 +11,13 @@ class RequestUtil:
         except KeyError:
             pass
         return value
+
+    @staticmethod
+    def get_param_from_body_raw_json_as_list(request):
+        if type(request.json) is list:
+            return request.json
+
+        return []
 
     @staticmethod
     def get_param_from_url_query_param(request, name):
