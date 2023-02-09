@@ -99,6 +99,9 @@
           <n-select placeholder="必填, 请选择所属群组" style="margin-bottom: 10px; max-width: 200px"/>
           <div style="font-size: 12pt; font-weight: bold;">业务需求</div>
           <n-input type="text" placeholder="必填, 请输入业务需求" style="margin-bottom: 10px;"/>
+<!--          TODO 应该有地方向安全组中添加机器和安全组-->
+<!--          <div style="font-size: 12pt; font-weight: bold;">安全组</div>-->
+<!--          <n-input type="textarea" row="10" placeholder="选填, 请输入安全组名称, 使用英文半角小写逗号分隔" style="margin-bottom: 10px;"/>-->
         </div>
         <div style="display: flex; width: 100%; height: 100%; justify-content: flex-end; margin-top: 10px">
           <n-button @click="onModifyModalFailed" style="margin-right: 10px;">取&nbsp;消</n-button>
@@ -175,8 +178,8 @@ let groups = ref([{
   "usage" : "1",
   // M 表示当前群组下面的机器所用的安全组
   // G 表示当前群组下面次级群组所用的安全组
-  // 只能修改当前群组下面机器的安群组
-  // 若要修改机器的安全组配置, 那么可以通过搜索指定
+  // 只能修改当前群组下面机器的安全组，会影响当前层级群组下面全部机器的安全组
+  // 若要修改机器的安全组配置, 那么可以通过搜索指定的机器进行修改，在机器页面
   "safe-group-list" : ["M:Web 业务", "M:数据库服务","G:网关服务"]
 
 }]);
@@ -219,7 +222,7 @@ let columns = [{
   width: 250
 },
   {
-    title: "安全组汇总",
+    title: "安全组",
     key: "safe-group-list",
     resizable: true,
     render(row) {

@@ -17,9 +17,13 @@ class ServiceService:
         pass
 
     @staticmethod
-    def create_service(name,  parent, usage, create_time, update_time):
+    def create_service(name, parent, usage, create_time, update_time):
         pass
 
     @staticmethod
-    def update_service_by_name(name, parent, usage, create_time, update_time):
+    def update_service_by_name(name, parent, usage, update_time):
+        pass
+
+    @staticmethod
+    def change_safe_group(safe_group_list):
         pass

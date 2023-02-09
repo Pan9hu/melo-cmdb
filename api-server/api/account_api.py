@@ -16,8 +16,8 @@ class AccountAPI:
         :param uid:
         :return:
         """
-        print("Get")
-        print(uid)
+        AccountService.get_account_by_uid(StringUtil.smart_trim(uid))
+
         return {}
 
     @staticmethod
@@ -27,11 +27,11 @@ class AccountAPI:
         根据条件进行匹配
         :return:
         """
-        p_name = RequestUtil.get_param_from_body_raw_json(request, "name")
-        p_phone = RequestUtil.get_param_from_body_raw_json(request, "phone")
-        p_email = RequestUtil.get_param_from_body_raw_json(request, "email")
-        p_sex = RequestUtil.get_param_from_body_raw_json(request, "sex")
-        p_arch_group = RequestUtil.get_param_from_body_raw_json(request, "arch-group")
+        p_name = RequestUtil.get_param_from_url_query_param(request, "name")
+        p_phone = RequestUtil.get_param_from_url_query_param(request, "phone")
+        p_email = RequestUtil.get_param_from_url_query_param(request, "email")
+        p_sex = RequestUtil.get_param_from_url_query_param(request, "sex")
+        p_arch_group = RequestUtil.get_param_from_url_query_param(request, "arch-group")
 
         name = StringUtil.smart_trim(p_name)
         phone = StringUtil.smart_trim(p_phone)
@@ -59,14 +59,14 @@ class AccountAPI:
         email = StringUtil.smart_trim(p_email)
         sex = StringUtil.smart_trim(p_sex)
         arch_group = StringUtil.smart_trim(p_arch_group)
-        create_time = datetime.now()
-        update_time = datetime.now()
+        create_time = datetime.utcnow()
+        update_time = datetime.utcnow()
 
         AccountService.create_account(uid, name, phone, email, sex, arch_group, create_time, update_time)
         return {}
 
     @staticmethod
-    @api.route("/", methods=("DELETE",))
+    @api.route("/<uid>", methods=("DELETE",))
     def delete_account_by_uid(uid):
         AccountService.delete_account_by_uid(StringUtil.smart_trim(uid))
         pass
@@ -82,6 +82,21 @@ class AccountAPI:
         return {}
 
     @staticmethod
-    @api.route("/", methods=("PUT",))
+    @api.route("/<uid>", methods=("PUT",))
     def update_account_by_uid(uid):
-        pass
+        p_name = RequestUtil.get_param_from_body_raw_json(request, "name")
+        p_phone = RequestUtil.get_param_from_body_raw_json(request, "phone")
+        p_email = RequestUtil.get_param_from_body_raw_json(request, "email")
+        p_sex = RequestUtil.get_param_from_body_raw_json(request, "sex")
+        p_arch_group = RequestUtil.get_param_from_body_raw_json(request, "arch-group")
+
+        uid = StringUtil.smart_trim(uid)
+        name = StringUtil.smart_trim(p_name)
+        phone = StringUtil.smart_trim(p_phone)
+        email = StringUtil.smart_trim(p_email)
+        sex = StringUtil.smart_trim(p_sex)
+        arch_group = StringUtil.smart_trim(p_arch_group)
+
+        AccountService.update_account(uid, name, phone, email, sex, arch_group)
+
+        return {}

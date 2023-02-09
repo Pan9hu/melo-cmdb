@@ -23,6 +23,8 @@ class AuthAPI:
 
         AuthService.login(username, password)
 
+        return {}
+
     @staticmethod
     @api.route("/refresh", methods=('POST',))
     def refresh():

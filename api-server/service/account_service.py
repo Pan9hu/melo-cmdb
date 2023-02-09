@@ -2,21 +2,25 @@ class AccountService:
 
     @staticmethod
     def get_account_by_uid(uid):
-        return uid
+        pass
 
     @staticmethod
     def list_account(name, phone, email, sex, arch_group):
-        return {}
+        pass
 
     @staticmethod
-    def create_account(uid,name, phone, email, sex, arch_group, create_time,update_time):
-
-        return {}
+    def create_account(uid, name, phone, email, sex, arch_group, create_time, update_time):
+        pass
 
     @staticmethod
     def delete_account_by_uid(uid):
-        return {}
+        pass
 
     @staticmethod
     def delete_account(uid):
-        return {}
+        pass
+
+    @staticmethod
+    def update_account(uid, name, phone, email, sex, arch_group):
+        pass
+

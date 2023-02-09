@@ -1,15 +1,18 @@
+from model.group_model import GroupModel
+
+
 class GroupService:
 
     @staticmethod
-    def get_group_by_name(name):
-        return name
+    def get_group_by_name(name: str):
+        return GroupModel.get_group_by_name(name)
 
     @staticmethod
     def get_group(name):
-        return {}
+        pass
 
     @staticmethod
-    def create_group( name, usage, create_time, update_time):
+    def create_group(name, usage, create_time, update_time):
         pass
 
     @staticmethod
@@ -21,8 +24,5 @@ class GroupService:
         pass
 
     @staticmethod
-    def delete_group(name):
+    def delete_group(name_list):
         pass
-
-
-
