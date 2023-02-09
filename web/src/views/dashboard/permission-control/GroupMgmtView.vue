@@ -97,10 +97,41 @@
 </template>
 
 <script setup>
-import {defineComponent, h, reactive, ref} from "vue";
+import {defineComponent, h, reactive, ref, getCurrentInstance, onMounted} from "vue";
 import {NButton, useDialog, useMessage} from "naive-ui";
 import {SearchOutlined, CloseOutlined, DeleteOutlined, PlusOutlined} from "@vicons/antd"
 import TableOperationAreaButtonGroup from "@/components/TableOperationAreaButtonGroup.vue";
+
+const {proxy} = getCurrentInstance()
+
+onMounted(() => {
+  proxy.$axios.get("/group", {}).then(r => {
+    if (r.status === 200) {
+      const content = r.data
+      if (content["code"] === "10000") {
+        const data = content["data"]
+        let result = [];
+
+        data.map((item) => {
+          result.push({
+            "key": item["name"],
+            "name": item["name"],
+            "create-time": item["create_time"],
+            "usage": item["usage"]
+          })
+        });
+
+        console.log(result)
+
+        groups.value = result;
+      } else {
+      }
+    } else {
+      console.error(r.status)
+    }
+  }).catch(e => {
+  })
+})
 
 const dialog = useDialog()
 const message = useMessage()
@@ -126,15 +157,16 @@ let isShowModifyModal = ref(false);
 
 function onAddModalAfterLeave() {
 }
+
 function onModifyModalAfterLeave() {
 }
 
 function onAddModalOk() {
-  isShowAddModal.value =false;
+  isShowAddModal.value = false;
 }
 
 function onAddModalFailed() {
-  isShowAddModal.value =false;
+  isShowAddModal.value = false;
 }
 
 function onModifyModalFailed() {
@@ -162,12 +194,7 @@ function handleBatchDeleteButtonClicked() {
 }
 
 
-let groups = ref([{
-  "key": "0",
-  "name": "运维一组",
-  "create-time": "2023/12/09 09:09:01",
-  "usage": "用户处理日常运维工作"
-}])
+let groups = ref([])
 
 let columns = [
   {
@@ -184,7 +211,7 @@ let columns = [
     width: 200
 
   }, {
-    title: "备注",
+    title: "用途",
     key: "usage",
     resizable: true,
   }, {
@@ -199,7 +226,7 @@ let columns = [
             onDetailButtonClicked: () => {
             },
             onModifyButtonClicked: () => {
-              isShowModifyModal.value =true
+              isShowModifyModal.value = true
             },
             onDeleteButtonClicked: () => {
             },

@@ -1,11 +1,17 @@
 from flask import Flask
 from flask_pymongo import PyMongo
-
+from flask_cors import CORS
 from core.settings import settings
 
 
 class Server:
     app = Flask(__name__)
+
+    CORS(app, resource={
+        r"*": {
+            "origins": "*"
+        }
+    })
 
     datasource = {}
     print("[INFO]: create data source list.")

@@ -1,32 +1,33 @@
 from datetime import datetime
 
 
-class Group:
-
-    def __init__(self, name: str = None,
-                 usage: str = None,
+class TaskDetail:
+    def __init__(self, _id: str = None,
+                 machine_id: str = None,
                  create_time: datetime = datetime.utcnow(),
                  update_time: datetime = datetime.utcnow(),
+                 status: str = None,
                  is_delete: bool = None):
-        self.__name = name
-        self.__usage = usage
+        self.__id = _id
+        self.__machine_id = machine_id
         self.__create_time = create_time
         self.__update_time = update_time
+        self.__status = status
         self.__is_delete = is_delete
 
-    def get_name(self) -> str:
-        return self.__name
+    def get__id(self) -> str:
+        return self.__id
 
-    def set_name(self, name: str):
-        self.__name = name
+    def set__id(self, _id: str):
+        self.__id = _id
 
     # ============================
 
-    def get_usage(self) -> str:
-        return self.__usage
+    def get_machine_id(self) -> str:
+        return self.__machine_id
 
-    def set_usage(self, usage: str):
-        self.__usage = usage
+    def set_machine_id(self, machine_id: str):
+        self.__machine_id = machine_id
 
     # ============================
 
@@ -43,6 +44,14 @@ class Group:
 
     def set_update_time(self, update_time: datetime):
         self.__update_time = update_time
+
+    # ============================
+
+    def get_status(self) -> str:
+        return self.__status
+
+    def set_status(self, status: str):
+        self.__status = status
 
     # ============================
 

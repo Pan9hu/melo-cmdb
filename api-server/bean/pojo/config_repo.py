@@ -1,17 +1,18 @@
 from datetime import datetime
 
 
-class Group:
-
+class ConfigRepo:
     def __init__(self, name: str = None,
-                 usage: str = None,
+                 address: str = None,
                  create_time: datetime = datetime.utcnow(),
                  update_time: datetime = datetime.utcnow(),
+                 _type: str = None,
                  is_delete: bool = None):
         self.__name = name
-        self.__usage = usage
+        self.__address = address
         self.__create_time = create_time
         self.__update_time = update_time
+        self.__type = _type
         self.__is_delete = is_delete
 
     def get_name(self) -> str:
@@ -22,11 +23,11 @@ class Group:
 
     # ============================
 
-    def get_usage(self) -> str:
-        return self.__usage
+    def get_address(self) -> str:
+        return self.__address
 
-    def set_usage(self, usage: str):
-        self.__usage = usage
+    def set_address(self, address: str):
+        self.__address = address
 
     # ============================
 
@@ -43,6 +44,14 @@ class Group:
 
     def set_update_time(self, update_time: datetime):
         self.__update_time = update_time
+
+    # ============================
+
+    def get_type(self) -> str:
+        return self.__type
+
+    def set_type(self, _type: str):
+        self.__type = _type
 
     # ============================
 
