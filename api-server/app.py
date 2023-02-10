@@ -9,8 +9,9 @@ from api.safe_group_api import SafeGroupAPI
 from api.service_api import ServiceAPI
 from api.task_api import TaskAPI
 from api.overview_api import OverViewAPI
+from core import settings
 from core.server import Server
-from core.settings import settings
+
 
 Server.app.register_blueprint(AuthAPI.api)
 Server.app.register_blueprint(GroupAPI.api)

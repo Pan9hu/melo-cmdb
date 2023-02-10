@@ -97,7 +97,7 @@
 </template>
 
 <script setup>
-import {defineComponent, h, reactive, ref, getCurrentInstance, onMounted} from "vue";
+import {h, reactive, ref, getCurrentInstance, onMounted} from "vue";
 import {NButton, useDialog, useMessage} from "naive-ui";
 import {SearchOutlined, CloseOutlined, DeleteOutlined, PlusOutlined} from "@vicons/antd"
 import TableOperationAreaButtonGroup from "@/components/TableOperationAreaButtonGroup.vue";
@@ -105,7 +105,7 @@ import TableOperationAreaButtonGroup from "@/components/TableOperationAreaButton
 const {proxy} = getCurrentInstance()
 
 onMounted(() => {
-  proxy.$axios.get("/group", {}).then(r => {
+  proxy.$axios.get("/api/group/", {}).then(r => {
     if (r.status === 200) {
       const content = r.data
       if (content["code"] === "10000") {
@@ -121,8 +121,6 @@ onMounted(() => {
           })
         });
 
-        console.log(result)
-
         groups.value = result;
       } else {
       }
@@ -132,6 +130,7 @@ onMounted(() => {
   }).catch(e => {
   })
 })
+
 
 const dialog = useDialog()
 const message = useMessage()
