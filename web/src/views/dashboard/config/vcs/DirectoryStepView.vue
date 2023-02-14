@@ -6,7 +6,7 @@
           <div style="margin-bottom: 25px;">
             <div style="font-size: 15pt; margin-bottom: 10px;">同步到:</div>
             <n-input style="width: 100%;" type="text"
-                     placeholder="请输入一个目录, 如果目标机器或群组不存在, 那么 Gala CMDB 将会自动创建"/>
+                     placeholder="请输入一个目录, 如果目标机器或群组不存在, 那么 Melo CMDB 将会自动创建"/>
           </div>
           <div style="margin-bottom: 25px;">
             <div style="font-size: 15pt;">同步后脚本:</div>
