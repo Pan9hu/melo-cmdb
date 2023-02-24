@@ -18,10 +18,9 @@
 
 # Get Started
 
-Curl;
+Curl:
 
 ``````sh
-
 ``````
 
 
@@ -34,7 +33,6 @@ Wget:
 Docker:
 
 ``````
-
 ``````
 
 
