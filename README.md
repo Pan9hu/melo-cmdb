@@ -10,7 +10,7 @@
 
 -  Permission Control / Group
 
-![image-20230224113521464](https://typora-1312877059.cos.ap-nanjing.myqcloud.com/typora/202302241135571.png)
+![image-20230224113521464](https://typora-1312877059.cos.ap-nanjing.myqcloud.com/typora/202303191920391.png)
 
 # Features
 - 主机管理：基于主机的资源信息，主机的用途对归属关系的管理
