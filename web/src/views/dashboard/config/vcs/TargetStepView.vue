@@ -46,8 +46,8 @@ const emit = defineEmits(["update-step-index", "update-step-status"])
 
 let targetMachineGroupOptions = [
   {
-    label: 'Rubber Soul',
-    key: 'Rubber Soul',
+    label: 'Minecraft',
+    key: 'Minecraft',
     children: [
       {
         label:
@@ -108,8 +108,8 @@ let targetMachineGroupOptions = [
     ]
   },
   {
-    label: 'Let It Be',
-    key: 'Let It Be Album',
+    label: 'Naraka',
+    key: 'Naraka',
     children: [
       {
         label: 'Two Of Us',

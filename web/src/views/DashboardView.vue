@@ -179,7 +179,7 @@ onMounted(() => {
 <template>
   <div class="dashboard-view">
     <n-watermark
-        content="小林 Z12311"
+        content="小林 Z426"
         cross
         fullscreen
         :font-size="16"

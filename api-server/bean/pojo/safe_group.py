@@ -6,13 +6,13 @@ class SafeGroup:
                  ports: list = None,
                  create_time: datetime = datetime.utcnow(),
                  update_time: datetime = datetime.utcnow(),
-                 usage: str = None,
+                 biz_needs: str = None,
                  is_delete: bool = None):
         self.__name = name
         self.__ports = ports
         self.__create_time = create_time
         self.__update_time = update_time
-        self.__usage = usage
+        self.__biz_needs = biz_needs
         self.__is_delete = is_delete
 
     def get_name(self) -> str:
@@ -47,11 +47,11 @@ class SafeGroup:
 
     # ============================
 
-    def get_usage(self) -> str:
-        return self.__usage
+    def get_biz_needs(self) -> str:
+        return self.__biz_needs
 
-    def set_usage(self, usage: str):
-        self.__usage = usage
+    def set_biz_needs(self, biz_needs: str):
+        self.__biz_needs = biz_needs
 
     # ============================
 

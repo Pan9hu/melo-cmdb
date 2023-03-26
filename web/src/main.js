@@ -12,6 +12,7 @@ const app = createApp(App)
 // app.config.globalProperties.$axios = axios.create({
 //     baseURL: "http://localhost:5000"
 // })
+//判断环境选择模式
 if (import.meta.env.MODE === "development") {
     app.config.globalProperties.$axios = axios.create({
         timeout: 3000
@@ -26,6 +27,4 @@ if (import.meta.env.MODE === "development") {
 app.use(naive)
 app.use(createPinia())
 app.use(router)
-
-
 app.mount('#app')

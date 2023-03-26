@@ -9,16 +9,16 @@
       </template>
     </n-page-header>
     <div class="op-area">
-      <n-input type="text" size="small" placeholder="按照 ID 搜索, 与其他条件互斥"
-               style="width: 250px; margin-right: 5px"/>
-      <n-input type="text" size="small" placeholder="按照群组搜索, 支持全文搜索"
-               style="width: 250px; margin-right: 5px"/>
-      <n-input type="text" size="small" placeholder="按照资源池搜索, 支持全文搜索"
-               style="width: 250px; margin-right: 5px"/>
-      <n-select v-model:value="machineTypeSearchOptionValue" size="medium" :options="machineTypeSearchOptions"
-                placeholder="选择机器类型" style="width: 150px; margin-right: 5px;"/>
-      <n-select v-model:value="machineStatusSearchOptionValue" size="medium" :options="machineStatusSearchOptions"
-                placeholder="选择机器状态" style="width: 150px; margin-right: 5px;"/>
+      <n-input style="width: 700px; margin-right: 10px;" v-model:value="machineID" type="text"
+               placeholder="按照 ID 搜索, 与其他条件互斥" />
+      <n-select v-model:value="machineTypeSearchOptionValue" :options="machineTypeSearchOptions"
+                placeholder="选择机器类型" style="width: 420px; margin-right: 10px;"/>
+      <n-select v-model:value="machineStatusSearchOptionValue" :options="machineStatusSearchOptions"
+                placeholder="选择机器状态" style="width: 420px; margin-right: 10px;"/>
+      <n-input style="margin-right: 10px;" size=small v-model:value="group" type="text"
+               placeholder="按照群组搜索, 支持全文搜索.."/>
+      <n-input style="width: 800px; margin-right: 10px;" size=small v-model:value="resPool" type="text"
+               placeholder="按照资源池搜索, 支持全文搜索.." />
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
           <n-button secondary tertiary circle style="margin-left: 5px" type="info">
@@ -45,7 +45,7 @@
       </n-tooltip>
     </div>
     <n-data-table striped :columns="columns" :data="machines" :pagination="pagination"/>
-    <div style="width: 100%; min-height: 20px;">&nbsp</div>
+    <div style="width: 100%; min-height: 20px;"></div>
   </div>
 </template>
 
@@ -55,6 +55,9 @@ import {NButton, NTag} from "naive-ui";
 import {SearchOutlined, CloseOutlined} from "@vicons/antd"
 
 let machineTypeSearchOptionValue = ref(null);
+let machineID = ref("")
+let group = ref("")
+let resPool = ref("")
 
 let machineTypeSearchOptions = [
   {
@@ -105,19 +108,6 @@ function handleMachineItemPowerClicked(row) {
 
 }
 
-const pagination = reactive({
-  page: 5,
-  pageSize: 100,
-  showSizePicker: true,
-  pageSizes: [10, 50, 100],
-  onChange: (page) => {
-    pagination.page = page;
-  },
-  onUpdatePageSize: (pageSize) => {
-    pagination.pageSize = pageSize;
-    pagination.page = 1;
-  }
-})
 
 let machines = ref([
   {
@@ -133,111 +123,91 @@ let machines = ref([
   },
   {
     "key": "2",
-    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "id": "2fc24717-48bd-4b8f-aed0-eea712562e66",
     "type": "物理机",
     "status": "正在运行",
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
-    "res-pool": "北京东三区",
+    "res-pool": "北京西一区",
     "create-time": "2023/02/15 00:12:09",
     "update-time": "2023/02/15 00:12:15"
   },
   {
     "key": "3",
-    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "id": "d38a9f14-37b6-4cd9-9440-3eb82fddd8f1",
     "type": "物理机",
     "status": "正在运行",
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
-    "res-pool": "北京东三区",
+    "res-pool": "北京东一区",
     "create-time": "2023/02/15 00:12:09",
     "update-time": "2023/02/15 00:12:15"
   },
   {
     "key": "4",
-    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "id": "8caaf420-8655-4361-9b31-9be42eb7a20a",
     "type": "物理机",
     "status": "正在运行",
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
-    "res-pool": "北京东三区",
+    "res-pool": "北京东二区",
     "create-time": "2023/02/15 00:12:09",
     "update-time": "2023/02/15 00:12:15"
   },
   {
     "key": "5",
-    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "id": "fecdb3dc-2568-4d14-a249-51991d0db49a",
     "type": "物理机",
     "status": "正在运行",
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
-    "res-pool": "北京东三区",
+    "res-pool": "北京西三区",
     "create-time": "2023/02/15 00:12:09",
     "update-time": "2023/02/15 00:12:15"
   },
   {
     "key": "6",
-    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "id": "2d6e28fc-64c1-4af3-931f-115ba0678677",
     "type": "物理机",
     "status": "正在运行",
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
-    "res-pool": "北京东三区",
+    "res-pool": "北京西二区",
     "create-time": "2023/02/15 00:12:09",
     "update-time": "2023/02/15 00:12:15"
   }, {
     "key": "7",
-    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "id": "cd37ddc9-761f-4671-bfe4-45cc6a88bc7f",
     "type": "物理机",
     "status": "正在运行",
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
-    "res-pool": "北京东三区",
+    "res-pool": "北京北二区",
     "create-time": "2023/02/15 00:12:09",
     "update-time": "2023/02/15 00:12:15"
   },
   {
     "key": "8",
-    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "id": "b80943b7-0bf1-423b-8672-739c7eaedd15",
     "type": "物理机",
     "status": "正在运行",
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
-    "res-pool": "北京东三区",
+    "res-pool": "北京南一区",
     "create-time": "2023/02/15 00:12:09",
     "update-time": "2023/02/15 00:12:15"
   }, {
     "key": "9",
-    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
+    "id": "3288ad07-ddf1-41d1-8c6d-df040945e450",
     "type": "物理机",
     "status": "正在运行",
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
-    "res-pool": "北京东三区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
-  }, {
-    "key": "10",
-    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
-    "type": "物理机",
-    "status": "正在运行",
-    "group": "/minecraft/全球",
-    "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
-    "res-pool": "北京东三区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
-  }, {
-    "key": "11",
-    "id": "57d7e24a-189d-4a60-9948-94eb18f17b69",
-    "type": "物理机",
-    "status": "正在运行",
-    "group": "/minecraft/全球",
-    "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
-    "res-pool": "北京东三区",
+    "res-pool": "北京北三区",
     "create-time": "2023/02/15 00:12:09",
     "update-time": "2023/02/15 00:12:15"
   }
-])
+]);
 const columns = [
   {
     title: "ID",
@@ -319,6 +289,21 @@ const columns = [
     width: 150
   },
 ];
+
+const pagination = reactive({
+  page: 5,
+  pageSize: 100,
+  showSizePicker: true,
+  pageSizes: [10, 50, 100],
+  onChange: (page) => {
+    pagination.page = page;
+  },
+  onUpdatePageSize: (pageSize) => {
+    pagination.pageSize = pageSize;
+    pagination.page = 1;
+  }
+})
+
 </script>
 
 <style scoped>

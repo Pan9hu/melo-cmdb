@@ -14,20 +14,28 @@ class GroupAPI:
     @staticmethod
     @api.route("/<name>", methods=('GET',))
     def get_group_by_name(name):
+        """
+        通过组名来获取组的详细信息
+        :param name
+        """
         group = GroupService.get_group_by_name(StringUtil.smart_trim(name))
-
+        # 将Get请求的name参数过滤后，调用对应的Service层模块
         group_dto = GroupDTO(
             name=group.get_name(),
             usage=group.get_usage(),
             create_time=group.get_create_time(),
             update_time=group.get_update_time(),
         )
+        # 获取经过Dao层处理后的数据
 
         return GenericJSONResponse(data=marshal(group_dto, fields=GroupDTO.fields)).build()
 
     @staticmethod
     @api.route("/", methods=('GET',))
     def get_group():
+        """
+        获取全部组信息
+        """
         p_usage = RequestUtil.get_param_from_url_query_param(request, "usage")
 
         usage = StringUtil.smart_trim(p_usage)
@@ -35,13 +43,13 @@ class GroupAPI:
         groups = GroupService.get_group(usage)
 
         dto_list = []
-
+        # 创建一个dto字典，用于将获得的数据逐个输入进去
         for group in groups:
             dto_list.append(GroupDTO(group.get_name(),
                                      group.get_usage(),
                                      group.get_create_time(),
                                      group.get_update_time()))
-
+        # 将数据append到字典中
         return GenericJSONResponse(data=marshal(dto_list, fields=GroupDTO.fields)).build()
 
     @staticmethod
@@ -52,11 +60,11 @@ class GroupAPI:
 
         name = StringUtil.smart_trim(p_name)
         usage = StringUtil.smart_trim(p_usage)
-
         create_time = datetime.utcnow()
         update_time = datetime.utcnow()
 
         GroupService.create_group(name, usage, create_time, update_time)
+
         return {}
 
     @staticmethod

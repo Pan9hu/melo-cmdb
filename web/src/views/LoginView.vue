@@ -22,7 +22,7 @@
         <n-input v-model:value="username" type="text" placeholder="请输入用户名"/>
       </div>
       <div class="box">
-        <n-input v-model:value="password" type="text" placeholder="请输入登录密码"/>
+          <n-input v-model:value="password" type="password" show-password-on="click" placeholder="请输入登录密码"/>
       </div>
       <div class="text-box">
         <div class="about-text" @click="handleAboutLinkClicked">关于 Melo CMDB</div>

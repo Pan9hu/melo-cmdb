@@ -4,12 +4,14 @@ from datetime import datetime
 class ConfigRepo:
     def __init__(self, name: str = None,
                  address: str = None,
+                 usage: str = None,
                  create_time: datetime = datetime.utcnow(),
                  update_time: datetime = datetime.utcnow(),
                  _type: str = None,
                  is_delete: bool = None):
         self.__name = name
         self.__address = address
+        self.__usage = usage
         self.__create_time = create_time
         self.__update_time = update_time
         self.__type = _type
@@ -28,6 +30,14 @@ class ConfigRepo:
 
     def set_address(self, address: str):
         self.__address = address
+
+    # ============================
+
+    def get_usage(self) -> str:
+        return self.__usage
+
+    def set_usage(self, usage: str):
+        self.__usage = usage
 
     # ============================
 

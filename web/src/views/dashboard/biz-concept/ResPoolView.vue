@@ -39,7 +39,7 @@
       </n-tooltip>
     </div>
     <n-data-table striped :columns="columns" :data="resPools" :pagination="pagination"/>
-    <div style="width: 100%; min-height: 20px;"> </div>
+    <div style="width: 100%; min-height: 20px;"></div>
   </div>
 </template>
 
@@ -61,7 +61,7 @@ let resPools = ref([
     "disk": "5000",
     "net": "1000",
     "create-time": "2023/2/3 15:51:03",
-    "usage": "打游戏",
+    "usage": "多实例数据库",
   }
 ]);
 let columns = [

@@ -14,7 +14,7 @@ class ServiceAPI:
     @api.route("/<name>", methods=('GET',))
     def get_service_by_name(name):
         ServiceService.get_service_by_name(StringUtil.smart_trim(name))
-
+        # 过滤数据后返回
         return {}
 
     @staticmethod
@@ -23,11 +23,11 @@ class ServiceAPI:
         p_level = RequestUtil.get_param_from_body_raw_json(request, "level")
         p_parent = RequestUtil.get_param_from_body_raw_json(request, "parent")
         p_usage = RequestUtil.get_param_from_body_raw_json(request, "usage")
-
+        # 获取body中的数据
         level = StringUtil.smart_trim(p_level)
         parent = StringUtil.smart_trim(p_parent)
         usage = StringUtil.smart_trim(p_usage)
-
+        # 判断数据是否为空，并过滤空格
         ServiceService.get_service(level, parent, usage)
         return {}
 
@@ -40,10 +40,10 @@ class ServiceAPI:
     @api.route("/", methods=('DELETE',))
     def delete_service():
         name_list = RequestUtil.get_param_from_body_raw_json_as_list(request)
-
+        # 获取body中的数据
         if len(name_list) > 0:
             ServiceService.delete_service(name_list)
-
+        # 判断name是否为空，不为空并以name为索引删除相关数据
         return {}
 
     @staticmethod

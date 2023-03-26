@@ -3,7 +3,7 @@ settings = {
         {
             "name": "default",
             "type": "mongodb",
-            "host": "192.168.80.4",
+            "host": "8.134.72.192",
             "port": "27017",
             "database": "db_melo_cmdb"
         }

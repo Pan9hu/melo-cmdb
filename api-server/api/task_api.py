@@ -27,10 +27,10 @@ class TaskAPI:
         p_services = RequestUtil.get_param_from_body_raw_json(request, "services")
         p_webhook_url = RequestUtil.get_param_from_body_raw_json(request, "webhook-url")
         p_webhook_sign = RequestUtil.get_param_from_body_raw_json(request, "webhook-sign")
-
+        # 获取body中的数据
         create_time = time.now()
         update_time = time.now()
-
+        # 任务创建时间
         status = "已经提交"
 
         timeout = None
@@ -45,7 +45,7 @@ class TaskAPI:
         services = StringUtil.smart_trim(p_services)
         webhook_url = StringUtil.smart_trim(p_webhook_url)
         webhook_sign = StringUtil.smart_trim(p_webhook_sign)
-
+        # 对数据进行判断过滤空格
         _id = str(uuid.uuid4())
 
         TaskService.create_task(_id, repo, branch, tag, target_directory, post_sync_script, machines, services,

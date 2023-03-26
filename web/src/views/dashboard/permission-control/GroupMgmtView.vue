@@ -63,15 +63,17 @@
         <span>清空搜索条件</span>
       </n-tooltip>
     </div>
-    <n-data-table striped :columns="columns" :data="groups" :pagination="pagination"/>
+    <n-data-table striped :columns="columns" :data="groups" :row-key="rowKey" @update-checked-row-keys="handleCheck"
+                  :pagination="pagination"/>
     <n-modal v-model:show="isShowAddModal" :mask-closablef="false" preset="card" title="添加组"
              :on-after-leave="onAddModalAfterLeave" :segmented="false" style="width: 45%; min-width: 600px">
       <div style="display: flex;width: 100%; height: 100%; flex-direction: column">
         <div style="width: 100%; ">
           <div style="font-size: 12pt; font-weight: bold;">名称</div>
-          <n-input type="text" placeholder="必填, 请输入名称" style="margin-bottom: 10px; max-width: 200px"/>
+          <n-input v-model:value="groupNameTextInput" type="text" placeholder="必填, 请输入组名"
+                   style="margin-bottom: 10px; max-width: 200px"/>
           <div style="font-size: 12pt; font-weight: bold;">用途</div>
-          <n-input type="text" placeholder="请输入用途"/>
+          <n-input v-model:value="usageTextInput" type="text" placeholder="请输入用途"/>
         </div>
         <div style="display: flex; width: 100%; height: 100%; justify-content: flex-end; margin-top: 10px">
           <n-button @click="onAddModalFailed" style="margin-right: 10px;">取&nbsp;消</n-button>
@@ -97,9 +99,9 @@
 </template>
 
 <script setup>
-import {h, reactive, ref, getCurrentInstance, onMounted} from "vue";
+import {getCurrentInstance, h, onMounted, reactive, ref} from "vue";
 import {NButton, useDialog, useMessage} from "naive-ui";
-import {SearchOutlined, CloseOutlined, DeleteOutlined, PlusOutlined} from "@vicons/antd"
+import {CloseOutlined, DeleteOutlined, PlusOutlined, SearchOutlined} from "@vicons/antd"
 import TableOperationAreaButtonGroup from "@/components/TableOperationAreaButtonGroup.vue";
 
 const {proxy} = getCurrentInstance()
@@ -116,6 +118,7 @@ onMounted(() => {
           result.push({
             "key": item["name"],
             "name": item["name"],
+            "update-time": item["update_time"],
             "create-time": item["create_time"],
             "usage": item["usage"]
           })
@@ -128,12 +131,18 @@ onMounted(() => {
       console.error(r.status)
     }
   }).catch(e => {
+    console.error(e);
   })
 })
 
 
 const dialog = useDialog()
 const message = useMessage()
+let checkedRowKeysRef = ref([])
+
+
+let groupNameTextInput = ref("")
+let usageTextInput = ref("")
 
 
 let roleSelectOptionValue = ref(null)
@@ -143,8 +152,8 @@ let roleSelectOptions = [
     label: "全部",
     value: null
   }, {
-    label: "名称",
-    value: "名称"
+    label: "组名",
+    value: "组名"
   }, {
     label: "用途",
     value: "用途"
@@ -154,6 +163,14 @@ let roleSelectOptions = [
 let isShowAddModal = ref(false);
 let isShowModifyModal = ref(false);
 
+function rowKey(row) {
+  return row.name
+}
+
+function handleCheck(rowKeys) {
+  checkedRowKeysRef.value = rowKeys;
+}
+
 function onAddModalAfterLeave() {
 }
 
@@ -161,7 +178,26 @@ function onModifyModalAfterLeave() {
 }
 
 function onAddModalOk() {
-  isShowAddModal.value = false;
+  isShowAddModal.value = true;
+  proxy.$axios.post("/api/group/", {
+    name: groupNameTextInput.value,
+    usage: usageTextInput.value,
+  },).then(r => {
+    if (r.status === 200) {
+      // 获得响应体中的数据
+      const content = r.data
+      console.log(content)
+      //   if (content["code"] === "10000"){
+      //     // 从响应体数据中获取状态码匹配
+      //     const data = content["data"]
+      //     console.log(data)
+      //   }
+    }
+    groupNameTextInput.value = "";
+    usageTextInput.value = "";
+  }).catch(e => {
+    console.error(e);
+  })
 }
 
 function onAddModalFailed() {
@@ -178,18 +214,37 @@ function onModifyModalOk() {
 
 function handleAddButtonClicked() {
   isShowAddModal.value = true;
+
 }
 
 function handleBatchDeleteButtonClicked() {
-  dialog.warning({
-    title: "批量删除",
-    content: "即将删除 24 个条目, 是否继续?",
-    positiveText: "确定",
-    negativeText: "取消",
-    onPositiveClick: () => {
-      message.success("删除成功")
-    },
-  })
+  const deleteContent = "即将删除 " + checkedRowKeysRef.value.length + " 个条目"
+  const emptyContent = "请选中条目后再进行删除"
+  checkedRowKeysRef.value.length === 0 ?
+      dialog.warning({
+        title: "批量删除",
+        content: emptyContent,
+        negativeText: "取消",
+      }) :
+      dialog.warning({
+        title: "批量删除",
+        content: deleteContent,
+        positiveText: "确定",
+        negativeText: "取消",
+        onPositiveClick: () => {
+          const name_list = { groupNames: checkedRowKeysRef.value }
+          proxy.$axios.delete("/api/group", {
+            data: name_list
+          }).then(r => {
+            if (r.status === 200) {
+              const content = r.data
+              console.log(content)
+            }
+            checkedRowKeysRef.value = [""];
+          })
+          message.success("删除成功")
+        }
+      })
 }
 
 
@@ -198,7 +253,7 @@ let groups = ref([])
 let columns = [
   {
     type: "selection",
-    fixed: "left"
+    fixed: "left",
   }, {
     title: "组名",
     key: "name",
@@ -207,6 +262,11 @@ let columns = [
   }, {
     title: "创建时间",
     key: "create-time",
+    width: 200
+
+  }, {
+    title: "更新时间",
+    key: "update-time",
     width: 200
 
   }, {

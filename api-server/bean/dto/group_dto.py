@@ -8,7 +8,6 @@ class GroupDTO:
         "usage": fields.String,
         "create_time": fields.DateTime(attribute="create_time"),
         "update_time": fields.DateTime(attribute="update_time")
-
     }
 
     def __init__(self, name: str = None,

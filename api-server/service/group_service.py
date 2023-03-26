@@ -1,3 +1,4 @@
+from datetime import datetime
 from model.group_model import GroupModel
 
 
@@ -15,8 +16,11 @@ class GroupService:
             return GroupModel.get_group(usage)
 
     @staticmethod
-    def create_group(name, usage, create_time, update_time):
-        pass
+    def create_group(name: str | None, usage: str | None, create_time: datetime, update_time: datetime):
+        if name is None or usage is None:
+            return {}
+        else:
+            GroupModel.create_group(name, usage, create_time, update_time)
 
     @staticmethod
     def update_group_by_name(name, usage):
