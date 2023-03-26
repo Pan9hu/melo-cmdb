@@ -6,20 +6,20 @@
 
 - Login
 
-![image-20230224112018201](https://typora-1312877059.cos.ap-nanjing.myqcloud.com/typora/202302241120400.png)
+![image-20230327025356290](https://typora-1312877059.cos.ap-nanjing.myqcloud.com/typora/202303270253402.png)
 
 -  Permission Control / Group
 
-<<<<<<< HEAD
-![image-20230224113521464](https://typora-1312877059.cos.ap-nanjing.myqcloud.com/typora/202302241135571.png)
+![image-20230327025420370](https://typora-1312877059.cos.ap-nanjing.myqcloud.com/typora/202303270254462.png)
+
+- Config / Version Control
+
+![image-20230327025617415](https://typora-1312877059.cos.ap-nanjing.myqcloud.com/typora/202303270256539.png)
+
+
 
 # Features
 
-=======
-![image-20230224113521464](https://typora-1312877059.cos.ap-nanjing.myqcloud.com/typora/202303191920391.png)
-
-# Features
->>>>>>> 73ae8ef755d9614cf9f8337c6ba2a01e013f8f3b
 - 主机管理：基于主机的资源信息，主机的用途对归属关系的管理
 - 组织架构管理：基于业务需求的组织架构管理
 - 权限管理：基于成员组的权限管理
@@ -27,7 +27,6 @@
 - 版本控制：基于CI/CD提供透明的流程，反馈各阶段的详细信息
 - 事件发现与推送：基于回调方式对事件的发现与推送
 - 审计：对用户敏感操作提供留存审计记录的功能
-<<<<<<< HEAD
 
 # Get Started
 
@@ -35,35 +34,20 @@ Curl;
 
 ``````sh
 
-=======
-
-
-# Get Started
-
-Curl:
-
-``````sh
->>>>>>> 73ae8ef755d9614cf9f8337c6ba2a01e013f8f3b
 ``````
 
 
 Wget:
 
 ``````sh
-<<<<<<< HEAD
 
-=======
->>>>>>> 73ae8ef755d9614cf9f8337c6ba2a01e013f8f3b
 ``````
 
 
 Docker:
 
 ``````
-<<<<<<< HEAD
 
-=======
->>>>>>> 73ae8ef755d9614cf9f8337c6ba2a01e013f8f3b
 ``````
 
 
