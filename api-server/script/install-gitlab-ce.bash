@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-
-=======
 #!/usr/bin/env bash
 
 
@@ -13,4 +10,3 @@ sudo locale-gen en_US.UTF-8
 localectl set-locale LANG=en_US.UTF-8
 apt install gitlab-ce -y
 gitlab-ctl reconfigure
->>>>>>> 73ae8ef755d9614cf9f8337c6ba2a01e013f8f3b
