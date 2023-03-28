@@ -10,11 +10,13 @@
     </n-page-header>
     <div class="op-area">
       <n-select style="width: 250px; margin-right: 10px;" size="medium" v-model:value="roleSelectOptionValue"
-                :options="roleSelectOptions" placeholder="选择检索条件"/>
-      <n-input style="margin-right: 10px;" placeholder="按照组名或者用途搜索, 支持全文检索.." type="text"/>
+                :options="roleSelectOptions" placeholder="选择检索条件(全部)"/>
+      <n-input style="margin-right: 10px;" placeholder="按照组名或者用途搜索, 支持全文检索.." type="text"
+               v-model:value="searchLineValue" @keyup.enter="handleSearchButtonClicked"/>
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
-          <n-button secondary tertiary circle style="margin-left: 5px" type="info">
+          <n-button secondary tertiary circle style="margin-left: 5px" type="info"
+          @click="handleSearchButtonClicked">
             <template #icon>
               <n-icon>
                 <search-outlined/>
@@ -52,7 +54,8 @@
       </n-tooltip>
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
-          <n-button secondary tertiary circle style="margin-left: 5px" type="error">
+          <n-button secondary tertiary circle style="margin-left: 5px" type="error"
+                    @click="handleClearSearchContent">
             <template #icon>
               <n-icon>
                 <close-outlined/>
@@ -104,7 +107,10 @@ import {NButton, useDialog, useMessage} from "naive-ui";
 import {CloseOutlined, DeleteOutlined, PlusOutlined, SearchOutlined} from "@vicons/antd"
 import TableOperationAreaButtonGroup from "@/components/TableOperationAreaButtonGroup.vue";
 
+
 const {proxy} = getCurrentInstance()
+const dialog = useDialog()
+const message = useMessage()
 
 onMounted(() => {
   proxy.$axios.get("/api/group/", {}).then(r => {
@@ -135,33 +141,25 @@ onMounted(() => {
   })
 })
 
-
-const dialog = useDialog()
-const message = useMessage()
 let checkedRowKeysRef = ref([])
-
-
 let groupNameTextInput = ref("")
 let usageTextInput = ref("")
-
-
-let roleSelectOptionValue = ref(null)
-
-let roleSelectOptions = [
-  {
-    label: "全部",
-    value: null
-  }, {
-    label: "组名",
-    value: "组名"
-  }, {
-    label: "用途",
-    value: "用途"
-  },
-]
-
+let roleSelectOptionValue = ref()
+let searchLineValue = ref("")
 let isShowAddModal = ref(false);
 let isShowModifyModal = ref(false);
+let roleSelectOptions = [
+    {
+      label: "全部",
+      value: null
+    }, {
+      label: "组名",
+      value: "name"
+    }, {
+      label: "用途",
+      value: "usage"
+    },
+]
 
 function rowKey(row) {
   return row.name
@@ -211,6 +209,70 @@ function onModifyModalFailed() {
 function onModifyModalOk() {
   isShowModifyModal.value = false;
 }
+function handleSearchButtonClicked(){
+  if (roleSelectOptionValue.value === "name"){
+    proxy.$axios.get("/api/group/name",{
+      params:{
+        name: searchLineValue.value,
+      }
+    }).then(r => {
+      if (r.status === 200) {
+        const content = r.data
+        if (content["code"] === "10000") {
+          const data = content["data"]
+          let result = [];
+
+          data.map((item) => {
+            result.push({
+              "key": item["name"],
+              "name": item["name"],
+              "update-time": item["update_time"],
+              "create-time": item["create_time"],
+              "usage": item["usage"]
+            })
+          });
+
+          groups.value = result;
+        } else {
+        }
+      } else {
+        console.error(r.status)
+      }
+    }).catch(e => {
+      console.error(e);
+    })
+  } else {
+    proxy.$axios.get("/api/group/",{
+      params:{
+        usage: searchLineValue.value,
+      }
+    }).then(r => {
+      if (r.status === 200) {
+        const content = r.data
+        if (content["code"] === "10000") {
+          const data = content["data"]
+          let result = [];
+          data.map((item) => {
+            result.push({
+              "key": item["name"],
+              "name": item["name"],
+              "update-time": item["update_time"],
+              "create-time": item["create_time"],
+              "usage": item["usage"]
+            })
+          });
+
+          groups.value = result;
+        } else {
+        }
+      } else {
+        console.error(r.status)
+      }
+    }).catch(e => {
+      console.error(e);
+    })
+  }
+}
 
 function handleAddButtonClicked() {
   isShowAddModal.value = true;
@@ -232,8 +294,8 @@ function handleBatchDeleteButtonClicked() {
         positiveText: "确定",
         negativeText: "取消",
         onPositiveClick: () => {
-          const name_list = { groupNames: checkedRowKeysRef.value }
-          proxy.$axios.delete("/api/group", {
+          const name_list = checkedRowKeysRef.value
+          proxy.$axios.delete("/api/group/", {
             data: name_list
           }).then(r => {
             if (r.status === 200) {
@@ -245,6 +307,11 @@ function handleBatchDeleteButtonClicked() {
           message.success("删除成功")
         }
       })
+}
+
+function handleClearSearchContent() {
+  searchLineValue.value = ""
+  roleSelectOptionValue = null
 }
 
 

@@ -19,8 +19,7 @@ class GroupService:
     def create_group(name: str | None, usage: str | None, create_time: datetime, update_time: datetime):
         if name is None or usage is None:
             return {}
-        else:
-            GroupModel.create_group(name, usage, create_time, update_time)
+        GroupModel.create_group(name, usage, create_time, update_time)
 
     @staticmethod
     def update_group_by_name(name, usage):
@@ -31,5 +30,7 @@ class GroupService:
         pass
 
     @staticmethod
-    def delete_group(name_list):
-        pass
+    def delete_group(name_list: list):
+        if len(name_list) == 0:
+            return []
+        GroupModel.delete_group(name_list)

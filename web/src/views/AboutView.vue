@@ -1,6 +1,6 @@
 <template>
   <n-layout class="about-view">
-    sb
+    aboutView
   </n-layout>
 </template>
 

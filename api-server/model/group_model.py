@@ -31,7 +31,14 @@ class GroupModel:
     def get_group(usage: str):
         result = Server.datasource["default"].db["group"].find({"usage": usage})
 
-        return result
+        groups = []
+
+        for item in result:
+            groups.append(Group(name=item["_id"],
+                                usage=item["usage"],
+                                create_time=item["create_time"],
+                                update_time=item["update_time"]))
+        return groups
 
     @staticmethod
     def create_group(name: str, usage: str, create_time: datetime, update_time: datetime):
@@ -41,3 +48,12 @@ class GroupModel:
                                                                       "update_time": update_time,
                                                                       "is_delete": False})
         return result
+
+    @staticmethod
+    def delete_group(name_list: list):
+        results = []
+        for groupName in name_list:
+            result = Server.datasource["default"].db["group"].delete_one({"_id": groupName})
+            results.append(result)
+
+        return results

@@ -12,23 +12,25 @@ class GroupAPI:
     api = Blueprint("group", __name__, url_prefix="/group")
 
     @staticmethod
-    @api.route("/<name>", methods=('GET',))
-    def get_group_by_name(name):
+    @api.route("/name", methods=('GET',))
+    def get_group_by_name():
         """
         通过组名来获取组的详细信息
-        :param name
+        :param
         """
-        group = GroupService.get_group_by_name(StringUtil.smart_trim(name))
+        p_name = RequestUtil.get_param_from_url_query_param(request, "name")
+        group = GroupService.get_group_by_name(StringUtil.smart_trim(p_name))
         # 将Get请求的name参数过滤后，调用对应的Service层模块
-        group_dto = GroupDTO(
-            name=group.get_name(),
-            usage=group.get_usage(),
-            create_time=group.get_create_time(),
-            update_time=group.get_update_time(),
-        )
+        group_dto_list = [GroupDTO(
+            group.get_name(),
+            group.get_usage(),
+            group.get_create_time(),
+            group.get_update_time(),
+        )]
+
         # 获取经过Dao层处理后的数据
 
-        return GenericJSONResponse(data=marshal(group_dto, fields=GroupDTO.fields)).build()
+        return GenericJSONResponse(data=marshal(group_dto_list, fields=GroupDTO.fields)).build()
 
     @staticmethod
     @api.route("/", methods=('GET',))
