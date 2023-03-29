@@ -12,14 +12,13 @@ class GroupAPI:
     api = Blueprint("group", __name__, url_prefix="/group")
 
     @staticmethod
-    @api.route("/name", methods=('GET',))
-    def get_group_by_name():
+    @api.route("/<name>", methods=('GET',))
+    def get_group_by_name(name):
         """
         通过组名来获取组的详细信息
         :param
         """
-        p_name = RequestUtil.get_param_from_url_query_param(request, "name")
-        group = GroupService.get_group_by_name(StringUtil.smart_trim(p_name))
+        group = GroupService.get_group_by_name(StringUtil.smart_trim("%s" % name))
         # 将Get请求的name参数过滤后，调用对应的Service层模块
         group_dto_list = [GroupDTO(
             group.get_name(),
@@ -72,17 +71,18 @@ class GroupAPI:
     @staticmethod
     @api.route("/<name>", methods=('PUT',))
     def update_group_by_name(name):
+
         p_usage = RequestUtil.get_param_from_body_raw_json(request, "usage")
         usage = StringUtil.smart_trim(p_usage)
 
-        GroupService.update_group_by_name(StringUtil.smart_trim(name), usage)
+        GroupService.update_group_by_name(StringUtil.smart_trim("%s" % name), usage)
 
         return {}
 
     @staticmethod
     @api.route("/<name>", methods=('DELETE',))
     def delete_group_by_name(name):
-        GroupService.delete_group_by_name(StringUtil.smart_trim(name))
+        GroupService.delete_group_by_name(StringUtil.smart_trim("%s" % name))
 
         return {}
 

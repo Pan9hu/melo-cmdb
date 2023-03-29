@@ -16,7 +16,7 @@
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
           <n-button secondary tertiary circle style="margin-left: 5px" type="info"
-          @click="handleSearchButtonClicked">
+                    @click="handleSearchButtonClicked">
             <template #icon>
               <n-icon>
                 <search-outlined/>
@@ -89,7 +89,7 @@
       <div style="display: flex;width: 100%; height: 100%; flex-direction: column">
         <div style="width: 100%; ">
           <div style="font-size: 12pt; font-weight: bold;">用途</div>
-          <n-input type="text" placeholder="请输入用途"/>
+          <n-input type="text" placeholder="请输入用途" v-model:value="usageTextInputOne"/>
         </div>
         <div style="display: flex; width: 100%; height: 100%; justify-content: flex-end; margin-top: 10px">
           <n-button @click="onModifyModalFailed" style="margin-right: 10px;">取&nbsp;消</n-button>
@@ -144,21 +144,24 @@ onMounted(() => {
 let checkedRowKeysRef = ref([])
 let groupNameTextInput = ref("")
 let usageTextInput = ref("")
+let usageTextInputOne = ref("")
 let roleSelectOptionValue = ref()
 let searchLineValue = ref("")
 let isShowAddModal = ref(false);
 let isShowModifyModal = ref(false);
+let isShowDeleteModal = ref(false);
+let groupName = ref("")
 let roleSelectOptions = [
-    {
-      label: "全部",
-      value: null
-    }, {
-      label: "组名",
-      value: "name"
-    }, {
-      label: "用途",
-      value: "usage"
-    },
+  {
+    label: "全部",
+    value: null
+  }, {
+    label: "组名",
+    value: "name"
+  }, {
+    label: "用途",
+    value: "usage"
+  },
 ]
 
 function rowKey(row) {
@@ -167,6 +170,10 @@ function rowKey(row) {
 
 function handleCheck(rowKeys) {
   checkedRowKeysRef.value = rowKeys;
+}
+
+function setGroupName(name) {
+  return groupName.value = name
 }
 
 function onAddModalAfterLeave() {
@@ -207,15 +214,30 @@ function onModifyModalFailed() {
 }
 
 function onModifyModalOk() {
-  isShowModifyModal.value = false;
+  isShowModifyModal.value = true;
+  proxy.$axios.put(`/api/group/${groupName.value}`, {
+    usage: usageTextInputOne.value,
+  }).then(r => {
+    if (r.status === 200) {
+      // 获得响应体中的数据
+      const content = r.data
+      console.log(content)
+      //   if (content["code"] === "10000"){
+      //     // 从响应体数据中获取状态码匹配
+      //     const data = content["data"]
+      //     console.log(data)
+      //   }
+    }
+    usageTextInputOne.value = "";
+  }).catch(e => {
+    console.error(e);
+  })
 }
-function handleSearchButtonClicked(){
-  if (roleSelectOptionValue.value === "name"){
-    proxy.$axios.get("/api/group/name",{
-      params:{
-        name: searchLineValue.value,
-      }
-    }).then(r => {
+
+
+function handleSearchButtonClicked() {
+  if (roleSelectOptionValue.value === "name") {
+    proxy.$axios.get(`/api/group/${searchLineValue.value}`,).then(r => {
       if (r.status === 200) {
         const content = r.data
         if (content["code"] === "10000") {
@@ -242,8 +264,8 @@ function handleSearchButtonClicked(){
       console.error(e);
     })
   } else {
-    proxy.$axios.get("/api/group/",{
-      params:{
+    proxy.$axios.get("/api/group/", {
+      params: {
         usage: searchLineValue.value,
       }
     }).then(r => {
@@ -276,7 +298,6 @@ function handleSearchButtonClicked(){
 
 function handleAddButtonClicked() {
   isShowAddModal.value = true;
-
 }
 
 function handleBatchDeleteButtonClicked() {
@@ -311,7 +332,7 @@ function handleBatchDeleteButtonClicked() {
 
 function handleClearSearchContent() {
   searchLineValue.value = ""
-  roleSelectOptionValue = null
+  roleSelectOptionValue.value = null
 }
 
 
@@ -353,8 +374,26 @@ let columns = [
             },
             onModifyButtonClicked: () => {
               isShowModifyModal.value = true
+              setGroupName(row.name)
             },
             onDeleteButtonClicked: () => {
+              isShowDeleteModal.value = true
+              dialog.warning({
+                title: "执行删除",
+                content: "即将删除 "+ row.name+" !",
+                positiveText: "确定",
+                negativeText: "取消",
+                onPositiveClick: () => {
+                  proxy.$axios.delete(`/api/group/${row.name}`).then(r => {
+                    if (r.status === 200) {
+                      const content = r.data
+                      console.log(content)
+                    }
+                    checkedRowKeysRef.value = [""];
+                  })
+                  message.success("删除成功")
+                }
+              })
             },
           }
       );

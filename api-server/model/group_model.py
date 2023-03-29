@@ -50,6 +50,11 @@ class GroupModel:
         return result
 
     @staticmethod
+    def delete_group_by_name(name: str):
+        result = Server.datasource["default"].db["group"].delete_one({"_id": name})
+        return result
+
+    @staticmethod
     def delete_group(name_list: list):
         results = []
         for groupName in name_list:
@@ -57,3 +62,9 @@ class GroupModel:
             results.append(result)
 
         return results
+
+    @staticmethod
+    def update_group_by_name(name: str, usage: str):
+        result = Server.datasource["default"].db["group"].find_one_and_update({"_id": name},
+                                                                              {"$set": {"usage": usage}})
+        return result
