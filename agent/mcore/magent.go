@@ -1,4 +1,4 @@
-package mcore
+package main
 
 import "fmt"
 
