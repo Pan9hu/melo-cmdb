@@ -1,5 +1,5 @@
 import uuid
-from datetime import time
+from datetime import datetime
 
 from flask import Blueprint, request
 
@@ -28,8 +28,8 @@ class TaskAPI:
         p_webhook_url = RequestUtil.get_param_from_body_raw_json(request, "webhook-url")
         p_webhook_sign = RequestUtil.get_param_from_body_raw_json(request, "webhook-sign")
         # 获取body中的数据
-        create_time = time.now()
-        update_time = time.now()
+        create_time = datetime.utcnow()
+        update_time = datetime.utcnow()
         # 任务创建时间
         status = "已经提交"
 
