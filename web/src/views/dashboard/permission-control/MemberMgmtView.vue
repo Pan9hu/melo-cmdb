@@ -251,8 +251,8 @@ let members = ref([{
   "phone": "1829317193",
   "email": "xxxxxxxxxx@gmail.com",
   "sex": "男",
-  "create-time": "2023/12/09 09:09:01",
-  "update-time": "2023/12/09 09:09:02",
+  "create_time": "2023/12/09 09:09:01",
+  "update_time": "2023/12/09 09:09:02",
 }]);
 
 let columns = [{
@@ -295,11 +295,11 @@ let columns = [{
 
   {
     title: "创建时间",
-    key: "create-time",
+    key: "create_time",
     width: 200
   }, {
     title: "最后一次修改时间",
-    key: "update-time",
+    key: "update_time",
     width: 200
   }, {
     title: "操作",

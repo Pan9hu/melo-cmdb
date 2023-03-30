@@ -125,7 +125,7 @@ let columns = [
     width: 320
   }, {
     title: "时间点",
-    key: "create-time",
+    key: "create_time",
     width: 320
   }, {
     title: "事件",
@@ -140,7 +140,7 @@ let items = ref([{
   "uid": "Z1231SS",
   "name": "小林",
   "result": "成功",
-  "create": "2023/2/2 12:31:32",
+  "create_time": "2023/2/2 12:31:32",
   "event": "在 /权限控制/成员 中, 添加了 小周 / Z123SA",
 }])
 

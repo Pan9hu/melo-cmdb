@@ -174,7 +174,7 @@ let groups = ref([{
   "name" : "/minecraft/全球",
   "level" : "第一层",
   "parent" : "运维1组",
-  "create-time" : "2023/2/7 18:32:30",
+  "create_time" : "2023/2/7 18:32:30",
   "usage" : "无",
   // M 表示当前群组下面的机器所用的安全组
   // G 表示当前群组下面次级群组所用的安全组
@@ -187,7 +187,7 @@ let groups = ref([{
     "name" : "/minecraft/全球",
     "level" : "第二层",
     "parent" : "运维2组",
-    "create-time" : "2023/2/7 18:32:33",
+    "create_time" : "2023/2/7 18:32:33",
     "usage" : "无",
     // M 表示当前群组下面的机器所用的安全组
     // G 表示当前群组下面次级群组所用的安全组
@@ -200,7 +200,7 @@ let groups = ref([{
   "name" : "/minecraft/全球",
   "level" : "第三层",
   "parent" : "运维2组",
-  "create-time" : "2023/2/7 19:32:30",
+  "create_time" : "2023/2/7 19:32:30",
   "usage" : "基础设施",
   // M 表示当前群组下面的机器所用的安全组
   // G 表示当前群组下面次级群组所用的安全组
@@ -213,7 +213,7 @@ let groups = ref([{
   "name" : "/minecraft/全球",
   "level" : "第二层",
   "parent" : "运维3组",
-  "create-time" : "2023/2/7 20:32:30",
+  "create_time" : "2023/2/7 20:32:30",
   "usage" : "简单难度",
   // M 表示当前群组下面的机器所用的安全组
   // G 表示当前群组下面次级群组所用的安全组
@@ -285,7 +285,7 @@ let columns = [{
   },
   {
     title: "创建时间",
-    key: "create-time",
+    key: "create_time",
     width: 200
 
   }, {

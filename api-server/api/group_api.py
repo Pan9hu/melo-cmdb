@@ -20,7 +20,7 @@ class GroupAPI:
         """
         group = GroupService.get_group_by_name(StringUtil.smart_trim("%s" % name))
         # 将Get请求的name参数过滤后，调用对应的Service层模块
-        group_dto_list = [GroupDTO(
+        group_dto = [GroupDTO(
             group.get_name(),
             group.get_usage(),
             group.get_create_time(),
@@ -29,13 +29,13 @@ class GroupAPI:
 
         # 获取经过Dao层处理后的数据
 
-        return GenericJSONResponse(data=marshal(group_dto_list, fields=GroupDTO.fields)).build()
+        return GenericJSONResponse(data=marshal(group_dto, fields=GroupDTO.fields)).build()
 
     @staticmethod
     @api.route("/", methods=('GET',))
     def get_group():
         """
-        获取全部组信息
+        获取url中的参数根据usage来获取组，如果参数为空则返回全部组的数据
         """
         p_usage = RequestUtil.get_param_from_url_query_param(request, "usage")
 
@@ -66,25 +66,46 @@ class GroupAPI:
 
         GroupService.create_group(name, usage, create_time, update_time)
 
-        return {}
+        group = GroupService.get_group_by_name(StringUtil.smart_trim("%s" % name))
+        # 将Get请求的name参数过滤后，调用对应的Service层模块
+        group_dto = [GroupDTO(
+            group.get_name(),
+            group.get_usage(),
+            group.get_create_time(),
+            group.get_update_time(),
+        )]
+        # 获取经过Dao层处理后的数据
+        return GenericJSONResponse(data=marshal(group_dto, fields=GroupDTO.fields)).build()
 
     @staticmethod
     @api.route("/<name>", methods=('PUT',))
     def update_group_by_name(name):
-
+        f_name = StringUtil.smart_trim("%s" % name)
         p_usage = RequestUtil.get_param_from_body_raw_json(request, "usage")
         usage = StringUtil.smart_trim(p_usage)
+        update_time = datetime.utcnow()
 
-        GroupService.update_group_by_name(StringUtil.smart_trim("%s" % name), usage)
-
-        return {}
+        GroupService.update_group_by_name(f_name, usage, update_time)
+        group = GroupService.get_group_by_name(f_name)
+        # 将Get请求的name参数过滤后，调用对应的Service层模块
+        group_dto = [GroupDTO(
+            group.get_name(),
+            group.get_usage(),
+            group.get_create_time(),
+            group.get_update_time(),
+        )]
+        # 获取经过Dao层处理后的数据
+        return GenericJSONResponse(data=marshal(group_dto, fields=GroupDTO.fields)).build()
 
     @staticmethod
     @api.route("/<name>", methods=('DELETE',))
     def delete_group_by_name(name):
-        GroupService.delete_group_by_name(StringUtil.smart_trim("%s" % name))
+        f_name = StringUtil.smart_trim("%s" % name)
+        GroupService.delete_group_by_name(f_name)
 
-        return {}
+        group = []
+        # 获取经过Dao层处理后的数据
+        return GenericJSONResponse(data=marshal(group, fields=GroupDTO.fields)).build()
 
     @staticmethod
     @api.route("/", methods=('DELETE',))
@@ -94,4 +115,14 @@ class GroupAPI:
         if len(name_list) > 0:
             GroupService.delete_group(name_list)
 
-        return {}
+        groups = GroupService.get_group("")
+
+        dto_list = []
+        # 创建一个dto字典，用于将获得的数据逐个输入进去
+        for group in groups:
+            dto_list.append(GroupDTO(group.get_name(),
+                                     group.get_usage(),
+                                     group.get_create_time(),
+                                     group.get_update_time()))
+        # 将数据append到字典中
+        return GenericJSONResponse(data=marshal(dto_list, fields=GroupDTO.fields)).build()

@@ -60,7 +60,7 @@ let resPools = ref([
     "memory": "128",
     "disk": "5000",
     "net": "1000",
-    "create-time": "2023/2/3 15:51:03",
+    "create_time": "2023/2/3 15:51:03",
     "usage": "多实例数据库",
   }
 ]);
@@ -97,7 +97,7 @@ let columns = [
   },
   {
     title:"创建时间",
-    key: "create-time",
+    key: "create_time",
     width: 200
 
   },{

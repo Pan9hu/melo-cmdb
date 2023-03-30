@@ -118,8 +118,8 @@ let machines = ref([
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
     "res-pool": "北京东三区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
+    "create_time": "2023/02/15 00:12:09",
+    "update_time": "2023/02/15 00:12:15"
   },
   {
     "key": "2",
@@ -129,8 +129,8 @@ let machines = ref([
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
     "res-pool": "北京西一区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
+    "create_time": "2023/02/15 00:12:09",
+    "update_time": "2023/02/15 00:12:15"
   },
   {
     "key": "3",
@@ -140,8 +140,8 @@ let machines = ref([
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
     "res-pool": "北京东一区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
+    "create_time": "2023/02/15 00:12:09",
+    "update_time": "2023/02/15 00:12:15"
   },
   {
     "key": "4",
@@ -151,8 +151,8 @@ let machines = ref([
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
     "res-pool": "北京东二区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
+    "create_time": "2023/02/15 00:12:09",
+    "update_time": "2023/02/15 00:12:15"
   },
   {
     "key": "5",
@@ -162,8 +162,8 @@ let machines = ref([
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
     "res-pool": "北京西三区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
+    "create_time": "2023/02/15 00:12:09",
+    "update_time": "2023/02/15 00:12:15"
   },
   {
     "key": "6",
@@ -173,8 +173,8 @@ let machines = ref([
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
     "res-pool": "北京西二区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
+    "create_time": "2023/02/15 00:12:09",
+    "update_time": "2023/02/15 00:12:15"
   }, {
     "key": "7",
     "id": "cd37ddc9-761f-4671-bfe4-45cc6a88bc7f",
@@ -183,8 +183,8 @@ let machines = ref([
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
     "res-pool": "北京北二区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
+    "create_time": "2023/02/15 00:12:09",
+    "update_time": "2023/02/15 00:12:15"
   },
   {
     "key": "8",
@@ -194,8 +194,8 @@ let machines = ref([
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
     "res-pool": "北京南一区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
+    "create_time": "2023/02/15 00:12:09",
+    "update_time": "2023/02/15 00:12:15"
   }, {
     "key": "9",
     "id": "3288ad07-ddf1-41d1-8c6d-df040945e450",
@@ -204,8 +204,8 @@ let machines = ref([
     "group": "/minecraft/全球",
     "safe-group": ["Web 服务", "数据库服务", "登录网关", "运维"],
     "res-pool": "北京北三区",
-    "create-time": "2023/02/15 00:12:09",
-    "update-time": "2023/02/15 00:12:15"
+    "create_time": "2023/02/15 00:12:09",
+    "update_time": "2023/02/15 00:12:15"
   }
 ]);
 const columns = [
@@ -258,11 +258,11 @@ const columns = [
   },
   {
     title: "受控时间",
-    key: "create-time",
+    key: "create_time",
     width: 220
   }, {
     title: "数据上报时间",
-    key: "update-time",
+    key: "update_time",
     width: 220
   },
 

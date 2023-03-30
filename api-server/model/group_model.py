@@ -7,7 +7,8 @@ class GroupModel:
 
     @staticmethod
     def get_group_by_name(name) -> Group:
-        result = Server.datasource["default"].db["group"].find_one({"_id": name})
+        result = Server.datasource["default"].db["group"].find_one({"_id": name, "is_delete": False})
+
         # 获取连接池并通过名字查找数据
         return Group(name=result["_id"],
                      usage=result["usage"],
@@ -29,15 +30,29 @@ class GroupModel:
 
     @staticmethod
     def get_group(usage: str):
-        result = Server.datasource["default"].db["group"].find({"usage": usage})
+        result = Server.datasource["default"].db["group"].find({"usage": usage, "is_delete": False})
 
         groups = []
-
         for item in result:
             groups.append(Group(name=item["_id"],
                                 usage=item["usage"],
                                 create_time=item["create_time"],
                                 update_time=item["update_time"]))
+        if not groups:
+            result = Server.datasource["default"].db["group"].find({"usage": {"$regex": usage}, "is_delete": False})
+            for item in result:
+                groups.append(Group(name=item["_id"],
+                                    usage=item["usage"],
+                                    create_time=item["create_time"],
+                                    update_time=item["update_time"]))
+        if not groups:
+            result = Server.datasource["default"].db["group"].find({"name": {"$regex": usage}, "is_delete": False})
+            for item in result:
+                groups.append(Group(name=item["_id"],
+                                    usage=item["usage"],
+                                    create_time=item["create_time"],
+                                    update_time=item["update_time"]))
+
         return groups
 
     @staticmethod
@@ -64,7 +79,9 @@ class GroupModel:
         return results
 
     @staticmethod
-    def update_group_by_name(name: str, usage: str):
+    def update_group_by_name(name: str, usage: str, update_time: datetime):
         result = Server.datasource["default"].db["group"].find_one_and_update({"_id": name},
-                                                                              {"$set": {"usage": usage}})
+                                                                              {"$set": {"usage": usage,
+                                                                                        "update_time": update_time}},
+                                                                              {"is_delete": False})
         return result

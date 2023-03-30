@@ -74,9 +74,9 @@
         <div style="width: 100%; ">
           <div style="font-size: 12pt; font-weight: bold;">名称</div>
           <n-input v-model:value="groupNameTextInput" type="text" placeholder="必填, 请输入组名"
-                   style="margin-bottom: 10px; max-width: 200px"/>
+                   style="margin-bottom: 10px; max-width: 200px" @keyup.enter="onAddModalOk"/>
           <div style="font-size: 12pt; font-weight: bold;">用途</div>
-          <n-input v-model:value="usageTextInput" type="text" placeholder="请输入用途"/>
+          <n-input v-model:value="usageTextInput" type="text" placeholder="请输入用途" @keyup.enter="onAddModalOk"/>
         </div>
         <div style="display: flex; width: 100%; height: 100%; justify-content: flex-end; margin-top: 10px">
           <n-button @click="onAddModalFailed" style="margin-right: 10px;">取&nbsp;消</n-button>
@@ -89,7 +89,7 @@
       <div style="display: flex;width: 100%; height: 100%; flex-direction: column">
         <div style="width: 100%; ">
           <div style="font-size: 12pt; font-weight: bold;">用途</div>
-          <n-input type="text" placeholder="请输入用途" v-model:value="usageTextInputOne"/>
+          <n-input type="text" placeholder="请输入用途" v-model:value="usageTextInputOne" @keyup.enter="onModifyModalOk"/>
         </div>
         <div style="display: flex; width: 100%; height: 100%; justify-content: flex-end; margin-top: 10px">
           <n-button @click="onModifyModalFailed" style="margin-right: 10px;">取&nbsp;消</n-button>
@@ -119,17 +119,15 @@ onMounted(() => {
       if (content["code"] === "10000") {
         const data = content["data"]
         let result = [];
-
         data.map((item) => {
           result.push({
             "key": item["name"],
             "name": item["name"],
-            "update-time": item["update_time"],
-            "create-time": item["create_time"],
+            "update_time": item["update_time"],
+            "create_time": item["create_time"],
             "usage": item["usage"]
           })
         });
-
         groups.value = result;
       } else {
       }
@@ -141,6 +139,8 @@ onMounted(() => {
   })
 })
 
+
+let groups = ref([])
 let checkedRowKeysRef = ref([])
 let groupNameTextInput = ref("")
 let usageTextInput = ref("")
@@ -164,8 +164,9 @@ let roleSelectOptions = [
   },
 ]
 
+
 function rowKey(row) {
-  return row.name
+  return row.key
 }
 
 function handleCheck(rowKeys) {
@@ -173,7 +174,7 @@ function handleCheck(rowKeys) {
 }
 
 function setGroupName(name) {
-  return groupName.value = name
+  groupName.value = name
 }
 
 function onAddModalAfterLeave() {
@@ -191,12 +192,20 @@ function onAddModalOk() {
     if (r.status === 200) {
       // 获得响应体中的数据
       const content = r.data
-      console.log(content)
-      //   if (content["code"] === "10000"){
-      //     // 从响应体数据中获取状态码匹配
-      //     const data = content["data"]
-      //     console.log(data)
-      //   }
+      message.success("添加成功")
+        if (content["code"] === "10000"){
+          // 从响应体数据中获取状态码匹配
+          const data = content["data"]
+          data.map((item)=>{
+            groups.value.push({
+              "key": item["name"],
+              "name": item["name"],
+              "update_time": item["update_time"],
+              "create_time": item["create_time"],
+              "usage": item["usage"]
+            })
+          });
+        }
     }
     groupNameTextInput.value = "";
     usageTextInput.value = "";
@@ -222,11 +231,15 @@ function onModifyModalOk() {
       // 获得响应体中的数据
       const content = r.data
       console.log(content)
-      //   if (content["code"] === "10000"){
-      //     // 从响应体数据中获取状态码匹配
-      //     const data = content["data"]
-      //     console.log(data)
-      //   }
+      if (content["code"] === "10000") {
+        // 从响应体数据中获取状态码匹配
+        const data = content["data"]
+        data.map((item) => {
+          groups.value.find(({key}) => key === item["name"]).update_time = item["update_time"]
+          groups.value.find(({key}) => key === item["name"]).usage = item["usage"];
+        })
+      }
+      message.success("修改成功")
     }
     usageTextInputOne.value = "";
   }).catch(e => {
@@ -243,13 +256,12 @@ function handleSearchButtonClicked() {
         if (content["code"] === "10000") {
           const data = content["data"]
           let result = [];
-
           data.map((item) => {
             result.push({
               "key": item["name"],
               "name": item["name"],
-              "update-time": item["update_time"],
-              "create-time": item["create_time"],
+              "update_time": item["update_time"],
+              "create_time": item["create_time"],
               "usage": item["usage"]
             })
           });
@@ -278,8 +290,8 @@ function handleSearchButtonClicked() {
             result.push({
               "key": item["name"],
               "name": item["name"],
-              "update-time": item["update_time"],
-              "create-time": item["create_time"],
+              "update_time": item["update_time"],
+              "create_time": item["create_time"],
               "usage": item["usage"]
             })
           });
@@ -321,11 +333,25 @@ function handleBatchDeleteButtonClicked() {
           }).then(r => {
             if (r.status === 200) {
               const content = r.data
-              console.log(content)
+              if (content["code"] === "10000") {
+                // 从响应体数据中获取状态码匹配
+                const data = content["data"]
+                let result = [];
+                data.map((item) => {
+                  result.push({
+                    "key": item["name"],
+                    "name": item["name"],
+                    "update_time": item["update_time"],
+                    "create_time": item["create_time"],
+                    "usage": item["usage"]
+                  })
+                });
+                groups.value = result;
+              }
+              message.success("删除成功")
             }
             checkedRowKeysRef.value = [""];
           })
-          message.success("删除成功")
         }
       })
 }
@@ -335,8 +361,6 @@ function handleClearSearchContent() {
   roleSelectOptionValue.value = null
 }
 
-
-let groups = ref([])
 
 let columns = [
   {
@@ -349,12 +373,12 @@ let columns = [
     width: 250
   }, {
     title: "创建时间",
-    key: "create-time",
+    key: "create_time",
     width: 200
 
   }, {
     title: "更新时间",
-    key: "update-time",
+    key: "update_time",
     width: 200
 
   }, {
@@ -380,14 +404,20 @@ let columns = [
               isShowDeleteModal.value = true
               dialog.warning({
                 title: "执行删除",
-                content: "即将删除 "+ row.name+" !",
+                content: "即将删除 " + row.name + " !",
                 positiveText: "确定",
                 negativeText: "取消",
                 onPositiveClick: () => {
                   proxy.$axios.delete(`/api/group/${row.name}`).then(r => {
                     if (r.status === 200) {
                       const content = r.data
-                      console.log(content)
+                      if (content["code"] === "10000") {
+                        // 从响应体数据中获取状态码匹配
+                        const data = content["data"]
+                        if (data.length === 0 ){
+                          groups.value.splice(groups.value.findIndex(({key}) => key === row.name),1)
+                        }
+                      }
                     }
                     checkedRowKeysRef.value = [""];
                   })
@@ -404,8 +434,8 @@ let columns = [
 ]
 
 const pagination = reactive({
-  page: 5,
-  pageSize: 100,
+  page: 1,
+  pageSize: 10,
   showSizePicker: true,
   pageSizes: [10, 50, 100],
   onChange: (page) => {

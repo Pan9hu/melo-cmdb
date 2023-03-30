@@ -190,7 +190,7 @@ let safeGroups = ref([{
   "key": "0",
   "name": "常规",
   "role": ["IN:TCP:80", "IN:TCP:443", "ALL:TCP:22", "ALL:TCP:3389"],
-  "create-time": "2023/02/15 00:12:09",
+  "create_time": "2023/02/15 00:12:09",
   "usage": "常规的静态 Web 服务和远程管理端口"
 }]);
 let columns = [{
@@ -226,7 +226,7 @@ let columns = [{
 },
   {
     title: "创建时间",
-    key: "create-time",
+    key: "create_time",
     width: 200
 
   }, {

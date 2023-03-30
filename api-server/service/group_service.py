@@ -22,10 +22,10 @@ class GroupService:
         GroupModel.create_group(name, usage, create_time, update_time)
 
     @staticmethod
-    def update_group_by_name(name: str | None, usage: str | None):
+    def update_group_by_name(name: str | None, usage: str | None, update_time: datetime):
         if name is None or usage is None:
             return {}
-        GroupModel.update_group_by_name(name, usage)
+        GroupModel.update_group_by_name(name, usage, update_time)
 
     @staticmethod
     def delete_group_by_name(name):

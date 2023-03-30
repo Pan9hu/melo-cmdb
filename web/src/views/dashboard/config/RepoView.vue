@@ -155,7 +155,7 @@ let repo = ref([{
   "name": "Pan9hu/melo-cmdb",
   "connect-type": "SSH",
   "location": "git@github.com:Pan9hu/melo-cmdb.git",
-  "create-time": "2023/2/1 12:32:03",
+  "create_time": "2023/2/1 12:32:03",
   "usage": "用于测试环境的 Web 集群负载均衡配置。",
 }]);
 
@@ -176,7 +176,7 @@ let columns = [{
   width: 500
 }, {
   title: "添加时间",
-  key: "create-time",
+  key: "create_time",
   width: 220
 }, {
   title: "用途",
