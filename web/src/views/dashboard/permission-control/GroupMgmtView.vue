@@ -192,7 +192,6 @@ function onAddModalOk() {
     if (r.status === 200) {
       // 获得响应体中的数据
       const content = r.data
-      message.success("添加成功")
         if (content["code"] === "10000"){
           // 从响应体数据中获取状态码匹配
           const data = content["data"]
@@ -206,6 +205,7 @@ function onAddModalOk() {
             })
           });
         }
+      message.success("添加成功")
     }
     groupNameTextInput.value = "";
     usageTextInput.value = "";
@@ -327,9 +327,8 @@ function handleBatchDeleteButtonClicked() {
         positiveText: "确定",
         negativeText: "取消",
         onPositiveClick: () => {
-          const name_list = checkedRowKeysRef.value
           proxy.$axios.delete("/api/group/", {
-            data: name_list
+            data: checkedRowKeysRef.value
           }).then(r => {
             if (r.status === 200) {
               const content = r.data
@@ -418,10 +417,10 @@ let columns = [
                           groups.value.splice(groups.value.findIndex(({key}) => key === row.name),1)
                         }
                       }
+                      message.success("删除成功")
                     }
                     checkedRowKeysRef.value = [""];
                   })
-                  message.success("删除成功")
                 }
               })
             },
