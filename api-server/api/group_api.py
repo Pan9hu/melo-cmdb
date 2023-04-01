@@ -26,9 +26,7 @@ class GroupAPI:
             group.get_create_time(),
             group.get_update_time(),
         )]
-
         # 获取经过Dao层处理后的数据
-
         return GenericJSONResponse(data=marshal(group_dto, fields=GroupDTO.fields)).build()
 
     @staticmethod

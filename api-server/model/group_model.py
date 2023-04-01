@@ -6,7 +6,7 @@ from datetime import datetime
 class GroupModel:
 
     @staticmethod
-    def get_group_by_name(name) -> Group:
+    def get_group_by_name(name: str) -> Group:
         result = Server.datasource["default"].db["group"].find_one({"_id": name, "is_delete": False})
 
         # 获取连接池并通过名字查找数据
@@ -16,7 +16,7 @@ class GroupModel:
                      update_time=result["update_time"])
 
     @staticmethod
-    def all_group():
+    def all_group() -> list:
         result = Server.datasource["default"].db["group"].find({"is_delete": False})
 
         groups = []
@@ -29,7 +29,7 @@ class GroupModel:
         return groups
 
     @staticmethod
-    def get_group(usage: str):
+    def get_group(usage: str) -> list:
         result = Server.datasource["default"].db["group"].find({"usage": usage, "is_delete": False})
 
         groups = []
@@ -57,31 +57,24 @@ class GroupModel:
 
     @staticmethod
     def create_group(name: str, usage: str, create_time: datetime, update_time: datetime):
-        result = Server.datasource["default"].db["group"].insert_one({"_id": name,
-                                                                      "usage": usage,
-                                                                      "create_time": create_time,
-                                                                      "update_time": update_time,
-                                                                      "is_delete": False})
-        return result
+        Server.datasource["default"].db["group"].insert_one({"_id": name,
+                                                             "usage": usage,
+                                                             "create_time": create_time,
+                                                             "update_time": update_time,
+                                                             "is_delete": False})
 
     @staticmethod
     def delete_group_by_name(name: str):
-        result = Server.datasource["default"].db["group"].delete_one({"_id": name})
-        return result
+        Server.datasource["default"].db["group"].delete_one({"_id": name})
 
     @staticmethod
     def delete_group(name_list: list):
-        results = []
         for groupName in name_list:
-            result = Server.datasource["default"].db["group"].delete_one({"_id": groupName})
-            results.append(result)
-
-        return results
+            Server.datasource["default"].db["group"].delete_one({"_id": groupName})
 
     @staticmethod
     def update_group_by_name(name: str, usage: str, update_time: datetime):
-        result = Server.datasource["default"].db["group"].find_one_and_update({"_id": name},
-                                                                              {"$set": {"usage": usage,
-                                                                                        "update_time": update_time}},
-                                                                              {"is_delete": False})
-        return result
+        Server.datasource["default"].db["group"].find_one_and_update({"_id": name},
+                                                                     {"$set": {"usage": usage,
+                                                                               "update_time": update_time}},
+                                                                     {"is_delete": False})

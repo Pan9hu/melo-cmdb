@@ -13,7 +13,7 @@ class GroupDTO:
     def __init__(self, name: str = None,
                  usage: str = None,
                  create_time: datetime = datetime.utcnow(),
-                 update_time: datetime = datetime.utcnow(), ):
+                 update_time: datetime = datetime.utcnow()):
         self.name = name
         self.usage = usage
         self.create_time = create_time

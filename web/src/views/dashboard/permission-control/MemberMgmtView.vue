@@ -11,7 +11,8 @@
     <div class="op-area">
       <n-input style="width: 350px; margin-right: 10px;" v-model:value="memberName" type="text"
                placeholder="请输入姓名"/>
-      <n-input style="width: 600px; margin-right: 10px;" v-model:value="memberNo" type="text" placeholder="请输入工号, 与其他条件互斥"/>
+      <n-input style="width: 600px; margin-right: 10px;" v-model:value="memberUid" type="text"
+               placeholder="请输入工号, 与其他条件互斥"/>
       <n-input style="width: 350px; margin-right: 10px;" v-model:value="memberGroup" type="text"
                placeholder="请输入组"/>
       <n-input style="width: 400px; margin-right: 10px;" v-model:value="memberPhone" type="text"
@@ -44,7 +45,7 @@
             </template>
           </n-button>
         </template>
-        <span>添加</span>
+        <span>添加成员</span>
       </n-tooltip>
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
@@ -72,25 +73,33 @@
         <span>清空搜索条件</span>
       </n-tooltip>
     </div>
-    <n-data-table striped :columns="columns" :data="members" :pagination="pagination"/>
+    <n-data-table striped :columns="columns" :data="members" @update-checked-row-keys="handleCheck"
+                  :pagination="pagination"/>
     <n-modal v-model:show="isShowAddModal" :mask-closablef="false" preset="card" title="添加成员"
              :on-after-leave="onAddModalAfterLeave" :segmented="false" style="width: 45%; min-width: 600px">
       <div style="display: flex;width: 100%; height: 100%; flex-direction: column">
         <div style="width: 100%; ">
           <div style="font-size: 12pt; font-weight: bold;">姓名</div>
-          <n-input type="text" placeholder="必填, 请输入姓名" style="margin-bottom: 10px; max-width: 200px"/>
+          <n-input type="text" placeholder="必填, 请输入姓名" style="margin-bottom: 10px; max-width: 200px"
+                   v-model:value="addMemberName"/>
           <div style="font-size: 12pt; font-weight: bold;">工号</div>
-          <n-input type="text" placeholder="必填, 请输入工号" style="margin-bottom: 10px; max-width: 250px"/>
+          <n-input type="text" placeholder="必填, 请输入工号" style="margin-bottom: 10px; max-width: 250px"
+                   v-model:value="addMemberUid"/>
           <div style="font-size: 12pt; font-weight: bold;">组</div>
-          <n-select placeholder="必填, 请选择组" style="margin-bottom: 10px; max-width: 200px"/>
+          <n-select placeholder="必填, 请选择组" style="margin-bottom: 10px; max-width: 200px"
+                    v-model:value="addMemberGroupSelectOptionValue" :options="addMemberGroupSelectOptions"/>
           <div style="font-size: 12pt; font-weight: bold;">性别</div>
-          <n-select placeholder="必填, 请选择性别" style="margin-bottom: 10px; max-width: 150px"/>
+          <n-select placeholder="必填, 请选择性别" style="margin-bottom: 10px; max-width: 150px"
+                    v-model:value="addMemberSexSelectOptionValue" :options="addMemberSexSelectOptions"/>
           <div style="font-size: 12pt; font-weight: bold;">手机号码</div>
-          <n-input type="text" placeholder="必填, 请输入手机号码" style="margin-bottom: 10px; max-width: 220px"/>
+          <n-input type="text" placeholder="必填, 请输入手机号码" style="margin-bottom: 10px; max-width: 220px"
+                   v-model:value="addMemberPhone"/>
           <div style="font-size: 12pt; font-weight: bold;">工作邮箱</div>
-          <n-input type="text" placeholder="必填, 请输入工作邮箱" style="margin-bottom: 10px; max-width: 300px"/>
+          <n-input type="text" placeholder="必填, 请输入工作邮箱" style="margin-bottom: 10px; max-width: 300px"
+                   v-model:value="addMemberEmail"/>
           <div style="font-size: 12pt; font-weight: bold;">组织架构</div>
-          <n-input type="text" placeholder="必填, 请输入组织架构" style="margin-bottom: 10px;"/>
+          <n-input type="text" placeholder="必填, 请输入组织架构" style="margin-bottom: 10px;"
+                   v-model:value="addMemberArchGroup"/>
         </div>
         <div style="display: flex; width: 100%; height: 100%; justify-content: flex-end; margin-top: 10px">
           <n-button @click="onAddModalFailed" style="margin-right: 10px;">取&nbsp;消</n-button>
@@ -155,25 +164,69 @@
 </template>
 
 <script setup>
-import {h, reactive, ref} from "vue";
+import {getCurrentInstance, h, onMounted, reactive, ref} from "vue";
 import {NButton, useDialog, useMessage} from "naive-ui";
 import {SearchOutlined, CloseOutlined, PlusOutlined, DeleteOutlined} from "@vicons/antd"
 import TableOperationAreaButtonGroup from "@/components/TableOperationAreaButtonGroup.vue";
 
+const {proxy} = getCurrentInstance()
 const dialog = useDialog()
 const message = useMessage()
 
+onMounted(() => {
+  proxy.$axios.get("/api/account/", {}).then(r => {
+    if (r.status === 200) {
+      const content = r.data
+      if (content["code"] === "10000") {
+        const data = content["data"]
+        let result = [];
+        data.map((item) => {
+          result.push({
+            "key": item["username"],
+            "name": item["name"],
+            "username": item["username"],
+            "group": item["group"],
+            "arch_group": item["arch_group"],
+            "phone": item["phone"],
+            "email": item["email"],
+            "sex": item["sex"],
+            "create_time": item["create_time"],
+            "update_time": item["update_time"]
+          })
+        });
+        members.value = result;
+      }
+    } else {
+      console.error(r.status)
+    }
+  }).catch(e => {
+    console.error(e);
+  })
+})
+
 let memberName = ref("");
-let memberNo = ref("");
+let memberUid = ref("");
 let memberGroup = ref("");
 let memberPhone = ref("");
 let memberEmail = ref("");
-let memberSexSelectOptionValue = ref(null)
+let addMemberName = ref("");
+let addMemberUid = ref("");
+let addMemberPhone = ref("");
+let addMemberEmail = ref("");
+let addMemberArchGroup = ref("");
+let memberSexSelectOptionValue = ref()
+let addMemberSexSelectOptionValue = ref()
+let addMemberGroupSelectOptionValue = ref()
+let addMemberGroupSelectOptions = ref([])
 let memberArchGroup = ref("");
 let isShowAddModal = ref(false);
 let isShowModifyModal = ref(false);
 let isShowDetailModal = ref(false);
+let checkedRowKeysRef = ref([])
 
+function handleCheck(rowKeys) {
+  checkedRowKeysRef.value = rowKeys;
+}
 
 function onAddModalAfterLeave() {
 
@@ -188,16 +241,59 @@ function onDetailModalAfterLeave() {
 }
 
 function onAddModalOk() {
-  isShowAddModal.value =false;
+  isShowAddModal.value = true;
+  proxy.$axios.post("/api/account/", {
+    name: addMemberName.value,
+    uid: addMemberUid.value,
+    group: addMemberGroupSelectOptionValue.value,
+    sex: addMemberSexSelectOptionValue.value,
+    phone: addMemberPhone.value,
+    email: addMemberEmail.value,
+    arch_group: addMemberArchGroup.value
+  }).then(r => {
+    if (r.status === 200) {
+      const content = r.data
+      if (content["code"] === "10000") {
+        const data = content["data"]
+        data.map((item) => {
+          members.value.push({
+            "key": item["username"],
+            "name": item["name"],
+            "username": item["username"],
+            "group": item["group"],
+            "arch_group": item["arch_group"],
+            "phone": item["phone"],
+            "email": item["email"],
+            "sex": item["sex"],
+            "create_time": item["create_time"],
+            "update_time": item["update_time"]
+          })
+        });
+      }
+      message.success("添加成功")
+    } else {
+      console.error(r.status)
+    }
+    addMemberName.value = "";
+    addMemberUid.value = "";
+    addMemberSexSelectOptionValue.value = [];
+    addMemberGroupSelectOptionValue.value = [];
+    addMemberPhone.value = "";
+    addMemberEmail.value = "";
+    addMemberArchGroup.value = ""
+  }).catch(e => {
+    console.error(e);
+  })
 }
 
 function onAddModalFailed() {
-  isShowAddModal.value =false;
+  isShowAddModal.value = true;
 }
 
 function onDetailModalOk() {
   isShowDetailModal.value = false;
 }
+
 function onModifyModalFailed() {
   isShowModifyModal.value = false;
 }
@@ -207,23 +303,96 @@ function onModifyModalOk() {
 }
 
 
-
-
 function handleAddButtonClicked() {
   isShowAddModal.value = true;
+  addMemberSexSelectOptionValue.value = []
+  addMemberGroupSelectOptionValue.value = []
+  proxy.$axios.get("/api/group/", {}).then(r => {
+    if (r.status === 200) {
+      const content = r.data
+      if (content["code"] === "10000") {
+        const data = content["data"]
+        let result = [];
+        data.map((item) => {
+          result.push({
+            "label": item["name"],
+            "value": item["name"],
+          })
+        });
+        addMemberGroupSelectOptions.value = result;
+      } else {
+      }
+    } else {
+      console.error(r.status)
+    }
+  }).catch(e => {
+    console.error(e);
+  })
 }
 
 function handleBatchDeleteButtonClicked() {
-  dialog.warning({
-    title: "批量删除",
-    content: "即将删除 24 个条目, 是否继续?",
-    positiveText: "确定",
-    negativeText: "取消",
-    onPositiveClick: () => {
-      message.success("删除成功!")
-    },
-  })
+  const deleteContent = "即将删除 " + checkedRowKeysRef.value.length + " 个条目"
+  const emptyContent = "请选中条目后再进行删除"
+  checkedRowKeysRef.value.length === 0 ?
+      dialog.warning({
+        title: "批量删除",
+        content: emptyContent,
+        negativeText: "取消",
+      }) :
+      dialog.warning({
+        title: "批量删除",
+        content: deleteContent,
+        positiveText: "确定",
+        negativeText: "取消",
+        onPositiveClick: () => {
+          proxy.$axios.delete("/api/account/", {
+            data: checkedRowKeysRef.value
+          }).then(r => {
+            if (r.status === 200) {
+              const content = r.data
+              if (content["code"] === "10000") {
+                // 从响应体数据中获取状态码匹配
+                const data = content["data"]
+                let result = [];
+                data.map((item) => {
+                  result.push({
+                    "key": item["username"],
+                    "name": item["name"],
+                    "username": item["username"],
+                    "group": item["group"],
+                    "arch_group": item["arch_group"],
+                    "phone": item["phone"],
+                    "email": item["email"],
+                    "sex": item["sex"],
+                    "create_time": item["create_time"],
+                    "update_time": item["update_time"]
+                  })
+                });
+                members.value = result;
+              }
+              message.success("删除成功")
+            } else {
+              message.error("删除失败")
+            }
+            checkedRowKeysRef.value = [""];
+          })
+        }
+      })
 }
+
+
+const addMemberSexSelectOptions = [
+  {
+    label: "男",
+    value: "男"
+  }, {
+    label: "女",
+    value: "女"
+  }, {
+    label: "其他",
+    value: "其他"
+  },
+]
 
 const memberSexSelectOptions = [
   {
@@ -242,18 +411,7 @@ const memberSexSelectOptions = [
 ]
 
 
-let members = ref([{
-  "key": "0",
-  "name": "小王",
-  "no": "Z12831839",
-  "group": "运维一组",
-  "arch-group": "/xxxx/xxxx/xxxx",
-  "phone": "1829317193",
-  "email": "xxxxxxxxxx@gmail.com",
-  "sex": "男",
-  "create_time": "2023/12/09 09:09:01",
-  "update_time": "2023/12/09 09:09:02",
-}]);
+let members = ref([]);
 
 let columns = [{
   type: "selection",
@@ -265,71 +423,66 @@ let columns = [{
   width: 100
 }, {
   title: "工号",
-  key: "no",
+  key: "username",
   width: 150
 }, {
   title: "组",
   key: "group",
   width: 200,
   fixed: "left"
+}, {
+  title: "手机号码",
+  key: "phone",
+  width: 150
+}, {
+  title: "工作邮箱",
+  key: "email",
+  width: 220
+}, {
+  title: "性别",
+  key: "sex",
+  width: 100
+}, {
+  title: "组织架构",
+  key: "arch_group",
+  resizable: true,
+}, {
+  title: "创建时间",
+  key: "create_time",
+  width: 200
+}, {
+  title: "最后一次修改时间",
+  key: "update_time",
+  width: 200
+}, {
+  title: "操作",
+  key: "op",
+  render(row) {
+    return h(
+        TableOperationAreaButtonGroup, {
+          isShowDetail: true,
+          isShowModify: true,
+          isShowDelete: true,
+          onDetailButtonClicked: () => {
+            isShowDetailModal.value = true;
+          },
+          onModifyButtonClicked: () => {
+            isShowModifyModal.value = true;
+          },
+          onDeleteButtonClicked: () => {
+
+          },
+        }
+    );
+  },
+  fixed: "right",
+  width: 150
 },
-  {
-    title: "手机号码",
-    key: "phone",
-    width: 150
-  }, {
-    title: "工作邮箱",
-    key: "email",
-    width: 220
-  },
-  {
-    title: "性别",
-    key: "sex",
-    width: 100
-  },
-  {
-    title: "组织架构",
-    key: "arch-group",
-    resizable: true,
-  },
-
-  {
-    title: "创建时间",
-    key: "create_time",
-    width: 200
-  }, {
-    title: "最后一次修改时间",
-    key: "update_time",
-    width: 200
-  }, {
-    title: "操作",
-    key: "op",
-    render(row) {
-      return h(
-          TableOperationAreaButtonGroup, {
-            isShowDetail: true,
-            isShowModify: true,
-            isShowDelete: true,
-            onDetailButtonClicked: () => {
-              isShowDetailModal.value = true;
-            },
-            onModifyButtonClicked: () => {
-              isShowModifyModal.value = true;
-            },
-            onDeleteButtonClicked: () => {
-
-            },
-          }
-      );
-    },
-    fixed: "right",
-    width: 150
-  },
 ];
 
 const pagination = reactive({
-  page: 5,
-  pageSize: 100,
+  page: 1,
+  pageSize: 10,
   showSizePicker: true,
   pageSizes: [10, 50, 100],
   onChange: (page) => {

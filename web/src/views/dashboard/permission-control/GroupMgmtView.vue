@@ -66,7 +66,7 @@
         <span>清空搜索条件</span>
       </n-tooltip>
     </div>
-    <n-data-table striped :columns="columns" :data="groups" :row-key="rowKey" @update-checked-row-keys="handleCheck"
+    <n-data-table striped :columns="columns" :data="groups" @update-checked-row-keys="handleCheck"
                   :pagination="pagination"/>
     <n-modal v-model:show="isShowAddModal" :mask-closablef="false" preset="card" title="添加组"
              :on-after-leave="onAddModalAfterLeave" :segmented="false" style="width: 45%; min-width: 600px">
@@ -89,7 +89,8 @@
       <div style="display: flex;width: 100%; height: 100%; flex-direction: column">
         <div style="width: 100%; ">
           <div style="font-size: 12pt; font-weight: bold;">用途</div>
-          <n-input type="text" placeholder="请输入用途" v-model:value="usageTextInputOne" @keyup.enter="onModifyModalOk"/>
+          <n-input type="text" placeholder="请输入用途" v-model:value="usageTextInputOne"
+                   @keyup.enter="onModifyModalOk"/>
         </div>
         <div style="display: flex; width: 100%; height: 100%; justify-content: flex-end; margin-top: 10px">
           <n-button @click="onModifyModalFailed" style="margin-right: 10px;">取&nbsp;消</n-button>
@@ -165,10 +166,6 @@ let roleSelectOptions = [
 ]
 
 
-function rowKey(row) {
-  return row.key
-}
-
 function handleCheck(rowKeys) {
   checkedRowKeysRef.value = rowKeys;
 }
@@ -192,20 +189,22 @@ function onAddModalOk() {
     if (r.status === 200) {
       // 获得响应体中的数据
       const content = r.data
-        if (content["code"] === "10000"){
-          // 从响应体数据中获取状态码匹配
-          const data = content["data"]
-          data.map((item)=>{
-            groups.value.push({
-              "key": item["name"],
-              "name": item["name"],
-              "update_time": item["update_time"],
-              "create_time": item["create_time"],
-              "usage": item["usage"]
-            })
-          });
-        }
+      if (content["code"] === "10000") {
+        // 从响应体数据中获取状态码匹配
+        const data = content["data"]
+        data.map((item) => {
+          groups.value.push({
+            "key": item["name"],
+            "name": item["name"],
+            "update_time": item["update_time"],
+            "create_time": item["create_time"],
+            "usage": item["usage"]
+          })
+        });
+      }
       message.success("添加成功")
+    } else {
+      message.error("添加失败")
     }
     groupNameTextInput.value = "";
     usageTextInput.value = "";
@@ -240,6 +239,8 @@ function onModifyModalOk() {
         })
       }
       message.success("修改成功")
+    } else {
+      message.error("修改失败")
     }
     usageTextInputOne.value = "";
   }).catch(e => {
@@ -267,9 +268,9 @@ function handleSearchButtonClicked() {
           });
 
           groups.value = result;
-        } else {
         }
       } else {
+        message.error("检索失败，组名对象不存在，请重新搜索")
         console.error(r.status)
       }
     }).catch(e => {
@@ -297,9 +298,9 @@ function handleSearchButtonClicked() {
           });
 
           groups.value = result;
-        } else {
         }
       } else {
+        message.error("检索失败，用途对象不存在，请重新搜索")
         console.error(r.status)
       }
     }).catch(e => {
@@ -348,8 +349,10 @@ function handleBatchDeleteButtonClicked() {
                 groups.value = result;
               }
               message.success("删除成功")
+            } else {
+              message.error("删除失败")
             }
-            checkedRowKeysRef.value = [""];
+            checkedRowKeysRef.value = [];
           })
         }
       })
@@ -397,29 +400,31 @@ let columns = [
             },
             onModifyButtonClicked: () => {
               isShowModifyModal.value = true
-              setGroupName(row.name)
+              setGroupName(row.key)
             },
             onDeleteButtonClicked: () => {
               isShowDeleteModal.value = true
               dialog.warning({
                 title: "执行删除",
-                content: "即将删除 " + row.name + " !",
+                content: "即将删除 " + row.key + " !",
                 positiveText: "确定",
                 negativeText: "取消",
                 onPositiveClick: () => {
-                  proxy.$axios.delete(`/api/group/${row.name}`).then(r => {
+                  proxy.$axios.delete(`/api/group/${row.key}`).then(r => {
                     if (r.status === 200) {
                       const content = r.data
                       if (content["code"] === "10000") {
                         // 从响应体数据中获取状态码匹配
                         const data = content["data"]
-                        if (data.length === 0 ){
-                          groups.value.splice(groups.value.findIndex(({key}) => key === row.name),1)
+                        if (data.length === 0) {
+                          groups.value.splice(groups.value.findIndex(({key}) => key === row.key), 1)
                         }
                       }
                       message.success("删除成功")
+                    } else {
+                      message.error("删除失败")
                     }
-                    checkedRowKeysRef.value = [""];
+                    checkedRowKeysRef.value = [];
                   })
                 }
               })

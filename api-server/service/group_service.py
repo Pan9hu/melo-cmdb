@@ -28,7 +28,7 @@ class GroupService:
         GroupModel.update_group_by_name(name, usage, update_time)
 
     @staticmethod
-    def delete_group_by_name(name):
+    def delete_group_by_name(name: str):
         if name is None:
             return {}
         GroupModel.delete_group_by_name(name)
