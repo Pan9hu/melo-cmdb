@@ -39,8 +39,28 @@ class AccountModel:
         return accounts
 
     @staticmethod
-    def get_account():
-        pass
+    def get_account(condition_dict: dict) -> list:
+
+        result = Server.datasource["default"].db["account"].find({"name": {"$regex": condition_dict['name']},
+                                                                  "group": {"$regex": condition_dict['group']},
+                                                                  "phone": {"$regex": condition_dict['phone']},
+                                                                  "email": {"$regex": condition_dict['email']},
+                                                                  "sex": {"$regex": condition_dict['sex']},
+                                                                  "arch_group": {
+                                                                      "$regex": condition_dict['arch_group']},
+                                                                  "is_delete": False})
+        account_list = []
+        for item in result:
+            account_list.append(Account(username=item["_id"],
+                                        name=item["name"],
+                                        phone=item["phone"],
+                                        email=item["email"],
+                                        group=item["group"],
+                                        sex=item["sex"],
+                                        arch_group=item["arch_group"],
+                                        create_time=item["create_time"],
+                                        update_time=item["update_time"]))
+        return account_list
 
     @staticmethod
     def create_account(uid: str, name: str, group: str, sex: str, phone: str, email: str, arch_group: str,
@@ -56,6 +76,17 @@ class AccountModel:
                                                                "create_time": create_time,
                                                                "update_time": update_time,
                                                                "is_delete": False})
+
+    @staticmethod
+    def update_account(uid: str, update_dict: dict):
+        for field in update_dict:
+            Server.datasource["default"].db["account"].find_one_and_update({"_id": uid},
+                                                                           {"$set": {field: update_dict[field]}},
+                                                                           {"is_delete": False})
+
+    @staticmethod
+    def delete_account_by_uid(uid: str):
+        Server.datasource["default"].db["account"].delete_one({"_id": uid})
 
     @staticmethod
     def delete_account(uid_list: list):

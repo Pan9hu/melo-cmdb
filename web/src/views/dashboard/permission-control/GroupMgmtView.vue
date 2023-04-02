@@ -175,9 +175,12 @@ function setGroupName(name) {
 }
 
 function onAddModalAfterLeave() {
+  groupNameTextInput.value = "";
+  usageTextInput.value = "";
 }
 
 function onModifyModalAfterLeave() {
+  usageTextInputOne.value = "";
 }
 
 function onAddModalOk() {
@@ -251,7 +254,7 @@ function onModifyModalOk() {
 
 function handleSearchButtonClicked() {
   if (roleSelectOptionValue.value === "name") {
-    proxy.$axios.get(`/api/group/${searchLineValue.value}`,).then(r => {
+    proxy.$axios.get(`/api/group/${searchLineValue.value}`).then(r => {
       if (r.status === 200) {
         const content = r.data
         if (content["code"] === "10000") {
@@ -296,7 +299,6 @@ function handleSearchButtonClicked() {
               "usage": item["usage"]
             })
           });
-
           groups.value = result;
         }
       } else {

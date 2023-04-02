@@ -94,7 +94,7 @@ class AccountAPI:
         update_time = datetime.utcnow()
 
         AccountService.create_account(uid, name, group, sex, phone, email, arch_group, create_time, update_time)
-        account = AccountService.get_account_by_uid(StringUtil.smart_trim(uid))
+        account = AccountService.get_account_by_uid(uid)
         account_dto = [AccountDTO(username=account.get_username(),
                                   name=account.get_name(),
                                   group=account.get_group(),
@@ -111,8 +111,10 @@ class AccountAPI:
     @staticmethod
     @api.route("/<uid>", methods=("DELETE",))
     def delete_account_by_uid(uid):
-        AccountService.delete_account_by_uid(StringUtil.smart_trim(uid))
-        pass
+        AccountService.delete_account_by_uid(StringUtil.smart_trim("%s" % uid))
+
+        account = []
+        return GenericJSONResponse(data=marshal(account, fields=AccountDTO.fields)).build()
 
     @staticmethod
     @api.route("/", methods=("DELETE",))
@@ -143,17 +145,32 @@ class AccountAPI:
     def update_account_by_uid(uid):
         p_name = RequestUtil.get_param_from_body_raw_json(request, "name")
         p_phone = RequestUtil.get_param_from_body_raw_json(request, "phone")
+        p_group = RequestUtil.get_param_from_body_raw_json(request, "group")
         p_email = RequestUtil.get_param_from_body_raw_json(request, "email")
         p_sex = RequestUtil.get_param_from_body_raw_json(request, "sex")
         p_arch_group = RequestUtil.get_param_from_body_raw_json(request, "arch_group")
 
-        uid = StringUtil.smart_trim(uid)
+        f_uid = StringUtil.smart_trim("%s" % uid)
         name = StringUtil.smart_trim(p_name)
         phone = StringUtil.smart_trim(p_phone)
+        group = StringUtil.smart_trim(p_group)
         email = StringUtil.smart_trim(p_email)
         sex = StringUtil.smart_trim(p_sex)
         arch_group = StringUtil.smart_trim(p_arch_group)
+        update_time = datetime.utcnow()
 
-        AccountService.update_account(uid, name, phone, email, sex, arch_group)
+        AccountService.update_account(f_uid, name, group, phone, email, sex, arch_group, update_time)
 
-        return {}
+        account = AccountService.get_account_by_uid(f_uid)
+        account_dto = [AccountDTO(username=account.get_username(),
+                                  name=account.get_name(),
+                                  group=account.get_group(),
+                                  phone=account.get_phone(),
+                                  email=account.get_email(),
+                                  sex=account.get_sex(),
+                                  arch_group=account.get_arch_group(),
+                                  create_time=account.get_create_time(),
+                                  update_time=account.get_update_time()
+                                  )]
+
+        return GenericJSONResponse(data=marshal(account_dto, fields=AccountDTO.fields)).build()
