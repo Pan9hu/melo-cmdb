@@ -185,35 +185,39 @@ function onModifyModalAfterLeave() {
 
 function onAddModalOk() {
   isShowAddModal.value = true;
-  proxy.$axios.post("/api/group/", {
-    name: groupNameTextInput.value,
-    usage: usageTextInput.value,
-  },).then(r => {
-    if (r.status === 200) {
-      // 获得响应体中的数据
-      const content = r.data
-      if (content["code"] === "10000") {
-        // 从响应体数据中获取状态码匹配
-        const data = content["data"]
-        data.map((item) => {
-          groups.value.push({
-            "key": item["name"],
-            "name": item["name"],
-            "update_time": item["update_time"],
-            "create_time": item["create_time"],
-            "usage": item["usage"]
-          })
-        });
+  if (groupNameTextInput.value&&usageTextInput.value){
+    proxy.$axios.post("/api/group/", {
+      name: groupNameTextInput.value,
+      usage: usageTextInput.value,
+    },).then(r => {
+      if (r.status === 200) {
+        // 获得响应体中的数据
+        const content = r.data
+        if (content["code"] === "10000") {
+          // 从响应体数据中获取状态码匹配
+          const data = content["data"]
+          data.map((item) => {
+            groups.value.push({
+              "key": item["name"],
+              "name": item["name"],
+              "update_time": item["update_time"],
+              "create_time": item["create_time"],
+              "usage": item["usage"]
+            })
+          });
+        }
+        message.success("添加成功")
+      } else {
+        message.error("添加失败")
       }
-      message.success("添加成功")
-    } else {
-      message.error("添加失败")
-    }
-    groupNameTextInput.value = "";
-    usageTextInput.value = "";
-  }).catch(e => {
-    console.error(e);
-  })
+      groupNameTextInput.value = "";
+      usageTextInput.value = "";
+    }).catch(e => {
+      console.error(e);
+    })
+  } else {
+    message.error("添加失败, 请填入相关信息")
+  }
 }
 
 function onAddModalFailed() {
@@ -226,29 +230,32 @@ function onModifyModalFailed() {
 
 function onModifyModalOk() {
   isShowModifyModal.value = true;
-  proxy.$axios.put(`/api/group/${groupName.value}`, {
-    usage: usageTextInputOne.value,
-  }).then(r => {
-    if (r.status === 200) {
-      // 获得响应体中的数据
-      const content = r.data
-      console.log(content)
-      if (content["code"] === "10000") {
-        // 从响应体数据中获取状态码匹配
-        const data = content["data"]
-        data.map((item) => {
-          groups.value.find(({key}) => key === item["name"]).update_time = item["update_time"]
-          groups.value.find(({key}) => key === item["name"]).usage = item["usage"];
-        })
+  if (usageTextInputOne.value === ""){
+    message.error("修改失败, 请输入用途")
+  } else {
+    proxy.$axios.put(`/api/group/${groupName.value}`, {
+      usage: usageTextInputOne.value,
+    }).then(r => {
+      if (r.status === 200) {
+        // 获得响应体中的数据
+        const content = r.data
+        if (content["code"] === "10000") {
+          // 从响应体数据中获取状态码匹配
+          const data = content["data"]
+          data.map((item) => {
+            groups.value.find(({key}) => key === item["name"]).update_time = item["update_time"]
+            groups.value.find(({key}) => key === item["name"]).usage = item["usage"];
+          })
+        }
+        message.success("修改成功")
+      } else {
+        message.error("修改失败")
       }
-      message.success("修改成功")
-    } else {
-      message.error("修改失败")
-    }
-    usageTextInputOne.value = "";
-  }).catch(e => {
-    console.error(e);
-  })
+      usageTextInputOne.value = "";
+    }).catch(e => {
+      console.error(e);
+    })
+  }
 }
 
 

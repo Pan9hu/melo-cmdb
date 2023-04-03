@@ -22,13 +22,14 @@
         <n-input v-model:value="username" type="text" placeholder="请输入用户名"/>
       </div>
       <div class="box">
-          <n-input v-model:value="password" type="password" show-password-on="click" placeholder="请输入登录密码"/>
+        <n-input v-model:value="password" type="password" show-password-on="click"
+                 @keyup.enter="handleLoginButtonClicked" placeholder="请输入登录密码"/>
       </div>
       <div class="text-box">
         <div class="about-text" @click="handleAboutLinkClicked">关于 Melo CMDB</div>
         <div class="forget-password">忘记密码? 点击找回</div>
       </div>
-      <div class="box" >
+      <div class="box">
         <n-button @click="handleLoginButtonClicked" type="primary" strong secondary style="width: 100%;"
                   :loading="loginButtonLoadingStatus">进&nbsp;入&nbsp;系&nbsp;统
         </n-button>
@@ -38,11 +39,13 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {getCurrentInstance, onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
+import {useMessage} from "naive-ui";
 
 const router = useRouter()
-
+const {proxy} = getCurrentInstance()
+const message = useMessage()
 
 let username = ref("");
 let password = ref("");
@@ -53,18 +56,32 @@ onMounted(() => {
   document.title = "登录 Melo CMDB"
 })
 
-
 function handleLoginButtonClicked() {
-  router.push({
-    path: '/dashboard'
-  })
+  if (!username.value && !password.value) {
+    message.error("登录失败, 请输入账号密码!")
+  } else if (username.value && !password.value){
+    message.warning("登录失败, 请输入密码!")
+  } else if (!username.value && password.value){
+    message.warning("登录失败, 请输入账号!")
+  } else {
+    proxy.$axios.post("/api/auth/login", {
+      username: username.value,
+      password: btoa(encodeURIComponent(password.value))
+    }).then(r => {
+      if (r.status === 200) {
+        const content = r.data
+        router.push({
+          path: '/dashboard'
+        })
+      }
+    })
+  }
 }
 
 function handleAboutLinkClicked() {
   router.push({
     path: '/about'
   })
-
 }
 
 </script>
@@ -106,7 +123,8 @@ function handleAboutLinkClicked() {
   text-decoration-line: underline;
   cursor: pointer;
 }
-.image{
+
+.image {
   display: flex;
   width: 20%;
   height: 20%;

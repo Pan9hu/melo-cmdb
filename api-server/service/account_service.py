@@ -11,7 +11,6 @@ class AccountService:
     @staticmethod
     def list_account(name: str | None, group: str | None, phone: str | None, email: str | None, sex: str | None,
                      arch_group: str | None):
-
         if name is None and group is None and phone is None and email is None and sex is None and arch_group is None:
             return AccountModel.all_account()
         else:

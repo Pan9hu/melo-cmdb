@@ -1,4 +1,5 @@
 import base64
+from datetime import datetime
 
 from flask import request, Blueprint
 from service.auth_service import AuthService
@@ -19,8 +20,10 @@ class AuthAPI:
         # base64解码
         username = StringUtil.smart_trim(p_username)
         password = StringUtil.smart_trim(p_password)
+        login_time = datetime.utcnow()
         # 判断账号密码是否为空
-        AuthService.login(username, password)
+        auth_token = AuthService.login(username, password, login_time)
+        print(auth_token)
 
         return {}
 

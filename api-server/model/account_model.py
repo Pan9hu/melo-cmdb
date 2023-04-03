@@ -8,7 +8,7 @@ class AccountModel:
     @staticmethod
     def get_account_by_uid(uid: str) -> Account:
         result = Server.datasource["default"].db["account"].find_one({"_id": uid, "is_delete": False})
-
+        print(result)
         return Account(username=result["_id"],
                        name=result["name"],
                        phone=result["phone"],
@@ -92,3 +92,9 @@ class AccountModel:
     def delete_account(uid_list: list):
         for uid in uid_list:
             Server.datasource["default"].db["account"].delete_one({"_id": uid})
+
+    @staticmethod
+    def auth_user(username: str) -> Account:
+        result = Server.datasource["default"].db["account"].find_one({"_id": username, "is_delete": False},
+                                                                     {"password": 1, "_id": 0})
+        return Account(password=result["password"])

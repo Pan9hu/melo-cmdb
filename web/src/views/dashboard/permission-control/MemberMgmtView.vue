@@ -224,11 +224,11 @@ let memberUid = ref(null);
 let memberGroup = ref("");
 let memberPhone = ref("");
 let memberEmail = ref("");
-let addMemberName = ref("");
-let addMemberUid = ref("");
-let addMemberPhone = ref("");
-let addMemberEmail = ref("");
-let addMemberArchGroup = ref("");
+let addMemberName = ref();
+let addMemberUid = ref();
+let addMemberPhone = ref();
+let addMemberEmail = ref();
+let addMemberArchGroup = ref();
 let memberSexSelectOptionValue = ref()
 let addMemberSexSelectOptionValue = ref()
 let addMemberGroupSelectOptionValue = ref()
@@ -290,12 +290,12 @@ function handleCheck(rowKeys) {
 }
 
 function onAddModalAfterLeave() {
-  addMemberName.value = "";
-  addMemberUid.value = "";
-  addMemberSexSelectOptionValue.value = [];
-  addMemberGroupSelectOptionValue.value = [];
-  addMemberPhone.value = "";
-  addMemberEmail.value = "";
+  addMemberName.value = ""
+  addMemberUid.value = ""
+  addMemberSexSelectOptionValue.value = null
+  addMemberGroupSelectOptionValue.value = null
+  addMemberPhone.value = ""
+  addMemberEmail.value = ""
   addMemberArchGroup.value = ""
 }
 
@@ -314,48 +314,54 @@ function onDetailModalAfterLeave() {
 
 function onAddModalOk() {
   isShowAddModal.value = true;
-  proxy.$axios.post("/api/account/", {
-    name: addMemberName.value,
-    uid: addMemberUid.value,
-    group: addMemberGroupSelectOptionValue.value,
-    sex: addMemberSexSelectOptionValue.value,
-    phone: addMemberPhone.value,
-    email: addMemberEmail.value,
-    arch_group: addMemberArchGroup.value
-  }).then(r => {
-    if (r.status === 200) {
-      const content = r.data
-      if (content["code"] === "10000") {
-        const data = content["data"]
-        data.map((item) => {
-          members.value.push({
-            "key": item["username"],
-            "name": item["name"],
-            "username": item["username"],
-            "group": item["group"],
-            "arch_group": item["arch_group"],
-            "phone": item["phone"],
-            "email": item["email"],
-            "sex": item["sex"],
-            "create_time": item["create_time"],
-            "update_time": item["update_time"]
-          })
-        });
+  if (addMemberName.value && addMemberUid.value && addMemberGroupSelectOptionValue.value &&
+      addMemberSexSelectOptionValue.value && addMemberPhone.value && addMemberEmail.value &&
+      addMemberArchGroup.value) {
+    proxy.$axios.post("/api/account/", {
+      name: addMemberName.value,
+      uid: addMemberUid.value,
+      group: addMemberGroupSelectOptionValue.value,
+      sex: addMemberSexSelectOptionValue.value,
+      phone: addMemberPhone.value,
+      email: addMemberEmail.value,
+      arch_group: addMemberArchGroup.value
+    }).then(r => {
+      if (r.status === 200) {
+        const content = r.data
+        if (content["code"] === "10000") {
+          const data = content["data"]
+          data.map((item) => {
+            members.value.push({
+              "key": item["username"],
+              "name": item["name"],
+              "username": item["username"],
+              "group": item["group"],
+              "arch_group": item["arch_group"],
+              "phone": item["phone"],
+              "email": item["email"],
+              "sex": item["sex"],
+              "create_time": item["create_time"],
+              "update_time": item["update_time"]
+            })
+          });
+        }
+        message.success("添加成功")
+      } else {
+        console.error(r.status)
       }
-      message.success("添加成功")
-    } else {
-      console.error(r.status)
-    }
-    addMemberName.value = "";
-    addMemberUid.value = "";
-    addMemberSexSelectOptionValue.value = [];
-    addMemberGroupSelectOptionValue.value = [];
-    addMemberPhone.value = "";
-    addMemberEmail.value = "";
-    addMemberArchGroup.value = ""
-  }).catch(e => {
-    console.error(e);
-  })
+      addMemberName.value = ""
+      addMemberUid.value = ""
+      addMemberSexSelectOptionValue.value = null
+      addMemberGroupSelectOptionValue.value = null
+      addMemberPhone.value = ""
+      addMemberEmail.value = ""
+      addMemberArchGroup.value = ""
+    }).catch(e => {
+      console.error(e);
+    })
+  } else {
+    message.error("添加失败, 请填入相关信息")
+  }
 }
 
 function onAddModalFailed() {
@@ -375,6 +381,9 @@ function onModifyModalOk() {
   isShowModifyModal.value = true;
   if (modifyUidValue.value === null) {
     message.error("获取工号失败")
+  } else if (!modifyNameValue.value && !modifyGroupValue.value && !modifySexValue.value &&
+      !modifyPhoneValue.value && !modifyEmailValue.value && !modifyArchGroupValue.value) {
+    message.error("修改失败, 请填入相关信息")
   } else {
     proxy.$axios.put(`/api/account/${modifyUidValue.value}`, {
       name: modifyNameValue.value,
@@ -387,7 +396,6 @@ function onModifyModalOk() {
       if (r.status === 200) {
         // 获得响应体中的数据
         const content = r.data
-        console.log(content)
         if (content["code"] === "10000") {
           // 从响应体数据中获取状态码匹配
           const data = content["data"]
@@ -417,6 +425,7 @@ function onModifyModalOk() {
   }
 }
 
+
 function handleSearchButtonClicked() {
   if (memberUid.value !== null) {
     proxy.$axios.get(`/api/account/${memberUid.value}`).then(r => {
@@ -441,7 +450,6 @@ function handleSearchButtonClicked() {
           });
           members.value = result;
         }
-        memberUid.value = null;
       } else {
         message.error("检索失败，工号对象不存在，请重新搜索")
         console.error(r.status)
@@ -484,12 +492,6 @@ function handleSearchButtonClicked() {
       } else {
         console.error(r.status)
       }
-      addMemberName.value = "";
-      addMemberSexSelectOptionValue.value = [];
-      addMemberGroupSelectOptionValue.value = [];
-      addMemberPhone.value = "";
-      addMemberEmail.value = "";
-      addMemberArchGroup.value = ""
     }).catch(e => {
       console.error(e);
     })
