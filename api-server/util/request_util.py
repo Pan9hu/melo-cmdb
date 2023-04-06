@@ -36,3 +36,16 @@ class RequestUtil:
         value = request_value.get(name)
 
         return value
+
+    @staticmethod
+    def get_param_from_headers(request, name):
+        """"
+        获取headers中的参数来查找数据
+        """
+        request_headers = request.headers
+        value = None
+        try:
+            value = request_headers[name]
+        except KeyError:
+            pass
+        return value

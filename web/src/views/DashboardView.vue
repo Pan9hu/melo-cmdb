@@ -1,5 +1,5 @@
 <script setup>
-import {h, onMounted} from "vue";
+import {getCurrentInstance, h, onMounted, ref} from "vue";
 import {RouterLink, RouterView} from 'vue-router'
 import {NIcon} from "naive-ui";
 import {
@@ -155,31 +155,48 @@ function handleMenuItemClicked(key, item) {
 }
 
 function handleLogoutButtonClicked() {
-    router.push({
+  sessionStorage.clear()
+  localStorage.clear()
+  username.value = null
+  router.push({
     path: '/login'
   })
+}
+
+
+let username = ref()
+
+function watermark_content() {
+  return username.value
 }
 
 onMounted(() => {
   document.title = "Melo CMDB - 具有HA特性的分布式配置管理数据系统"
   document.getElementById("left-menu").style.height = window.innerHeight + 'px'
   document.getElementById("right-content").style.width = window.innerWidth - 240 + 'px'
-
   window.onresize = () => {
     document.getElementById("left-menu").style.height = window.innerHeight + 'px'
     autoChangeRightContentWidth()
   }
-
-
+  username.value = localStorage.getItem("username")
+  if (localStorage.username === undefined) {
+    router.push({
+      path: '/login'
+    })
+  }
+  const {proxy} = getCurrentInstance()
+  proxy.$axios.interceptors.request.use(function (config) {
+    config.headers["X-Auth-Token"] = localStorage.getItem("access_token")
+    return config
+  })
 })
-
 </script>
 
 
 <template>
   <div class="dashboard-view">
     <n-watermark
-        content="小林 z426"
+        :content=watermark_content()
         cross
         fullscreen
         :font-size="16"
@@ -190,29 +207,31 @@ onMounted(() => {
         :y-offset="60"
         :rotate="-15"
     />
-      <n-layout has-sider>
-        <n-button @click="handleLogoutButtonClicked" id="logout-button" strong secondary style="position: absolute;bottom: 10px;left: 10px; z-index: 99;width: 220px">退&nbsp;出&nbsp;Melo&nbsp;CMDB</n-button>
-        <n-layout-sider
-            id="left-menu"
-            bordered
-            show-trigger
-            collapse-mode="width"
+    <n-layout has-sider>
+      <n-button @click="handleLogoutButtonClicked" id="logout-button" strong secondary
+                style="position: absolute;bottom: 10px;left: 10px; z-index: 99;width: 220px">退&nbsp;出&nbsp;Melo&nbsp;CMDB
+      </n-button>
+      <n-layout-sider
+          id="left-menu"
+          bordered
+          show-trigger
+          collapse-mode="width"
+          :collapsed-width="64"
+          :width="240"
+          :native-scrollbar="false"
+          :on-update:collapsed="autoChangeRightContentWidth"
+      >
+        <n-menu
             :collapsed-width="64"
-            :width="240"
-            :native-scrollbar="false"
-            :on-update:collapsed="autoChangeRightContentWidth"
-        >
-          <n-menu
-              :collapsed-width="64"
-              :collapsed-icon-size="22"
-              :options="menuOptions"
-              @update:value="handleMenuItemClicked"
-          />
-        </n-layout-sider>
-        <n-layout-content id="right-content" content-style="padding: 20px;">
-          <router-view style="width: 100%; height: 100%;"/>
-        </n-layout-content>
-      </n-layout>
+            :collapsed-icon-size="22"
+            :options="menuOptions"
+            @update:value="handleMenuItemClicked"
+        />
+      </n-layout-sider>
+      <n-layout-content id="right-content" content-style="padding: 20px;">
+        <router-view style="width: 100%; height: 100%;"/>
+      </n-layout-content>
+    </n-layout>
   </div>
 </template>
 

@@ -1,13 +1,13 @@
-import {createApp} from 'vue'
+import {createApp, getCurrentInstance} from 'vue'
 import {createPinia} from 'pinia'
 import axios from "axios";
-
-
 import App from './App.vue'
 import router from './router'
 import naive from 'naive-ui'
 
 const app = createApp(App)
+
+
 
 // app.config.globalProperties.$axios = axios.create({
 //     baseURL: "http://localhost:5000"
@@ -16,6 +16,7 @@ const app = createApp(App)
 if (import.meta.env.MODE === "development") {
     app.config.globalProperties.$axios = axios.create({
         timeout: 3000
+
     })
 } else {
     app.config.globalProperties.$axios = axios.create({

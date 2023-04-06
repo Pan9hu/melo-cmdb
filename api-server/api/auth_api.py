@@ -1,6 +1,9 @@
 import base64
-from datetime import datetime
+import datetime
 
+from flask_restful import marshal
+from bean.dto.auth_dto import AuthDTO
+from core.response.generic_json_response import GenericJSONResponse
 from flask import request, Blueprint
 from service.auth_service import AuthService
 from util.request_util import RequestUtil
@@ -20,20 +23,36 @@ class AuthAPI:
         # base64解码
         username = StringUtil.smart_trim(p_username)
         password = StringUtil.smart_trim(p_password)
-        login_time = datetime.utcnow()
+        login_time = datetime.datetime.now(tz=datetime.timezone.utc)
         # 判断账号密码是否为空
-        auth_token = AuthService.login(username, password, login_time)
-        print(auth_token)
-
-        return {}
+        access_token, refresh_token, code = AuthService.login(username, password, login_time)
+        if code == "20000":
+            return GenericJSONResponse(
+                data=marshal({"access_token": access_token, "refresh_token": refresh_token, "username": username},
+                             fields=AuthDTO.fields),
+                message="用户不存在", code=code).build()
+        elif code == "30000":
+            return GenericJSONResponse(
+                data=marshal({"access_token": access_token, "refresh_token": refresh_token, "username": username},
+                             fields=AuthDTO.fields),
+                message="密码错误", code=code).build()
+        elif code == "40000":
+            return GenericJSONResponse(
+                data=marshal({"access_token": access_token, "refresh_token": refresh_token, "username": username},
+                             fields=AuthDTO.fields),
+                message="获取Token失败", code=code).build()
+        else:
+            return GenericJSONResponse(
+                data=marshal({"access_token": access_token, "refresh_token": refresh_token, "username": username},
+                             fields=AuthDTO.fields)).build()
 
     @staticmethod
     @api.route("/refresh", methods=('POST',))
     def refresh():
-        p_refresh = RequestUtil.get_param_from_body_raw_json(request, " refresh")
+        p_refresh = RequestUtil.get_param_from_body_raw_json(request, "refresh")
         refresh = StringUtil.smart_trim(p_refresh)
         # 刷新过期的token
-        AuthService.refresh(refresh)
+        token = AuthService.refresh(refresh)
         return {}
 
     @staticmethod

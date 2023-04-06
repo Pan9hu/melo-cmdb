@@ -53,15 +53,24 @@ let loginButtonLoadingStatus = ref(false)
 
 
 onMounted(() => {
+  if (localStorage.access_token && localStorage.username){
+    router.push({
+      path: '/dashboard'
+    })
+  }
+  proxy.$axios.interceptors.request.use(function (config) {
+    config.headers["X-Auth-Token"] = localStorage.getItem("access_token")
+    return config
+  })
   document.title = "登录 Melo CMDB"
 })
 
 function handleLoginButtonClicked() {
   if (!username.value && !password.value) {
     message.error("登录失败, 请输入账号密码!")
-  } else if (username.value && !password.value){
+  } else if (username.value && !password.value) {
     message.warning("登录失败, 请输入密码!")
-  } else if (!username.value && password.value){
+  } else if (!username.value && password.value) {
     message.warning("登录失败, 请输入账号!")
   } else {
     proxy.$axios.post("/api/auth/login", {
@@ -70,9 +79,20 @@ function handleLoginButtonClicked() {
     }).then(r => {
       if (r.status === 200) {
         const content = r.data
-        router.push({
-          path: '/dashboard'
-        })
+        if (content["code"] === "10000") {
+          sessionStorage.clear()
+          localStorage.clear()
+          localStorage.access_token = content.data.access_token
+          localStorage.refresh_token = content.data.refresh_token
+          localStorage.username = content.data.username
+          router.push({
+            path: '/dashboard'
+          })
+        } else if (content["code"] === "20000") {
+          message.error("用户不存在, 请重新输入")
+        }else {
+          message.error("密码错误, 请重新输入")
+        }
       }
     })
   }

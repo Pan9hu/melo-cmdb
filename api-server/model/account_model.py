@@ -94,7 +94,9 @@ class AccountModel:
             Server.datasource["default"].db["account"].delete_one({"_id": uid})
 
     @staticmethod
-    def auth_user(username: str) -> Account:
+    def auth_user(username: str) -> Account | None:
         result = Server.datasource["default"].db["account"].find_one({"_id": username, "is_delete": False},
                                                                      {"password": 1, "_id": 0})
+        if result is None:
+            return None
         return Account(password=result["password"])
