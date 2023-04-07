@@ -183,6 +183,7 @@ import {getCurrentInstance, h, onMounted, reactive, ref, watch} from "vue";
 import {NButton, useDialog, useMessage} from "naive-ui";
 import {SearchOutlined, CloseOutlined, PlusOutlined, DeleteOutlined} from "@vicons/antd"
 import TableOperationAreaButtonGroup from "@/components/TableOperationAreaButtonGroup.vue";
+import router from "@/router";
 
 const {proxy} = getCurrentInstance()
 const dialog = useDialog()
@@ -211,6 +212,22 @@ onMounted(() => {
           })
         });
         members.value = result;
+      } else if (content["code"] === "15000") {
+        handlerTokenRefresh()
+      } else if (content["code"] === "20000") {
+        message.warning("验证信息过期, 请重新登录")
+        sessionStorage.clear()
+        localStorage.clear()
+        router.push({
+          path: '/login'
+        })
+      } else if (content["code"] === "30000") {
+        message.warning("验证信息失效, 请重新登录")
+        sessionStorage.clear()
+        localStorage.clear()
+        router.push({
+          path: '/login'
+        })
       }
     } else {
       console.error(r.status)
@@ -262,6 +279,26 @@ function setUidValue(uid) {
   modifyUidValue.value = uid
 }
 
+function handlerTokenRefresh() {
+  proxy.$axios.post("/api/auth/refresh", {
+    refresh: localStorage.access_token
+  }).then(r => {
+    if (r.status === 200) {
+      const content = r.data
+      if (content["code"] === "10000") {
+        localStorage.access_token = content.data.access_token
+      } else {
+        message.warning("获取验证信息错误, 请重新登录")
+        sessionStorage.clear()
+        localStorage.clear()
+        router.push({
+          path: '/login'
+        })
+      }
+    }
+  })
+}
+
 function getGroups() {
   proxy.$axios.get("/api/group/", {}).then(r => {
     if (r.status === 200) {
@@ -276,7 +313,22 @@ function getGroups() {
           })
         });
         memberGroupSelectOptions.value = result;
-      } else {
+      } else if (content["code"] === "15000") {
+        handlerTokenRefresh()
+      } else if (content["code"] === "20000") {
+        message.warning("验证信息过期, 请重新登录")
+        sessionStorage.clear()
+        localStorage.clear()
+        router.push({
+          path: '/login'
+        })
+      } else if (content["code"] === "30000") {
+        message.warning("验证信息失效, 请重新登录")
+        sessionStorage.clear()
+        localStorage.clear()
+        router.push({
+          path: '/login'
+        })
       }
     } else {
       console.error(r.status)
@@ -345,8 +397,24 @@ function onAddModalOk() {
               "update_time": item["update_time"]
             })
           });
+          message.success("添加成功")
+        } else if (content["code"] === "15000") {
+          handlerTokenRefresh()
+        } else if (content["code"] === "20000") {
+          message.warning("验证信息过期, 请重新登录")
+          sessionStorage.clear()
+          localStorage.clear()
+          router.push({
+            path: '/login'
+          })
+        } else if (content["code"] === "30000") {
+          message.warning("验证信息失效, 请重新登录")
+          sessionStorage.clear()
+          localStorage.clear()
+          router.push({
+            path: '/login'
+          })
         }
-        message.success("添加成功")
       } else {
         console.error(r.status)
       }
@@ -409,8 +477,24 @@ function onModifyModalOk() {
             members.value.find(({key}) => key === item["username"]).email = item["email"];
             members.value.find(({key}) => key === item["username"]).arch_group = item["arch_group"];
           })
+          message.success("修改成功")
+        } else if (content["code"] === "15000") {
+          handlerTokenRefresh()
+        } else if (content["code"] === "20000") {
+          message.warning("验证信息过期, 请重新登录")
+          sessionStorage.clear()
+          localStorage.clear()
+          router.push({
+            path: '/login'
+          })
+        } else if (content["code"] === "30000") {
+          message.warning("验证信息失效, 请重新登录")
+          sessionStorage.clear()
+          localStorage.clear()
+          router.push({
+            path: '/login'
+          })
         }
-        message.success("修改成功")
       } else {
         message.error("修改失败")
       }
@@ -450,6 +534,22 @@ function handleSearchButtonClicked() {
             })
           });
           members.value = result;
+        } else if (content["code"] === "15000") {
+          handlerTokenRefresh()
+        } else if (content["code"] === "20000") {
+          message.warning("验证信息过期, 请重新登录")
+          sessionStorage.clear()
+          localStorage.clear()
+          router.push({
+            path: '/login'
+          })
+        } else if (content["code"] === "30000") {
+          message.warning("验证信息失效, 请重新登录")
+          sessionStorage.clear()
+          localStorage.clear()
+          router.push({
+            path: '/login'
+          })
         }
       } else {
         message.error("检索失败，工号对象不存在，请重新搜索")
@@ -489,6 +589,22 @@ function handleSearchButtonClicked() {
             })
           });
           members.value = result;
+        } else if (content["code"] === "15000") {
+          handlerTokenRefresh()
+        } else if (content["code"] === "20000") {
+          message.warning("验证信息过期, 请重新登录")
+          sessionStorage.clear()
+          localStorage.clear()
+          router.push({
+            path: '/login'
+          })
+        } else if (content["code"] === "30000") {
+          message.warning("验证信息失效, 请重新登录")
+          sessionStorage.clear()
+          localStorage.clear()
+          router.push({
+            path: '/login'
+          })
         }
       } else {
         console.error(r.status)
@@ -545,8 +661,24 @@ function handleBatchDeleteButtonClicked() {
                   })
                 });
                 members.value = result;
+                message.success("删除成功")
+              } else if (content["code"] === "15000") {
+                handlerTokenRefresh()
+              } else if (content["code"] === "20000") {
+                message.warning("验证信息过期, 请重新登录")
+                sessionStorage.clear()
+                localStorage.clear()
+                router.push({
+                  path: '/login'
+                })
+              } else if (content["code"] === "30000") {
+                message.warning("验证信息失效, 请重新登录")
+                sessionStorage.clear()
+                localStorage.clear()
+                router.push({
+                  path: '/login'
+                })
               }
-              message.success("删除成功")
             } else {
               message.error("删除失败")
             }
@@ -684,8 +816,24 @@ let columns = [{
                       if (data.length === 0) {
                         members.value.splice(members.value.findIndex(({key}) => key === row.key), 1)
                       }
+                      message.success("删除成功")
+                    } else if (content["code"] === "15000") {
+                      handlerTokenRefresh()
+                    } else if (content["code"] === "20000") {
+                      message.warning("验证信息过期, 请重新登录")
+                      sessionStorage.clear()
+                      localStorage.clear()
+                      router.push({
+                        path: '/login'
+                      })
+                    } else if (content["code"] === "30000") {
+                      message.warning("验证信息失效, 请重新登录")
+                      sessionStorage.clear()
+                      localStorage.clear()
+                      router.push({
+                        path: '/login'
+                      })
                     }
-                    message.success("删除成功")
                   } else {
                     message.error("删除失败")
                   }

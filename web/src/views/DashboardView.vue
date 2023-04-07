@@ -184,11 +184,7 @@ onMounted(() => {
       path: '/login'
     })
   }
-  const {proxy} = getCurrentInstance()
-  proxy.$axios.interceptors.request.use(function (config) {
-    config.headers["X-Auth-Token"] = localStorage.getItem("access_token")
-    return config
-  })
+
 })
 </script>
 

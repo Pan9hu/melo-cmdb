@@ -52,8 +52,14 @@ class AuthAPI:
         p_refresh = RequestUtil.get_param_from_body_raw_json(request, "refresh")
         refresh = StringUtil.smart_trim(p_refresh)
         # 刷新过期的token
-        token = AuthService.refresh(refresh)
-        return {}
+        access_token = AuthService.refresh(refresh)
+        if access_token == "无效Token":
+            return GenericJSONResponse(
+                data=marshal({"access_token": access_token}, fields=AuthDTO.fields), message="无效的Token",
+                code="20000").build()
+        else:
+            return GenericJSONResponse(
+                data=marshal({"access_token": access_token}, fields=AuthDTO.fields)).build()
 
     @staticmethod
     @api.route("/reset-password", methods=('POST',))

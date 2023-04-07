@@ -1,4 +1,4 @@
-import {createApp, getCurrentInstance} from 'vue'
+import {createApp,} from 'vue'
 import {createPinia} from 'pinia'
 import axios from "axios";
 import App from './App.vue'
@@ -6,7 +6,6 @@ import router from './router'
 import naive from 'naive-ui'
 
 const app = createApp(App)
-
 
 
 // app.config.globalProperties.$axios = axios.create({
@@ -24,6 +23,23 @@ if (import.meta.env.MODE === "development") {
         timeout: 3000
     })
 }
+
+app.config.globalProperties.$axios.interceptors.request.use(function (config) {
+    config.headers["X-Auth-Token"] = JSON.stringify({
+         "access": localStorage.getItem("access_token"),
+        "refresh": localStorage.getItem("refresh_token")
+    })
+    return config
+})
+app.config.globalProperties.$axios.interceptors.response.use(function (config) {
+    config.headers["X-Auth-Token"] = JSON.stringify({
+        "access": localStorage.getItem("access_token"),
+        "refresh": localStorage.getItem("refresh_token")
+    })
+    return config
+})
+
+
 
 app.use(naive)
 app.use(createPinia())

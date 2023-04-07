@@ -8,7 +8,6 @@ class AccountModel:
     @staticmethod
     def get_account_by_uid(uid: str) -> Account:
         result = Server.datasource["default"].db["account"].find_one({"_id": uid, "is_delete": False})
-        print(result)
         return Account(username=result["_id"],
                        name=result["name"],
                        phone=result["phone"],
@@ -79,10 +78,9 @@ class AccountModel:
 
     @staticmethod
     def update_account(uid: str, update_dict: dict):
-        for field in update_dict:
-            Server.datasource["default"].db["account"].find_one_and_update({"_id": uid},
-                                                                           {"$set": {field: update_dict[field]}},
-                                                                           {"is_delete": False})
+        Server.datasource["default"].db["account"].find_one_and_update({"_id": uid},
+                                                                       {"$set": update_dict},
+                                                                       {"is_delete": False})
 
     @staticmethod
     def delete_account_by_uid(uid: str):

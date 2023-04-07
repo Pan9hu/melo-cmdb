@@ -6,6 +6,7 @@ from core.response.generic_json_response import GenericJSONResponse
 from service.group_service import GroupService
 from util.request_util import RequestUtil
 from util.string_util import StringUtil
+from util.token_handler import TokenHandler
 
 
 class GroupAPI:
@@ -18,6 +19,10 @@ class GroupAPI:
         通过组名来获取组的详细信息
         :param
         """
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         group = GroupService.get_group_by_name(StringUtil.smart_trim("%s" % name))
         # 将Get请求的name参数过滤后，调用对应的Service层模块
         group_dto = [GroupDTO(
@@ -35,6 +40,10 @@ class GroupAPI:
         """
         获取url中的参数根据usage来获取组，如果参数为空则返回全部组的数据
         """
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         p_usage = RequestUtil.get_param_from_url_query_param(request, "usage")
 
         usage = StringUtil.smart_trim(p_usage)
@@ -54,6 +63,10 @@ class GroupAPI:
     @staticmethod
     @api.route("/", methods=('POST',))
     def create_group():
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         p_name = RequestUtil.get_param_from_body_raw_json(request, "name")
         p_usage = RequestUtil.get_param_from_body_raw_json(request, "usage")
 
@@ -78,6 +91,10 @@ class GroupAPI:
     @staticmethod
     @api.route("/<name>", methods=('PUT',))
     def update_group_by_name(name):
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         f_name = StringUtil.smart_trim("%s" % name)
         p_usage = RequestUtil.get_param_from_body_raw_json(request, "usage")
         usage = StringUtil.smart_trim(p_usage)
@@ -98,6 +115,10 @@ class GroupAPI:
     @staticmethod
     @api.route("/<name>", methods=('DELETE',))
     def delete_group_by_name(name):
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         f_name = StringUtil.smart_trim("%s" % name)
         GroupService.delete_group_by_name(f_name)
 
@@ -108,6 +129,10 @@ class GroupAPI:
     @staticmethod
     @api.route("/", methods=('DELETE',))
     def delete_group():
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         name_list = RequestUtil.get_param_from_body_raw_json_as_list(request)
 
         if len(name_list) > 0:

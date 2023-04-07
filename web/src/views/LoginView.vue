@@ -58,10 +58,6 @@ onMounted(() => {
       path: '/dashboard'
     })
   }
-  proxy.$axios.interceptors.request.use(function (config) {
-    config.headers["X-Auth-Token"] = localStorage.getItem("access_token")
-    return config
-  })
   document.title = "登录 Melo CMDB"
 })
 

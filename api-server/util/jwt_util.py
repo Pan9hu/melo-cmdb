@@ -6,6 +6,7 @@ from util.date_encoder import DateEncoder
 
 class JWTUtile:
     __secret_key = "6d52e21d599841d0b8c690efa9748ce4"  # 密钥下面jwt-encode和jwt-decode时需要
+    headers = {'typ': 'jwt', 'alg': 'HS256'}
 
     @staticmethod
     def generate_token(_id: str, login_time: datetime.datetime, long: bool) -> str | Exception:
@@ -24,12 +25,12 @@ class JWTUtile:
         # 签发时间(Issued At)
         # 编号(JWT ID)
         if long:
-            exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=0, seconds=10)
+            exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=0, hours=2)
         else:
-            exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=0, seconds=60)
+            exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=30)
 
         try:
-            headers = {'typ': 'jwt', 'alg': 'HS256'}
+
             payload = {
                 'iss': 'melo',
                 'exp': exp,
@@ -44,7 +45,7 @@ class JWTUtile:
                 payload,
                 JWTUtile.__secret_key,
                 'HS256',
-                headers,
+                JWTUtile.headers,
             )
         except Exception as e:
             return e
@@ -53,12 +54,31 @@ class JWTUtile:
     def verify_token(token) -> str:
         try:
             verified_payload = jwt.decode(token, JWTUtile.__secret_key, algorithms='HS256')
-            print(verified_payload)
             if 'data' in verified_payload and 'id' in verified_payload['data']:
                 return verified_payload
             else:
                 raise jwt.InvalidTokenError
         except jwt.ExpiredSignatureError:
             return 'Token过期'
+        except jwt.InvalidTokenError:
+            return '无效Token'
+
+    @staticmethod
+    def refresh_token(token):
+        try:
+            verified_payload = jwt.decode(token, JWTUtile.__secret_key, algorithms='HS256',
+                                          options={"verify_exp": False})
+            if 'data' in verified_payload and 'id' in verified_payload['data']:
+                verified_payload["exp"] = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=0,
+                                                                                                               hours=2)
+                verified_payload["iat"] = datetime.datetime.now(tz=datetime.timezone.utc)
+                return jwt.encode(
+                    verified_payload,
+                    JWTUtile.__secret_key,
+                    'HS256',
+                    JWTUtile.headers,
+                )
+            else:
+                raise jwt.InvalidTokenError
         except jwt.InvalidTokenError:
             return '无效Token'

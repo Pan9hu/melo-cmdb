@@ -6,6 +6,7 @@ from core.response.generic_json_response import GenericJSONResponse
 from service.account_service import AccountService
 from util.request_util import RequestUtil
 from util.string_util import StringUtil
+from util.token_handler import TokenHandler
 
 
 class AccountAPI:
@@ -19,6 +20,10 @@ class AccountAPI:
         :param uid:
         :return:
         """
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         account = AccountService.get_account_by_uid(StringUtil.smart_trim("%s" % uid))
         account_dto = [AccountDTO(username=account.get_username(),
                                   name=account.get_name(),
@@ -40,6 +45,10 @@ class AccountAPI:
         根据条件进行匹配
         :return:
         """
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         p_name = RequestUtil.get_param_from_url_query_param(request, "name")
         p_group = RequestUtil.get_param_from_url_query_param(request, "group")
         p_phone = RequestUtil.get_param_from_url_query_param(request, "phone")
@@ -73,6 +82,10 @@ class AccountAPI:
     @staticmethod
     @api.route("/", methods=("POST",))
     def create_account():
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         p_name = RequestUtil.get_param_from_body_raw_json(request, "name")
         p_uid = RequestUtil.get_param_from_body_raw_json(request, "uid")
         p_group = RequestUtil.get_param_from_body_raw_json(request, "group")
@@ -109,6 +122,10 @@ class AccountAPI:
     @staticmethod
     @api.route("/<uid>", methods=("DELETE",))
     def delete_account_by_uid(uid):
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         AccountService.delete_account_by_uid(StringUtil.smart_trim("%s" % uid))
 
         account = []
@@ -117,6 +134,10 @@ class AccountAPI:
     @staticmethod
     @api.route("/", methods=("DELETE",))
     def delete_account():
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         p_uid_list = RequestUtil.get_param_from_body_raw_json_as_list(request)
 
         if len(p_uid_list) > 0:
@@ -141,6 +162,10 @@ class AccountAPI:
     @staticmethod
     @api.route("/<uid>", methods=("PUT",))
     def update_account_by_uid(uid):
+        p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        handler_result = TokenHandler.token_handler(p_token)
+        if handler_result:
+            return handler_result
         p_name = RequestUtil.get_param_from_body_raw_json(request, "name")
         p_phone = RequestUtil.get_param_from_body_raw_json(request, "phone")
         p_group = RequestUtil.get_param_from_body_raw_json(request, "group")
