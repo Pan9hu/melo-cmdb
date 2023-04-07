@@ -31,14 +31,6 @@ app.config.globalProperties.$axios.interceptors.request.use(function (config) {
     })
     return config
 })
-app.config.globalProperties.$axios.interceptors.response.use(function (config) {
-    config.headers["X-Auth-Token"] = JSON.stringify({
-        "access": localStorage.getItem("access_token"),
-        "refresh": localStorage.getItem("refresh_token")
-    })
-    return config
-})
-
 
 
 app.use(naive)
