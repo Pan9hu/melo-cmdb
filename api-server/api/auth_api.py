@@ -62,15 +62,36 @@ class AuthAPI:
                 data=marshal({"access_token": access_token}, fields=AuthDTO.fields)).build()
 
     @staticmethod
-    @api.route("/reset-password", methods=('POST',))
-    def reset_password():
+    @api.route("/security-code", methods=('POST',))
+    def security_code():
         """
         忘记密码， 重置密码， 向可能的通知类型发送验证码(邮箱, 手机号码）
         :return:
         """
         p_username = RequestUtil.get_param_from_body_raw_json(request, "username")
+        p_auth_method = RequestUtil.get_param_from_body_raw_json(request, "auth_method")
         username = StringUtil.smart_trim(p_username)
+        auth_method = StringUtil.smart_trim(p_auth_method)
 
-        AuthService.reset_password(username)
+        AuthService.security_code(username, auth_method)
+
+        return {}
+
+    @staticmethod
+    @api.route("/reset-password", methods=('POST',))
+    def reset_password():
+        """
+        忘记密码， 重置密码。
+        :return:
+        """
+        p_username = RequestUtil.get_param_from_body_raw_json(request, "username")
+        p_password_b64 = RequestUtil.get_param_from_body_raw_json(request, "password")
+        # 从body中获取账号和密码
+        p_password = base64.b64decode(p_password_b64).decode("UTF-8")
+        # base64解码
+        username = StringUtil.smart_trim(p_username)
+        password = StringUtil.smart_trim(p_password)
+
+        AuthService.reset_password(username, password)
 
         return {}

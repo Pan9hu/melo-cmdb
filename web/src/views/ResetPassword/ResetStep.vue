@@ -6,11 +6,19 @@
         <div class="step-form-content">
           <div style="margin-bottom: 25px;">
             <div style="font-size: 13pt; margin-bottom: 10px;">新密码:</div>
-            <n-input style="width: 500px;" type="password" show-password-on="click" placeholder="请输入新密码"/>
+            <n-input  type="password" show-password-on="click" placeholder="请输入新密码">
+              <template #prefix>
+                <n-icon :component="Password"/>
+              </template>
+            </n-input>
           </div>
           <div style="margin-bottom: 25px;">
             <div style="font-size: 13pt; margin-bottom: 10px;">再次输入:</div>
-            <n-input style="width: 500px;" type="password" show-password-on="click" placeholder="请再次输入新密码"/>
+            <n-input  type="password" show-password-on="click" placeholder="请再次输入新密码">
+              <template #prefix>
+                <n-icon :component="Password"/>
+              </template>
+            </n-input>
           </div>
         </div>
         <div class="step-op-area">
@@ -26,6 +34,7 @@
 
 import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
+import {Password} from "@vicons/carbon";
 
 const router = useRouter()
 

@@ -58,7 +58,6 @@ const message = useMessage()
 
 let username = ref("");
 let password = ref("");
-let NextButtonLoadingStatus = ref(false)
 let currentStepIndex = ref(1);
 let currentStepStatus = ref("process") // 'process' | 'finish' |'error' |'wait'
 

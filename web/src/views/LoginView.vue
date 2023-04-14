@@ -19,11 +19,19 @@
       </div>
       <div class="title">登录 Melo CMDB</div>
       <div class="box">
-        <n-input v-model:value="username" type="text" placeholder="请输入用户名"/>
+        <n-input v-model:value="username" type="text" placeholder="请输入用户名">
+          <template #prefix>
+            <n-icon :component="UserOutlined" />
+          </template>
+        </n-input>
       </div>
       <div class="box">
         <n-input v-model:value="password" type="password" show-password-on="click"
-                 @keyup.enter="handleLoginButtonClicked" placeholder="请输入登录密码"/>
+                 @keyup.enter="handleLoginButtonClicked" placeholder="请输入登录密码">
+          <template #prefix>
+            <n-icon :component="Password" />
+          </template>
+        </n-input>
       </div>
       <div class="text-box">
         <div class="about-text" @click="handleAboutLinkClicked">关于 Melo CMDB</div>
@@ -42,6 +50,8 @@
 import {getCurrentInstance, onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {useMessage} from "naive-ui";
+import {UserOutlined} from "@vicons/antd";
+import {Password} from "@vicons/carbon";
 
 const router = useRouter()
 const {proxy} = getCurrentInstance()
