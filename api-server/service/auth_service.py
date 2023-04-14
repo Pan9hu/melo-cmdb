@@ -24,9 +24,9 @@ class AuthService:
         return JWTUtile.refresh_token(refresh)
 
     @staticmethod
-    def reset_password(username: str, password: str):
+    def security_code(username: str, auth_method: str):
         pass
 
     @staticmethod
-    def security_code(username: str, auth_method: str):
+    def reset_password(username: str, password: str):
         pass
