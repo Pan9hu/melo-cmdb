@@ -27,7 +27,7 @@
       </div>
       <div class="text-box">
         <div class="about-text" @click="handleAboutLinkClicked">关于 Melo CMDB</div>
-        <div class="forget-password">忘记密码? 点击找回</div>
+        <div class="forget-password" @click="handleResetPasswordClicked" >忘记密码? 点击找回</div>
       </div>
       <div class="box">
         <n-button @click="handleLoginButtonClicked" type="primary" strong secondary style="width: 100%;"
@@ -99,6 +99,13 @@ function handleAboutLinkClicked() {
     path: '/about'
   })
 }
+
+function handleResetPasswordClicked(){
+  router.push({
+    path: '/reset-password'
+  })
+}
+
 
 </script>
 

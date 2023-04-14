@@ -183,8 +183,9 @@ import {getCurrentInstance, h, onMounted, reactive, ref, watch} from "vue";
 import {NButton, useDialog, useMessage} from "naive-ui";
 import {SearchOutlined, CloseOutlined, PlusOutlined, DeleteOutlined} from "@vicons/antd"
 import TableOperationAreaButtonGroup from "@/components/TableOperationAreaButtonGroup.vue";
-import router from "@/router";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const {proxy} = getCurrentInstance()
 const dialog = useDialog()
 const message = useMessage()
@@ -237,25 +238,25 @@ onMounted(() => {
   })
 })
 
-let memberName = ref("");
-let memberUid = ref(null);
-let memberGroup = ref("");
-let memberPhone = ref("");
-let memberEmail = ref("");
-let addMemberName = ref();
-let addMemberUid = ref();
-let addMemberPhone = ref();
-let addMemberEmail = ref();
-let addMemberArchGroup = ref();
+let memberName = ref("")
+let memberUid = ref(null)
+let memberGroup = ref("")
+let memberPhone = ref("")
+let memberEmail = ref("")
+let addMemberName = ref()
+let addMemberUid = ref()
+let addMemberPhone = ref()
+let addMemberEmail = ref()
+let addMemberArchGroup = ref()
 let memberSexSelectOptionValue = ref()
 let addMemberSexSelectOptionValue = ref()
 let addMemberGroupSelectOptionValue = ref()
 let memberGroupSelectOptions = ref([])
-let memberArchGroup = ref("");
-let isShowAddModal = ref(false);
-let isShowModifyModal = ref(false);
-let isShowDetailModal = ref(false);
-let isShowDeleteModal = ref(false);
+let memberArchGroup = ref("")
+let isShowAddModal = ref(false)
+let isShowModifyModal = ref(false)
+let isShowDetailModal = ref(false)
+let isShowDeleteModal = ref(false)
 let checkedRowKeysRef = ref([])
 let detailTitleValue = ref()
 let detailNameValue = ref()

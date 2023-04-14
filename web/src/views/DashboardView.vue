@@ -1,5 +1,5 @@
 <script setup>
-import {getCurrentInstance, h, onMounted, ref} from "vue";
+import {h, onMounted, ref} from "vue";
 import {RouterLink, RouterView} from 'vue-router'
 import {NIcon} from "naive-ui";
 import {

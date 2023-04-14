@@ -20,6 +20,7 @@ class GroupAPI:
         :param
         """
         p_token = RequestUtil.get_param_from_headers(request, "X-Auth-Token")
+        # 获取token 并在下面验证是否过期
         handler_result = TokenHandler.token_handler(p_token)
         if handler_result:
             return handler_result

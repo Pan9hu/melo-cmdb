@@ -1,0 +1,40 @@
+Date : 2023-04-08 21:39:57
+Directory : c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent
+Total : 9 files,  64 codes, 1 comments, 10 blanks, all 75 lines
+
+Languages
++--------------+------------+------------+------------+------------+------------+
+| language     | files      | code       | comment    | blank      | total      |
++--------------+------------+------------+------------+------------+------------+
+| XML          |          7 |         48 |          0 |          2 |         50 |
+| Shell Script |          1 |          9 |          1 |          5 |         15 |
+| Go           |          1 |          7 |          0 |          3 |         10 |
++--------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                             | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                |          9 |         64 |          1 |         10 |         75 |
+| . (Files)                                                                        |          1 |          9 |          1 |          5 |         15 |
+| .idea                                                                            |          3 |         23 |          0 |          0 |         23 |
+| mcore                                                                            |          5 |         32 |          0 |          5 |         37 |
+| mcore (Files)                                                                    |          2 |          9 |          0 |          5 |         14 |
+| mcore\.idea                                                                      |          3 |         23 |          0 |          0 |         23 |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| filename                                                                         | language     | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\.idea\agent.iml         | XML          |          9 |          0 |          0 |          9 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\.idea\modules.xml       | XML          |          8 |          0 |          0 |          8 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\.idea\vcs.xml           | XML          |          6 |          0 |          0 |          6 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\build.sh                | Shell Script |          9 |          1 |          5 |         15 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\mcore\.idea\mcore.iml   | XML          |          9 |          0 |          0 |          9 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\mcore\.idea\modules.xml | XML          |          8 |          0 |          0 |          8 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\mcore\.idea\vcs.xml     | XML          |          6 |          0 |          0 |          6 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\mcore\go.mod            | XML          |          2 |          0 |          2 |          4 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\mcore\magent.go         | Go           |          7 |          0 |          3 |         10 |
+| Total                                                                            |              |         64 |          1 |         10 |         75 |
++----------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+

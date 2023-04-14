@@ -107,9 +107,9 @@ import {getCurrentInstance, h, onMounted, reactive, ref} from "vue";
 import {NButton, useDialog, useMessage} from "naive-ui";
 import {CloseOutlined, DeleteOutlined, PlusOutlined, SearchOutlined} from "@vicons/antd"
 import TableOperationAreaButtonGroup from "@/components/TableOperationAreaButtonGroup.vue";
-import router from "@/router";
+import {useRouter} from "vue-router";
 
-
+const router = useRouter()
 const {proxy} = getCurrentInstance()
 const dialog = useDialog()
 const message = useMessage()

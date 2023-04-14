@@ -9,6 +9,27 @@ const router = createRouter({
     }, {
         path: '/about', name: 'about', component: () => import('../views/AboutView.vue')
     }, {
+        path: "/reset-password",
+        name: "reset-password",
+        component: () => import('../views/ResetPasswordView.vue'),children:[
+            {
+                path: "",
+                component: () => import('../views/ResetPassword/AuthenticationStep.vue')
+            },{
+                path: "authentication-step",
+                name: "reset-password-authentication-step",
+                component: () => import('../views/ResetPassword/AuthenticationStep.vue')
+            },{
+                path: "reset-step",
+                name: "reset-password-reset-step",
+                component: () => import('../views/ResetPassword/ResetStep.vue')
+            }, {
+                path: "reset-success-step",
+                name: "reset-password-reset-success-step",
+                component: () => import('../views/ResetPassword/ResetSuccessStep.vue')
+            }
+        ]
+    }, {
         path: '/dashboard', component: () => import('../views/DashboardView.vue'), children: [{
             path: '', name: "home", component: () => import('../views/dashboard/HomeView.vue')
         }, {

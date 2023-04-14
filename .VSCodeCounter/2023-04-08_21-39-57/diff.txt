@@ -1,0 +1,60 @@
+Date : 2023-04-08 21:39:57
+Directory : c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent
+Total : 18 files,  -2057 codes, -3 comments, -9 blanks, all -2069 lines
+
+Languages
++--------------+------------+------------+------------+------------+------------+
+| language     | files      | code       | comment    | blank      | total      |
++--------------+------------+------------+------------+------------+------------+
+| XML          |         10 |         45 |          0 |          2 |         47 |
+| Shell Script |          1 |          9 |          1 |          5 |         15 |
+| Go           |          1 |          7 |          0 |          3 |         10 |
+| HTML         |          1 |        -65 |          0 |         -1 |        -66 |
+| JavaScript   |          3 |       -151 |         -4 |        -16 |       -171 |
+| JSON         |          2 |     -1,902 |          0 |         -2 |     -1,904 |
++--------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                   | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                      |         18 |     -2,057 |         -3 |         -9 |     -2,069 |
+| . (Files)                                                                                              |          1 |          9 |          1 |          5 |         15 |
+| ..                                                                                                     |          9 |     -2,121 |         -4 |        -19 |     -2,144 |
+| ..\web                                                                                                 |          9 |     -2,121 |         -4 |        -19 |     -2,144 |
+| ..\web (Files)                                                                                         |          4 |     -1,990 |          0 |         -8 |     -1,998 |
+| ..\web\src                                                                                             |          5 |       -131 |         -4 |        -11 |       -146 |
+| ..\web\src (Files)                                                                                     |          1 |        -28 |         -4 |         -8 |        -40 |
+| ..\web\src\assets                                                                                      |          3 |         -3 |          0 |          0 |         -3 |
+| ..\web\src\assets\image                                                                                |          3 |         -3 |          0 |          0 |         -3 |
+| ..\web\src\router                                                                                      |          1 |       -100 |          0 |         -3 |       -103 |
+| .idea                                                                                                  |          3 |         23 |          0 |          0 |         23 |
+| mcore                                                                                                  |          5 |         32 |          0 |          5 |         37 |
+| mcore (Files)                                                                                          |          2 |          9 |          0 |          5 |         14 |
+| mcore\.idea                                                                                            |          3 |         23 |          0 |          0 |         23 |
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| filename                                                                                               | language     | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\.idea\agent.iml                               | XML          |          9 |          0 |          0 |          9 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\.idea\modules.xml                             | XML          |          8 |          0 |          0 |          8 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\.idea\vcs.xml                                 | XML          |          6 |          0 |          0 |          6 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\build.sh                                      | Shell Script |          9 |          1 |          5 |         15 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\mcore\.idea\mcore.iml                         | XML          |          9 |          0 |          0 |          9 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\mcore\.idea\modules.xml                       | XML          |          8 |          0 |          0 |          8 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\mcore\.idea\vcs.xml                           | XML          |          6 |          0 |          0 |          6 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\mcore\go.mod                                  | XML          |          2 |          0 |          2 |          4 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\agent\mcore\magent.go                               | Go           |          7 |          0 |          3 |         10 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\web\index.html                                      | HTML         |        -65 |          0 |         -1 |        -66 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\web\package-lock.json                               | JSON         |     -1,878 |          0 |         -1 |     -1,879 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\web\package.json                                    | JSON         |        -24 |          0 |         -1 |        -25 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\web\src\assets\image\melo.svg                       | XML          |         -1 |          0 |          0 |         -1 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\web\src\assets\image\undraw_ideas_re_7twj.svg       | XML          |         -1 |          0 |          0 |         -1 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\web\src\assets\image\undraw_proud_coder_re_exuy.svg | XML          |         -1 |          0 |          0 |         -1 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\web\src\main.js                                     | JavaScript   |        -28 |         -4 |         -8 |        -40 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\web\src\router\index.js                             | JavaScript   |       -100 |          0 |         -3 |       -103 |
+| c:\Users\Pan9Hu\go\src\github.com\Pan9Hu\melo-cmdb\web\vite.config.js                                  | JavaScript   |        -23 |          0 |         -5 |        -28 |
+| Total                                                                                                  |              |     -2,057 |         -3 |         -9 |     -2,069 |
++--------------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
