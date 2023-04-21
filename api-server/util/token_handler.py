@@ -2,7 +2,7 @@ from flask_restful import marshal
 
 from bean.dto.auth_dto import AuthDTO
 from core.response.generic_json_response import GenericJSONResponse
-from util.jwt_util import JWTUtile
+from util.jwt_util import JWTUtil
 from util.string_util import StringUtil
 
 
@@ -15,8 +15,8 @@ class TokenHandler:
         p_refresh_token = e_token["refresh"]
         access_token = StringUtil.smart_trim(p_access_token)
         refresh_token = StringUtil.smart_trim(p_refresh_token)
-        result_access_token = JWTUtile.verify_token(access_token)
-        result_refresh_token = JWTUtile.verify_token(refresh_token)
+        result_access_token = JWTUtil.verify_token(access_token)
+        result_refresh_token = JWTUtil.verify_token(refresh_token)
         if result_access_token == 'Token过期':
             if result_refresh_token == 'Token过期':
                 return GenericJSONResponse(data=marshal({"access_token": result_refresh_token}, fields=AuthDTO.fields),

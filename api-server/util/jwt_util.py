@@ -4,7 +4,7 @@ import jwt
 from util.date_encoder import DateEncoder
 
 
-class JWTUtile:
+class JWTUtil:
     __secret_key = "6d52e21d599841d0b8c690efa9748ce4"  # 密钥下面jwt-encode和jwt-decode时需要
     headers = {'typ': 'jwt', 'alg': 'HS256'}
 
@@ -43,9 +43,9 @@ class JWTUtile:
             }
             return jwt.encode(
                 payload,
-                JWTUtile.__secret_key,
+                JWTUtil.__secret_key,
                 'HS256',
-                JWTUtile.headers,
+                JWTUtil.headers,
             )
         except Exception as e:
             return e
@@ -53,7 +53,7 @@ class JWTUtile:
     @staticmethod
     def verify_token(token) -> str:
         try:
-            verified_payload = jwt.decode(token, JWTUtile.__secret_key, algorithms='HS256')
+            verified_payload = jwt.decode(token, JWTUtil.__secret_key, algorithms='HS256')
             if 'data' in verified_payload and 'id' in verified_payload['data']:
                 return verified_payload
             else:
@@ -66,7 +66,7 @@ class JWTUtile:
     @staticmethod
     def refresh_token(token):
         try:
-            verified_payload = jwt.decode(token, JWTUtile.__secret_key, algorithms='HS256',
+            verified_payload = jwt.decode(token, JWTUtil.__secret_key, algorithms='HS256',
                                           options={"verify_exp": False})
             if 'data' in verified_payload and 'id' in verified_payload['data']:
                 verified_payload["exp"] = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=0,
@@ -74,9 +74,9 @@ class JWTUtile:
                 verified_payload["iat"] = datetime.datetime.now(tz=datetime.timezone.utc)
                 return jwt.encode(
                     verified_payload,
-                    JWTUtile.__secret_key,
+                    JWTUtil.__secret_key,
                     'HS256',
-                    JWTUtile.headers,
+                    JWTUtil.headers,
                 )
             else:
                 raise jwt.InvalidTokenError

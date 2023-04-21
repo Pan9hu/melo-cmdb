@@ -39,7 +39,6 @@ import {useMessage} from 'naive-ui'
 
 const message = useMessage()
 const router = useRouter()
-const numberAnimationInstRef = ref(null)
 const emit = defineEmits(["update-step-index", "update-step-status"])
 
 let gitRepoCheckStatus = ref('ok');
@@ -60,7 +59,6 @@ function handleToAuthSteButtonClicked() {
 
 onMounted(() => {
   emit('update-step-index', 3)
-  numberAnimationInstRef.value?.play()
 })
 
 

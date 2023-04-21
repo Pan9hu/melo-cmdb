@@ -1,7 +1,7 @@
 <template>
   <div class="authentication-step-view">
     <div
-        style="width: 100%;height: 100%;display: flex;flex-direction: column;align-items: center">
+        style="width: 100%;height: 100%;display: flex;justify-content: center">
       <n-card style="width: 26%;height: 60%;display: flex;flex-direction: column;">
         <div class="step-form-content">
           <div style="margin-bottom: 25px;">
@@ -19,14 +19,14 @@
           </div>
           <div style="margin-bottom: 25px;">
             <div style="font-size: 13pt; margin-bottom: 10px;">验证码:</div>
-            <div class="container" style="position: relative">
-              <n-input type="text" placeholder="请输入你获取的验证码">
+            <div style="position: relative">
+              <n-input v-model:value="SecurityCodeValue" type="text" placeholder="请输入你获取的验证码">
                 <template #prefix>
                   <n-icon :component="Email"/>
                 </template>
               </n-input>
               <n-button size="small" style="position: absolute;top: 9%;right: 1%;border: none;outline: none;"
-                        @click="handleSendSecurityCodeButtonClicked" >获取验证码
+                        @click="handleSendSecurityCodeButtonClicked">获取验证码
               </n-button>
             </div>
           </div>
@@ -48,10 +48,11 @@ import {useRouter} from "vue-router";
 import {getCurrentInstance, onMounted, ref} from "vue";
 import {UserOutlined} from "@vicons/antd";
 import {Email} from "@vicons/carbon";
+import {useMessage} from "naive-ui";
 
 const {proxy} = getCurrentInstance()
 const router = useRouter()
-
+const message = useMessage()
 const emit = defineEmits(["update-step-index", "update-step-status"])
 
 const AuthenticationOptions = [
@@ -67,6 +68,7 @@ const AuthenticationOptions = [
 let AuthenticationOptionValue = ref();
 let nextButtonLoading = ref(false)
 let username = ref("")
+let SecurityCodeValue = ref("")
 
 function handleToLoginViewButtonClicked() {
   router.push({
@@ -75,16 +77,35 @@ function handleToLoginViewButtonClicked() {
 }
 
 function handleStepNextButtonClicked() {
-  router.push({
-    path: '/reset-password/reset-step'
-  });
+  if (!username.value) {
+    message.warning("请填入账号")
+  } else if (!AuthenticationOptionValue.value) {
+    message.warning("请选择验证方式")
+  } else if (!SecurityCodeValue.value) {
+    message.warning("请填入验证码！")
+  } else {
+    router.push({
+      path: '/reset-password/reset-step'
+    });
+  }
 }
 
 function handleSendSecurityCodeButtonClicked() {
-  proxy.$axios.post("/api/auth/security-code",{
-    username: username.value,
-    auth_method: AuthenticationOptionValue.value
-  })
+  if (!username.value) {
+    message.warning("请填入账号")
+  } else if (!AuthenticationOptionValue.value) {
+    message.warning("请选择验证方式")
+  } else {
+    proxy.$axios.post("/api/auth/security-code", {
+      username: username.value,
+      auth_method: AuthenticationOptionValue.value
+    }).then(r=>{
+      if (r.status === 200) {
+        const content = r.data
+      }
+    })
+  }
+
 }
 
 onMounted(() => {
@@ -103,6 +124,7 @@ onMounted(() => {
 
 .step-form-content {
   flex: 1;
+
 }
 
 .step-op-area {

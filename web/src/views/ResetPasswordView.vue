@@ -11,8 +11,7 @@
       :y-offset="60"
       :rotate="-15"
   />
-  <n-layout class="reset-password-view">
-    <div class="reset-password-step-view">
+    <n-layout class="reset-password-view" >
       <div
           style="width: 100%;height: 100%;display: flex;flex-direction: column;justify-content: center;align-items: center">
         <div class="title">重置密码</div>
@@ -36,11 +35,10 @@
         <router-view @update-step-index="setCurrentStepIndex" @update-step-status="setCurrentStepStatus"
                      style="width: 100%; height: 100%;"/>
       </div>
+    </n-layout>
+    <div class="image">
+      <img src="../assets/image/melo.svg" alt="">
     </div>
-  </n-layout>
-  <div class="image">
-    <img src="../assets/image/melo.svg" alt="">
-  </div>
 </template>
 
 <script setup>
@@ -81,6 +79,7 @@ function setCurrentStepStatus(status) {
   text-align: center;
   margin-bottom: 25px;
   margin-top: 10%;
+
 }
 
 .image {
@@ -92,14 +91,10 @@ function setCurrentStepStatus(status) {
   bottom: 0;
 }
 
-.reset-password-step-view {
+.reset-password-view {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-}
-
-.reset-password-view {
+  justify-content: center;
   width: 100%;
   height: 100%;
 }
