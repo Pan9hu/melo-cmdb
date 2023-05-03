@@ -2,6 +2,8 @@ from datetime import datetime
 from model.account_model import AccountModel
 from util.aes_util import AESUtil
 from util.jwt_util import JWTUtil
+from util.random_util import RandomUtil
+from util.sms_verification_util import SMSVerificationUtil
 
 
 class AuthService:
@@ -28,7 +30,18 @@ class AuthService:
 
     @staticmethod
     def security_code(username: str, auth_method: str):
-        pass
+        username_detail = AccountModel.get_account_by_uid(username)
+        if auth_method == "phone":
+            phone = username_detail.get_phone()
+            if phone is not None:
+                code = RandomUtil.get_random()
+                template_param = str({'code': code})
+                b_mes = SMSVerificationUtil.send_sms(phone, template_param)
+                mes = eval(str(b_mes, encoding='utf-8'))
+                if mes["Message"] == "OK":
+                    return mes["Message"]
+        elif auth_method == "email":
+            email = username_detail.get_email()
 
     @staticmethod
     def reset_password(username: str, password: str):

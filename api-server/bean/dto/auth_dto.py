@@ -5,5 +5,5 @@ class AuthDTO:
     fields = {
         "access_token": fields.String,
         "refresh_token": fields.String,
-        "username": fields.String
+        "username": fields.String,
     }

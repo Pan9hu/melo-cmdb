@@ -73,9 +73,9 @@ class AuthAPI:
         username = StringUtil.smart_trim(p_username)
         auth_method = StringUtil.smart_trim(p_auth_method)
 
-        AuthService.security_code(username, auth_method)
-
-        return {}
+        mes = AuthService.security_code(username, auth_method)
+        if mes == "OK":
+            return GenericJSONResponse(data=marshal({"username": username}, fields=AuthDTO.fields)).build()
 
     @staticmethod
     @api.route("/reset-password", methods=('POST',))
