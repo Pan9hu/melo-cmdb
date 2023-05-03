@@ -26,7 +26,7 @@
                 </template>
               </n-input>
               <n-button size="small" style="position: absolute;top: 9%;right: 1%;border: none;outline: none;"
-                        @click="handleSendSecurityCodeButtonClicked">获取验证码
+                        @click="handleSendSecurityCodeButtonClicked">{{content}}
               </n-button>
             </div>
           </div>
@@ -45,7 +45,7 @@
 <script setup>
 
 import {useRouter} from "vue-router";
-import {getCurrentInstance, onMounted, ref} from "vue";
+import {getCurrentInstance, onMounted, reactive, ref} from "vue";
 import {UserOutlined} from "@vicons/antd";
 import {Email} from "@vicons/carbon";
 import {useMessage} from "naive-ui";
@@ -64,11 +64,25 @@ const AuthenticationOptions = [
     value: "phone"
   }
 ]
-
-let AuthenticationOptionValue = ref();
+let content = ref("发送验证码")
+let totalTime = ref(60)
+let AuthenticationOptionValue = ref()
 let nextButtonLoading = ref(false)
 let username = ref("")
 let SecurityCodeValue = ref("")
+
+function countDown(){
+  content.value = totalTime.value + 's后重新发送'  //这里解决60秒不见了的问题
+  let clock = window.setInterval(() => {
+    totalTime.value--
+    content.value = totalTime.value + 's后重新发送'
+    if (totalTime.value < 0) {         //当倒计时小于0时清除定时器
+      window.clearInterval(clock)
+      content.value = '重新发送验证码'
+      totalTime.value = 60
+    }
+  },1000)
+}
 
 function handleToLoginViewButtonClicked() {
   router.push({
@@ -96,12 +110,15 @@ function handleSendSecurityCodeButtonClicked() {
   } else if (!AuthenticationOptionValue.value) {
     message.warning("请选择验证方式")
   } else {
+    countDown()
     proxy.$axios.post("/api/auth/security-code", {
       username: username.value,
       auth_method: AuthenticationOptionValue.value
     }).then(r=>{
       if (r.status === 200) {
         const content = r.data
+        if (content["code"]=== "10000"){
+        }
       }
     })
   }
