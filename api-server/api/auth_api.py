@@ -70,10 +70,12 @@ class AuthAPI:
         """
         p_username = RequestUtil.get_param_from_body_raw_json(request, "username")
         p_auth_method = RequestUtil.get_param_from_body_raw_json(request, "auth_method")
+        # 获取用户名和验证方式
         username = StringUtil.smart_trim(p_username)
         auth_method = StringUtil.smart_trim(p_auth_method)
-
-        mes = AuthService.security_code(username, auth_method)
+        expired_time = datetime.datetime.utcnow()
+        # 发送验证码
+        mes = AuthService.security_code(username, auth_method,expired_time)
         if mes == "OK":
             return GenericJSONResponse(data=marshal({"username": username}, fields=AuthDTO.fields)).build()
 

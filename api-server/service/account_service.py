@@ -13,11 +13,13 @@ class AccountService:
                      arch_group: str | None):
         if name is None and group is None and phone is None and email is None and sex is None and arch_group is None:
             return AccountModel.all_account()
+            # 不满足全部条件则, 返回全部账户信息
         else:
             condition_dict = {'name': "" if name is None else name, 'group': "" if group is None else group,
                               'phone': "" if phone is None else phone, 'email': "" if email is None else email,
                               'sex': "" if sex is None else sex,
                               'arch_group': "" if arch_group is None else arch_group}
+            # 多条件匹配, 获取查询结果返回
             return AccountModel.get_account(condition_dict)
 
     @staticmethod
@@ -26,6 +28,7 @@ class AccountService:
                        update_time: datetime):
         if uid is None or name is None:
             return {}
+        # 判断关键信息是否为空, 不为空则传入Model层落实为数据库记录
         AccountModel.create_account(uid, name, group, sex, phone, email, arch_group, create_time, update_time)
 
     @staticmethod
@@ -38,6 +41,7 @@ class AccountService:
     def delete_account(uid_list: list):
         if len(uid_list) == 0:
             return []
+        # 判断批量删除列表是否为空, 不为空则传入Model层落实为数据库记录
         AccountModel.delete_account(uid_list)
 
     @staticmethod
@@ -49,11 +53,6 @@ class AccountService:
             return {}
         update_fields_dict = {'name': name, 'group': group, 'phone': phone, 'email': email, 'sex': sex,
                               'arch_group': arch_group, 'update_time': update_time}
-        update_dict = {}
-        for field in update_fields_dict:
-            if update_fields_dict[field] is None:
-                continue
-            else:
-                update_dict[field] = update_fields_dict[field]
+        # 生成需要更新的字段的字典，传入Model层落实为数据库记录
 
-        AccountModel.update_account(uid, update_dict)
+        AccountModel.update_account(uid, update_fields_dict)

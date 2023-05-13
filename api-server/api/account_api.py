@@ -24,6 +24,7 @@ class AccountAPI:
         handler_result = TokenHandler.token_handler(p_token)
         if handler_result:
             return handler_result
+        # 获取X-Auth-Token中的双token, 校验是否过期
         account = AccountService.get_account_by_uid(StringUtil.smart_trim("%s" % uid))
         account_dto = [AccountDTO(username=account.get_username(),
                                   name=account.get_name(),
@@ -49,6 +50,7 @@ class AccountAPI:
         handler_result = TokenHandler.token_handler(p_token)
         if handler_result:
             return handler_result
+        # 获取X-Auth-Token中的双token, 校验是否过期
         p_name = RequestUtil.get_param_from_url_query_param(request, "name")
         p_group = RequestUtil.get_param_from_url_query_param(request, "group")
         p_phone = RequestUtil.get_param_from_url_query_param(request, "phone")
@@ -86,6 +88,7 @@ class AccountAPI:
         handler_result = TokenHandler.token_handler(p_token)
         if handler_result:
             return handler_result
+        # 获取X-Auth-Token中的双token, 校验是否过期
         p_name = RequestUtil.get_param_from_body_raw_json(request, "name")
         p_uid = RequestUtil.get_param_from_body_raw_json(request, "uid")
         p_group = RequestUtil.get_param_from_body_raw_json(request, "group")
@@ -126,6 +129,7 @@ class AccountAPI:
         handler_result = TokenHandler.token_handler(p_token)
         if handler_result:
             return handler_result
+        # 获取X-Auth-Token中的双token, 校验是否过期
         AccountService.delete_account_by_uid(StringUtil.smart_trim("%s" % uid))
 
         account = []
@@ -138,6 +142,7 @@ class AccountAPI:
         handler_result = TokenHandler.token_handler(p_token)
         if handler_result:
             return handler_result
+        # 获取X-Auth-Token中的双token, 校验是否过期
         p_uid_list = RequestUtil.get_param_from_body_raw_json_as_list(request)
 
         if len(p_uid_list) > 0:
@@ -166,6 +171,7 @@ class AccountAPI:
         handler_result = TokenHandler.token_handler(p_token)
         if handler_result:
             return handler_result
+        # 获取X-Auth-Token中的双token, 校验是否过期
         p_name = RequestUtil.get_param_from_body_raw_json(request, "name")
         p_phone = RequestUtil.get_param_from_body_raw_json(request, "phone")
         p_group = RequestUtil.get_param_from_body_raw_json(request, "group")
