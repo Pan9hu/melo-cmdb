@@ -15,9 +15,15 @@ class AuthModel:
         pass
 
     @staticmethod
-    def get_sms_code_by_phone(phone: str):
-        pass
+    def get_sms_code_by_phone(username: str, auth_method: str) -> SecurityCode | None:
+        result = Server.datasource["default"].db["security_code"].find_one(
+            {"_id": username, "auth_method": auth_method},
+            {"code": 1, "_id": 0})
+
+        if result is None:
+            return None
+        return SecurityCode(code=result["code"])
 
     @staticmethod
-    def get_sms_code_by_email(email: str):
+    def get_sms_code_by_email(username: str, auth_method: str) -> SecurityCode | None:
         pass

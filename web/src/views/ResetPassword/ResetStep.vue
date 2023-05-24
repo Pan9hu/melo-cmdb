@@ -6,7 +6,8 @@
         <div class="step-form-content">
           <div style="margin-bottom: 25px;">
             <div style="font-size: 13pt; margin-bottom: 10px;">新密码:</div>
-            <n-input v-model:value="newPassword" type="password" show-password-on="click" placeholder="请输入新密码">
+            <n-input v-model:value="newPassword" type="password" show-password-on="click"
+                     @keyup.enter="handleStepNextButtonClicked" placeholder="请输入新密码">
               <template #prefix>
                 <n-icon :component="Password"/>
               </template>
@@ -14,7 +15,9 @@
           </div>
           <div style="margin-bottom: 25px;">
             <div style="font-size: 13pt; margin-bottom: 10px;">再次输入:</div>
-            <n-input v-model:value="checkPassword" type="password" show-password-on="click" placeholder="请再次输入新密码">
+            <n-input v-model:value="checkPassword" type="password" @keyup.enter="handleStepNextButtonClicked"
+                     show-password-on="click"
+                     placeholder="请再次输入新密码">
               <template #prefix>
                 <n-icon :component="Password"/>
               </template>
@@ -33,10 +36,11 @@
 <script setup>
 
 import {useRouter} from "vue-router";
-import {onMounted, ref} from "vue";
+import {getCurrentInstance, onMounted, ref} from "vue";
 import {Password} from "@vicons/carbon";
 import {useMessage} from "naive-ui";
 
+const {proxy} = getCurrentInstance()
 const router = useRouter()
 const message = useMessage()
 const emit = defineEmits(["update-step-index", "update-step-status"])
@@ -46,7 +50,7 @@ let newPassword = ref("")
 let checkPassword = ref("")
 
 
-function handleClearButtonClicked(){
+function handleClearButtonClicked() {
   newPassword.value = ""
   checkPassword.value = ""
 }
@@ -55,16 +59,35 @@ function handleClearButtonClicked(){
 function handleStepNextButtonClicked() {
   if (!newPassword.value) {
     message.warning("请输入新密码！")
-  } else if(!checkPassword.value){
+  } else if (!checkPassword.value) {
     message.warning("请再次输入新密码")
-  } else if (newPassword.value !== checkPassword.value){
+  } else if (newPassword.value !== checkPassword.value) {
     message.warning("两次输入的密码不同！请重新输入")
     newPassword.value = ""
     checkPassword.value = ""
   } else {
-    router.push({
-      path: '/reset-password/reset-success-step'
-    });
+    proxy.$axios.post("/api/auth/reset-password", {
+      username: localStorage.username,
+      password: btoa(encodeURIComponent(checkPassword.value)),
+    }).then(r => {
+      if (r.status === 200) {
+        const content = r.data
+        if (content["code"] === "10000") {
+          message.success("修改成功")
+          sessionStorage.clear()
+          localStorage.clear()
+          router.push({
+            path: '/reset-password/reset-success-step'
+          });
+        } else if (content["code"] === "20000") {
+          message.error("修改失败, 密码不存在")
+        } else if (content["code"] === "30000") {
+          message.error("出现了密码幂等性问题")
+        } else if (content["code"] === "30000") {
+          message.error("出现了无法预知的错误")
+        }
+      }
+    })
     newPassword.value = ""
     checkPassword.value = ""
   }

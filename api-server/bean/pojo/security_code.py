@@ -3,22 +3,24 @@ from datetime import datetime
 
 class SecurityCode:
 
-    def __init__(self, name: str = None,
+    def __init__(self, username: str = None,
                  auth_method: str = None,
                  phone: str = None,
                  email: str = None,
+                 code: str = None,
                  expired_time: datetime = datetime.utcnow()):
-        self.__name = name
+        self.__username = username
         self.__auth_method = auth_method
         self.__phone = phone
         self.__email = email
+        self.__code: str = code
         self.__expired_time = expired_time
 
     def get_name(self) -> str:
-        return self.__name
+        return self.__username
 
     def set_name(self, name: str):
-        self.__name = name
+        self.__username = name
 
     # ============================
 
@@ -46,6 +48,14 @@ class SecurityCode:
 
     # ============================
 
+    def get_code(self) -> str:
+        return self.__code
+
+    def set_code(self, code: str):
+        self.__code = code
+
+    # ============================
+
     def get_expired_time(self) -> datetime:
         return self.__expired_time
 
@@ -53,4 +63,3 @@ class SecurityCode:
         self.__expired_time = expired_time
 
     # ============================
-

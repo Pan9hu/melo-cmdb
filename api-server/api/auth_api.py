@@ -75,9 +75,40 @@ class AuthAPI:
         auth_method = StringUtil.smart_trim(p_auth_method)
         expired_time = datetime.datetime.utcnow()
         # 发送验证码
-        mes = AuthService.security_code(username, auth_method,expired_time)
+        mes = AuthService.security_code(username, auth_method, expired_time)
         if mes == "OK":
             return GenericJSONResponse(data=marshal({"username": username}, fields=AuthDTO.fields)).build()
+
+    @staticmethod
+    @api.route("/verify_code", methods=('POST',))
+    def verify_code():
+        """
+        验证用户输入的验证码，从定时的数据中核对验证码。
+        :return:
+        """
+        p_username = RequestUtil.get_param_from_body_raw_json(request, "username")
+        p_auth_method = RequestUtil.get_param_from_body_raw_json(request, "auth_method")
+        p_code_b64 = RequestUtil.get_param_from_body_raw_json(request, "code")
+        # 从body中获取账号和验证码
+        p_code = base64.b64decode(p_code_b64).decode("UTF-8")
+
+        # 获取用户名、验证方式和验证码
+        username = StringUtil.smart_trim(p_username)
+        auth_method = StringUtil.smart_trim(p_auth_method)
+        code = StringUtil.smart_trim(p_code)
+
+        result = AuthService.verify_code(username, auth_method, code)
+        if result == "20000":
+            return GenericJSONResponse(
+                data=marshal({"username": username, "auth_method": auth_method}, fields=AuthDTO.fields),
+                message="验证码已过期", code=result).build()
+        elif result == "40000":
+            return GenericJSONResponse(
+                data=marshal({"username": username, "auth_method": auth_method}, fields=AuthDTO.fields),
+                message="输入的验证码有误", code=result).build()
+        else:
+            return GenericJSONResponse(
+                data=marshal({"username": username, "auth_method": auth_method}, fields=AuthDTO.fields)).build()
 
     @staticmethod
     @api.route("/reset-password", methods=('POST',))
@@ -93,7 +124,22 @@ class AuthAPI:
         # base64解码
         username = StringUtil.smart_trim(p_username)
         password = StringUtil.smart_trim(p_password)
+        update_time = datetime.datetime.utcnow()
 
-        AuthService.reset_password(username, password)
+        result = AuthService.reset_password(username, password, update_time)
 
-        return {}
+        if result == "50000":
+            return GenericJSONResponse(
+                data=marshal({"username": username}, fields=AuthDTO.fields),
+                message="出现了无法预知的错误", code=result).build()
+        elif result == "30000":
+            return GenericJSONResponse(
+                data=marshal({"username": username}, fields=AuthDTO.fields),
+                message="出现了密码幂等性问题", code=result).build()
+        elif result == "20000":
+            return GenericJSONResponse(
+                data=marshal({"username": username}, fields=AuthDTO.fields),
+                message="修改失败, 密码不存在", code=result).build()
+        else:
+            return GenericJSONResponse(
+                data=marshal({"username": username}, fields=AuthDTO.fields)).build()

@@ -52,5 +52,42 @@ class AuthService:
             email = username_detail.get_email()
 
     @staticmethod
-    def reset_password(username: str, password: str):
+    def verify_code(username: str, auth_method: str, code: str):
+        if auth_method == "phone":
+            b_code_dict = AuthModel.get_sms_code_by_phone(username, auth_method)
+            if b_code_dict is None:
+                return "20000"
+            elif b_code_dict:
+                r_code = str(AESUtil.decrypt(eval(b_code_dict.get_code())["code"]), 'utf-8')
+                # 将从数据库中的加盐的验证码反序列化并解密得到验证码, 方便后续校验
+                if r_code == code:
+                    return "10000"
+                else:
+                    return "40000"
+        elif auth_method == "email":
+            AuthModel.get_sms_code_by_email(username, auth_method)
         pass
+
+    @staticmethod
+    def reset_password(username: str, password: str, update_time: datetime):
+        if username is None or password is None:
+            return None
+        b_password = AESUtil.encrypt(password)
+        b_password_dict = str({"byte_password": b_password})
+
+        update_fields_dict = {'password': b_password_dict, 'update_time': update_time}
+        AccountModel.update_account(username, update_fields_dict)
+
+        # 验证密码
+        byte_password = AccountModel.auth_user(username)
+        if byte_password is None:
+            return "20000"
+        elif byte_password:
+            r_password = str(AESUtil.decrypt(eval(byte_password.get_password())["byte_password"]), 'utf-8')
+            # 将从数据库中的密码反序列化并解密得到密码, 方便后续校验
+            if r_password == password:
+                return "10000"
+            else:
+                return "30000"
+        else:
+            return "50000"

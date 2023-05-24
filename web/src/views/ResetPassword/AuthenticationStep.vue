@@ -6,7 +6,7 @@
         <div class="step-form-content">
           <div style="margin-bottom: 25px;">
             <div style="font-size: 13pt; margin-bottom: 10px;">账号:</div>
-            <n-input v-model:value="username" type="text" placeholder="请输入你要重置密码的账号">
+            <n-input v-model:value="username" type="text" @keyup.enter="handleStepNextButtonClicked" placeholder="请输入你要重置密码的账号">
               <template #prefix>
                 <n-icon :component="UserOutlined"/>
               </template>
@@ -20,13 +20,13 @@
           <div style="margin-bottom: 25px;">
             <div style="font-size: 13pt; margin-bottom: 10px;">验证码:</div>
             <div style="position: relative">
-              <n-input v-model:value="SecurityCodeValue" type="text" placeholder="请输入你获取的验证码">
+              <n-input v-model:value="SecurityCodeValue" type="text" @keyup.enter="handleStepNextButtonClicked" placeholder="请输入你获取的验证码">
                 <template #prefix>
                   <n-icon :component="Email"/>
                 </template>
               </n-input>
               <n-button size="small" style="position: absolute;top: 9%;right: 1%;border: none;outline: none;"
-                        @click="handleSendSecurityCodeButtonClicked">{{content}}
+                        @click="handleSendSecurityCodeButtonClicked">{{ content }}
               </n-button>
             </div>
           </div>
@@ -71,7 +71,7 @@ let nextButtonLoading = ref(false)
 let username = ref("")
 let SecurityCodeValue = ref("")
 
-function countDown(){
+function countDown() {
   content.value = totalTime.value + 's后重新发送'  //这里解决60秒不见了的问题
   let clock = window.setInterval(() => {
     totalTime.value--
@@ -81,7 +81,7 @@ function countDown(){
       content.value = '重新发送验证码'
       totalTime.value = 60
     }
-  },1000)
+  }, 1000)
 }
 
 function handleToLoginViewButtonClicked() {
@@ -98,9 +98,29 @@ function handleStepNextButtonClicked() {
   } else if (!SecurityCodeValue.value) {
     message.warning("请填入验证码！")
   } else {
-    router.push({
-      path: '/reset-password/reset-step'
-    });
+    proxy.$axios.post("/api/auth/verify_code", {
+      username: username.value,
+      auth_method: AuthenticationOptionValue.value,
+      code: btoa(encodeURIComponent(SecurityCodeValue.value)),
+    }).then(r => {
+      if (r.status === 200) {
+        const content = r.data
+        if (content["code"] === "10000") {
+          sessionStorage.clear()
+          localStorage.clear()
+          localStorage.username = content.data.username
+          localStorage.auth_method = content.data.auth_method
+          message.success("验证通过")
+          router.push({
+            path: '/reset-password/reset-step'
+          });
+        } else if (content["code"] === "20000") {
+          message.error("验证码已过期请重新获取")
+        }else if (content["code"] === "40000") {
+          message.error("输入的验证码有误, 请再次确认")
+        }
+      }
+    })
   }
 }
 
@@ -114,10 +134,10 @@ function handleSendSecurityCodeButtonClicked() {
     proxy.$axios.post("/api/auth/security-code", {
       username: username.value,
       auth_method: AuthenticationOptionValue.value
-    }).then(r=>{
+    }).then(r => {
       if (r.status === 200) {
         const content = r.data
-        if (content["code"]=== "10000"){
+        if (content["code"] === "10000") {
         }
       }
     })
