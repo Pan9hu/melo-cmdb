@@ -25,8 +25,8 @@
                   <n-icon :component="Email"/>
                 </template>
               </n-input>
-              <n-button size="small" style="position: absolute;top: 9%;right: 1%;border: none;outline: none;"
-                        @click="handleSendSecurityCodeButtonClicked">{{ content }}
+              <n-button size="small" :loading="buttonStatus" style="position: absolute;top: 9%;right: 1%;border: none;outline: none;"
+                         @click="handleSendSecurityCodeButtonClicked">{{ content }}
               </n-button>
             </div>
           </div>
@@ -65,6 +65,7 @@ const AuthenticationOptions = [
   }
 ]
 let content = ref("发送验证码")
+let buttonStatus = ref (false)
 let totalTime = ref(60)
 let AuthenticationOptionValue = ref()
 let nextButtonLoading = ref(false)
@@ -72,14 +73,17 @@ let username = ref("")
 let SecurityCodeValue = ref("")
 
 function countDown() {
+  buttonStatus.value = true
   content.value = totalTime.value + 's后重新发送'  //这里解决60秒不见了的问题
   let clock = window.setInterval(() => {
+    buttonStatus.value = true
     totalTime.value--
     content.value = totalTime.value + 's后重新发送'
     if (totalTime.value < 0) {         //当倒计时小于0时清除定时器
       window.clearInterval(clock)
       content.value = '重新发送验证码'
       totalTime.value = 60
+      buttonStatus.value = false
     }
   }, 1000)
 }
