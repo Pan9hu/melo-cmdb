@@ -43,9 +43,12 @@ class RequestUtil:
         获取headers中的参数来查找数据
         """
         request_headers = request.headers
+
         value = None
+
         try:
             value = request_headers[name]
         except KeyError:
             pass
+
         return value

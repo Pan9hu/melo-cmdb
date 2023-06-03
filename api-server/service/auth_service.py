@@ -49,6 +49,7 @@ class AuthService:
                     AuthModel.create_sms_code_by_phone(username, b_code_dict, auth_method, phone, expired_time)
                     return mes["Message"]
         elif auth_method == "email":
+            # TODO 邮箱验证码
             email = username_detail.get_email()
 
     @staticmethod

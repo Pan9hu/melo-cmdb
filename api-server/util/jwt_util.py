@@ -30,7 +30,6 @@ class JWTUtil:
             exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=30)
 
         try:
-
             payload = {
                 'iss': 'melo',
                 'exp': exp,
@@ -55,6 +54,7 @@ class JWTUtil:
         try:
             verified_payload = jwt.decode(token, JWTUtil.__secret_key, algorithms='HS256')
             if 'data' in verified_payload and 'id' in verified_payload['data']:
+                # TODO 验证username是否与token中的username一致
                 return verified_payload
             else:
                 raise jwt.InvalidTokenError

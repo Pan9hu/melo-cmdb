@@ -27,7 +27,8 @@ if (import.meta.env.MODE === "development") {
 app.config.globalProperties.$axios.interceptors.request.use(function (config) {
     config.headers["X-Auth-Token"] = JSON.stringify({
          "access": localStorage.getItem("access_token"),
-        "refresh": localStorage.getItem("refresh_token")
+        "refresh": localStorage.getItem("refresh_token"),
+        "username":localStorage.getItem("username")
     })
     return config
 })
