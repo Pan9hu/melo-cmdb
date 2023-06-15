@@ -9,6 +9,7 @@ from api.safe_group_api import SafeGroupAPI
 from api.service_api import ServiceAPI
 from api.task_api import TaskAPI
 from api.overview_api import OverViewAPI
+from api.version_api import VersionAPI
 from core.server import Server
 from core.settings import settings
 
@@ -23,6 +24,7 @@ Server.app.register_blueprint(SafeGroupAPI.api)
 Server.app.register_blueprint(ServiceAPI.api)
 Server.app.register_blueprint(TaskAPI.api)
 Server.app.register_blueprint(OverViewAPI.api)
+Server.app.register_blueprint(VersionAPI.api)
 
 app = Server.app
 
