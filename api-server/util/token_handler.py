@@ -19,19 +19,19 @@ class TokenHandler:
         result_refresh_token = JWTUtil.verify_token(refresh_token)
         if result_access_token == 'Token过期':
             if result_refresh_token == 'Token过期':
-                return GenericJSONResponse(data=marshal({"access_token": result_refresh_token}, fields=AuthDTO.fields),
+                return GenericJSONResponse(data=marshal({"refresh_token": result_refresh_token}, fields=AuthDTO.fields),
                                            message="RefreshToken过期, 重新登录", code="20000").build()
             elif result_refresh_token == '无效Token':
-                return GenericJSONResponse(data=marshal({"access_token": result_refresh_token}, fields=AuthDTO.fields),
+                return GenericJSONResponse(data=marshal({"refresh_token": result_refresh_token}, fields=AuthDTO.fields),
                                            message="RefreshToken失效, 重新登录", code="30000").build()
             return GenericJSONResponse(data=marshal({"access_token": result_access_token}, fields=AuthDTO.fields),
                                        message="AccessToken过期, 重新获取", code="15000").build()
         elif result_access_token == '无效Token':
             if result_refresh_token == 'Token过期':
-                return GenericJSONResponse(data=marshal({"access_token": result_refresh_token}, fields=AuthDTO.fields),
+                return GenericJSONResponse(data=marshal({"refresh_token": result_refresh_token}, fields=AuthDTO.fields),
                                            message="RefreshToken过期, 重新登录", code="20000").build()
             elif result_refresh_token == '无效Token':
-                return GenericJSONResponse(data=marshal({"access_token": result_refresh_token}, fields=AuthDTO.fields),
+                return GenericJSONResponse(data=marshal({"refresh_token": result_refresh_token}, fields=AuthDTO.fields),
                                            message="RefreshToken失效, 重新登录", code="30000").build()
             return GenericJSONResponse(data=marshal({"access_token": result_access_token}, fields=AuthDTO.fields),
                                        message="AccessToken失效, 重新获取", code="15000").build()

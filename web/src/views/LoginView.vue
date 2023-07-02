@@ -21,7 +21,7 @@
       <div class="box">
         <n-input v-model:value="username" type="text" placeholder="请输入用户名">
           <template #prefix>
-            <n-icon :component="UserOutlined" />
+            <n-icon :component="UserOutlined"/>
           </template>
         </n-input>
       </div>
@@ -29,13 +29,13 @@
         <n-input v-model:value="password" type="password" show-password-on="click"
                  @keyup.enter="handleLoginButtonClicked" placeholder="请输入登录密码">
           <template #prefix>
-            <n-icon :component="Password" />
+            <n-icon :component="Password"/>
           </template>
         </n-input>
       </div>
       <div class="text-box">
         <div class="about-text" @click="handleAboutLinkClicked">关于 Melo CMDB</div>
-        <div class="forget-password" @click="handleResetPasswordClicked" >忘记密码? 点击找回</div>
+        <div class="forget-password" @click="handleResetPasswordClicked">忘记密码? 点击找回</div>
       </div>
       <div class="box">
         <n-button @click="handleLoginButtonClicked" type="primary" strong secondary style="width: 100%;"
@@ -63,7 +63,7 @@ let loginButtonLoadingStatus = ref(false)
 
 
 onMounted(() => {
-  if (localStorage.access_token && localStorage.username){
+  if (localStorage.access_token && localStorage.username) {
     router.push({
       path: '/dashboard'
     })
@@ -94,10 +94,15 @@ function handleLoginButtonClicked() {
           router.push({
             path: '/dashboard'
           })
+          message.success("登录成功")
         } else if (content["code"] === "20000") {
           message.error("用户不存在, 请重新输入")
-        }else {
+        } else if (content["code"] === "30000") {
           message.error("密码错误, 请重新输入")
+        } else if (content["code"] === "40000") {
+          message.error("获取Token失败, 请尝试再次登录")
+        } else {
+          message.error("服务不可达")
         }
       }
     })
@@ -110,7 +115,7 @@ function handleAboutLinkClicked() {
   })
 }
 
-function handleResetPasswordClicked(){
+function handleResetPasswordClicked() {
   router.push({
     path: '/reset-password'
   })
