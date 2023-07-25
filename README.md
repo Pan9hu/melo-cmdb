@@ -32,7 +32,7 @@
 
 # Experience
 
-- [在线体验Melo CMDB](http://8.134.72.192/)🍈 **账号：z426，密码：admin**
+- [在线体验Melo CMDB](http://www.melo-cmdb.site/)🍈 **账号：z426，密码：admin**
 
 # Get Started
 
